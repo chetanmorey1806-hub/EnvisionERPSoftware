@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"require\\('./app'\\); console.log\\('OK: full app graph \\(20 controllers + routes\\) loads cleanly'\\);\")",
+      "Bash(echo \"pid $!\")",
+      "Bash(node -e \"require\\('./app'\\); console.log\\('OK: full app graph loads with new models/services/validations/helpers layers'\\);\")",
+      "Bash(node -e \"require\\('./app'\\); require\\('./config/socket'\\); require\\('./services/NotificationService'\\); console.log\\('OK: backend graph loads with socket + notifications'\\);\")",
+      "Bash(PORT=5063 node server.js)",
+      "Bash(echo \"started $!\")",
+      "Bash(curl -s -w \" [HTTP %{http_code}]\" http://localhost:5063/api/health)",
+      "Bash(node /tmp/claude-1000/-home-stn-Pictures-Envision-ERP/10910bfe-5e13-4070-93e5-5a05e0d97e64/scratchpad/covcheck.mjs)",
+      "Bash(grep -n -A18 \"CREATE TABLE IF NOT EXISTS \\\\`\\\\\\(companies\\\\|job_postings\\\\|placements\\\\\\)\\\\`\" ../database/envision_erp.sql)",
+      "Bash(npx vite *)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"api :5000 -> %{http_code}\\\\n\" http://localhost:5000/api/health)",
+      "Bash(curl -s -o /dev/null -w \"web :5173 -> %{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(python3 -c \"import playwright\")",
+      "Bash(npm ls *)",
+      "Bash(npm view *)",
+      "Bash(node shot.mjs /students/7/edit edit-1366.png 1366 768)",
+      "Bash(sed -n '/CREATE TABLE IF NOT EXISTS `inventory_suppliers`/,/ENGINE/p' database/envision_erp.sql)",
+      "Bash(sed -n '/CREATE TABLE IF NOT EXISTS `id_sequences`/,/ENGINE/p' database/envision_erp.sql)",
+      "Bash(cd /home/stn/Pictures/Envision-ERP *)",
+      "Bash(cp /tmp/claude-1000/-home-stn-Pictures-Envision-ERP/10910bfe-5e13-4070-93e5-5a05e0d97e64/scratchpad/dbcheck.js ./_dbcheck.tmp.js)",
+      "Bash(node ./_dbcheck.tmp.js)",
+      "Bash(rm -f ./_dbcheck.tmp.js)",
+      "Bash(node -pe 'const d=JSON.parse\\(require\\(\"fs\"\\).readFileSync\\(0,\"utf8\"\\)\\).data; *)",
+      "Bash(sed -i '1062d;1050d;988d;944d;538d;526d;464d;420d' i18n/translations.js)",
+      "Bash(node --input-type=module -e \"import\\('./i18n/translations.js'\\).then\\(m=>{const t=m.default;console.log\\('mr',Object.keys\\(t.mr\\).length,'hi',Object.keys\\(t.hi\\).length,'| Dues:',t.mr.Dues,'/',t.hi.Dues,'| parses OK'\\);}\\)\")",
+      "Bash(grep -Ev \"^$\")"
+    ],
+    "additionalDirectories": [
+      "/home/stn/Pictures/Envision-ERP/client/src/pages/transactions"
+    ]
+  }
+}

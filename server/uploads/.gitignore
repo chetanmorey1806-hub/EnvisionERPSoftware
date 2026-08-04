@@ -1,0 +1,5 @@
+# Ignore uploaded files but keep the folder structure (and each .gitkeep).
+*
+!.gitignore
+!*/
+!*/.gitkeep

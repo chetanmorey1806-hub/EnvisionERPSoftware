@@ -1,0 +1,263 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (ThemeContext toggles `.dark` on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Typography: Plus Jakarta Sans — a geometric humanist sans that reads as
+   professional rather than generic. Loaded self-hosted via @fontsource. */
+@theme {
+  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+/* ==========================================================================
+   1. BASE SYSTEM GRAPH DIRECTIVES
+   ========================================================================== */
+@layer base {
+  /*
+    `min-h-full` + `overflow-x-hidden`, NOT `h-full overflow-hidden`.
+    Locking the page height and hiding overflow stops the document scrolling at
+    all, so anything below the fold on a short viewport becomes unreachable —
+    the bottom half of a long form simply cannot be got to. Only the horizontal
+    axis is clipped, to keep stray wide children from causing a sideways scroll.
+  */
+  html, body {
+    @apply min-h-full w-full overflow-x-hidden bg-gray-50 text-gray-900 transition-colors duration-200 antialiased font-sans m-0 p-0;
+  }
+  
+  html.dark body {
+    @apply bg-slate-950 text-slate-50;
+  }
+
+  /* Form Element Baseline Reset Controls */
+  input, select, textarea {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-500/30 transition-all duration-150;
+  }
+}
+
+/* ==========================================================================
+   2. REUSABLE ATOMIC INTEGRATION PATTERNS
+   ========================================================================== */
+@layer components {
+  /* Unified Enterprise Input Fields */
+  .form-input-field {
+    @apply w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 shadow-2xs hover:border-gray-300 dark:hover:border-slate-700 transition-all;
+  }
+
+  /* Structural Table Element Matrix Layouts */
+  .erp-table-container {
+    @apply w-full overflow-x-auto bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl shadow-2xs;
+  }
+
+  .erp-table {
+    @apply w-full text-left border-collapse text-xs;
+  }
+
+  .erp-table-th {
+    @apply px-4 py-3 bg-gray-50/70 dark:bg-slate-900/40 text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 border-b border-gray-100 dark:border-slate-800/80;
+  }
+
+  .erp-table-td {
+    @apply px-4 py-3.5 border-b border-gray-50 dark:border-slate-800/40 text-gray-700 dark:text-slate-300 align-middle;
+  }
+
+  /* Status Identity Badges */
+  .status-pill {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold font-mono uppercase tracking-wide rounded-full border shadow-2xs;
+  }
+}
+
+/* ==========================================================================
+   3. DESYNCHRONIZED HARDWARE TRANSITIONS & ANIMATIONS
+   ========================================================================== */
+@layer utilities {
+  /* Custom Animation Triggers */
+  .animate-fade-in {
+    animation: erpFadeIn 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .animate-fade-up {
+    animation: erpFadeUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .animate-scale-up {
+    animation: erpScaleUp 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .animate-slide-in {
+    animation: erpSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Mobile bottom-sheet entrance */
+  .animate-sheet-up {
+    animation: erpSheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Skeleton shimmer */
+  .animate-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.55) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: erpShimmer 1.4s infinite linear;
+  }
+  html.dark .animate-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.06) 50%,
+      transparent 100%
+    );
+  }
+
+  /* Stagger children: set --i on each child (or use style={{'--i': idx}}) */
+  .stagger > * {
+    animation: erpFadeUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 40ms);
+  }
+
+  /* Micro Interaction Dynamics */
+  .click-press-shrink {
+    @apply transition-transform active:scale-98 duration-75;
+  }
+
+  .press {
+    @apply transition-transform duration-100 active:scale-95;
+  }
+
+  /* Lift a card on hover (pointer devices only) */
+  @media (hover: hover) {
+    .hover-lift {
+      @apply transition-all duration-200;
+    }
+    .hover-lift:hover {
+      transform: translateY(-2px);
+      @apply shadow-lg;
+    }
+  }
+
+  /* Safe-area padding for iOS home indicator (mobile bottom nav) */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Gentle vertical float — hero art, illustrations */
+  .animate-float {
+    animation: erpFloat 6s ease-in-out infinite;
+  }
+
+  /* Slow breathing glow — decorative background orbs */
+  .animate-glow {
+    animation: erpGlow 7s ease-in-out infinite;
+  }
+
+  /* One-shot sheen sweeping across a logo/plate. Parent needs `relative overflow-hidden`. */
+  .shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%) skewX(-20deg);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.75) 50%,
+      transparent 100%
+    );
+    animation: erpShine 2.6s ease-in-out 0.6s 1;
+    pointer-events: none;
+  }
+
+  /* Replay the sheen on hover (pointer devices only) */
+  @media (hover: hover) {
+    .shine:hover::after {
+      animation: erpShine 1s ease-in-out 1;
+    }
+  }
+}
+
+@keyframes erpFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+@keyframes erpGlow {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 0.6;  transform: scale(1.12); }
+}
+
+@keyframes erpShine {
+  0%   { transform: translateX(-120%) skewX(-20deg); }
+  100% { transform: translateX(220%)  skewX(-20deg); }
+}
+
+@keyframes erpFadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes erpFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes erpScaleUp {
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes erpSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes erpSheetUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes erpShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Users who ask for less motion get none of it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   4. LAYOUT SYSTEM WIRE INTRUSION OVERRIDES
+   ========================================================================== */
+/* Scrollbar layout standardization for layout blocks */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-200 dark:bg-slate-800 rounded-full hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors;
+}
+
+/* Eliminate browser password background yellow flashes */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: inherit !important;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}

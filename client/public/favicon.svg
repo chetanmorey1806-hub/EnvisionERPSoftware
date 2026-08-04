@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Envision">
+  <title>Envision Computer Training Institute</title>
+  <rect width="64" height="64" rx="14" fill="#0a66c2"/>
+  <!-- Globe, echoing the 'O' in the ENVISION wordmark -->
+  <g stroke="#ffffff" stroke-width="2.75" fill="none" stroke-linecap="round">
+    <circle cx="32" cy="32" r="15"/>
+    <ellipse cx="32" cy="32" rx="6.5" ry="15"/>
+    <line x1="17" y1="32" x2="47" y2="32"/>
+    <line x1="20" y1="23" x2="44" y2="23"/>
+    <line x1="20" y1="41" x2="44" y2="41"/>
+  </g>
+</svg>
