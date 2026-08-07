@@ -1,18 +1,32 @@
 import React from 'react';
 import SettingsDashboard from '../../components/settings/SettingsDashboard';
+import { PageHero, Panel } from '../../components/common/PageShell';
+import { Icons } from '../../components/common/icons';
 
 const SettingsPage = () => {
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-bold">Node Cluster Environment Properties</h1>
+    <div className="space-y-5">
+      <PageHero
+        tone="slate"
+        icon={Icons.settings}
+        title="Institute Settings"
+        subtitle="Configuration that every other module reads from."
+      />
+
       <SettingsDashboard />
-      <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border dark:border-slate-800 space-y-4">
-        <h3 className="text-sm font-bold">Security Context Directives</h3>
-        <div className="flex items-center justify-between text-xs">
-          <span>Enforce Enforce Strong Passkey Sequences (Dual Factor OTP)</span>
-          <input type="checkbox" defaultChecked className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-        </div>
-      </div>
+
+      <Panel title="Security" subtitle="Who can sign in, and how" icon={Icons.roles} tone="slate">
+        <label className="flex items-center justify-between gap-4 text-xs cursor-pointer">
+          <span className="text-gray-700 dark:text-slate-300">
+            Require a strong passphrase and two-factor OTP at sign-in
+          </span>
+          <input
+            type="checkbox"
+            defaultChecked
+            className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+          />
+        </label>
+      </Panel>
     </div>
   );
 };

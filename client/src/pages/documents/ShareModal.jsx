@@ -67,7 +67,7 @@ const ShareModal = ({ target, onClose, onDone }) => {
             {t('Cancel')}
           </button>
           <button onClick={save} disabled={saving || !picked.length}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50 press">
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50 press">
             <Icons.share size={14} /> {saving ? t('Saving…') : `${t('Share with')} ${picked.length}`}
           </button>
         </>
@@ -80,7 +80,7 @@ const ShareModal = ({ target, onClose, onDone }) => {
         )}
 
         {target.itemType === 'folder' && (
-          <div className="p-3 rounded-lg bg-blue-50/60 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900 text-[11px] text-blue-800 dark:text-blue-300">
+          <div className="p-3 rounded-lg bg-brand-50/60 dark:bg-brand-950/20 border border-brand-100 dark:border-brand-900 text-[11px] text-brand-800 dark:text-brand-300">
             {t('Sharing a folder also shares everything inside it, including files you add later.')}
           </div>
         )}
@@ -101,13 +101,13 @@ const ShareModal = ({ target, onClose, onDone }) => {
             {visible.map((u) => (
               <button key={u.id} type="button" onClick={() => toggle(u.id)}
                 className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 text-left transition ${
-                  picked.includes(u.id) ? 'bg-blue-50 dark:bg-blue-950/30' : 'hover:bg-gray-50 dark:hover:bg-slate-800'
+                  picked.includes(u.id) ? 'bg-brand-50 dark:bg-brand-950/30' : 'hover:bg-gray-50 dark:hover:bg-slate-800'
                 }`}>
                 <span className="min-w-0">
                   <span className="block text-xs font-semibold text-gray-800 dark:text-slate-100 truncate">{u.name}</span>
                   <span className="block text-[10px] text-gray-400 truncate">{u.email} · {t(u.role)}</span>
                 </span>
-                {picked.includes(u.id) && <Icons.check size={15} className="text-blue-600 shrink-0" />}
+                {picked.includes(u.id) && <Icons.check size={15} className="text-brand-600 shrink-0" />}
               </button>
             ))}
           </div>
@@ -121,7 +121,7 @@ const ShareModal = ({ target, onClose, onDone }) => {
               <button key={a.value} type="button" onClick={() => setAccess(a.value)}
                 className={`p-3 rounded-lg border text-left transition press ${
                   access === a.value
-                    ? 'border-blue-500 bg-blue-50/60 dark:bg-blue-950/30'
+                    ? 'border-brand-500 bg-brand-50/60 dark:bg-brand-950/30'
                     : 'border-gray-200 dark:border-slate-700 hover:border-gray-300'
                 }`}>
                 <span className="block text-xs font-bold text-gray-800 dark:text-slate-100">{t(a.label)}</span>

@@ -8,25 +8,29 @@ import { AUTH_ROLES, ROLE_ORDER } from '../../config/authRoles';
  * The front door. Each role gets its own login/register path, so a Trainer,
  * a Placement Officer and a Student never share a screen.
  * `mode` = 'login' | 'register'.
+ *
+ * It sits on the same washed photographic backdrop as the workspace, so
+ * signing in and being signed in look like one product.
  */
 const RoleChooser = ({ mode = 'login' }) => {
   const navigate = useNavigate();
   const isRegister = mode === 'register';
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-linear-to-br from-slate-900 via-blue-950 to-slate-900">
+    <div className="erp-shell min-h-screen flex flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-3xl animate-fade-up">
+
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 shadow-lg">
             <Logo className="h-12" />
           </div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-white/50 mt-3">
-            {INSTITUTE.city} · An ISO 9001:2015 Certified Company
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 mt-3">
+            {INSTITUTE.city} · {INSTITUTE.certification}
           </p>
-          <h1 className="mt-5 text-2xl font-black text-white">
+          <h1 className="mt-5 text-2xl font-extrabold text-gray-900 dark:text-slate-50">
             {isRegister ? 'Create your account' : 'Sign in to your portal'}
           </h1>
-          <p className="text-sm text-white/60 mt-1">Choose your role to continue.</p>
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Choose your role to continue.</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 stagger">
@@ -42,23 +46,24 @@ const RoleChooser = ({ mode = 'login' }) => {
                 key={slug}
                 {...(disabled ? {} : { to })}
                 style={{ '--i': i }}
-                className={`group relative p-5 rounded-2xl border text-left transition-all ${
-                  disabled
-                    ? 'border-white/10 bg-white/5 opacity-60 cursor-not-allowed'
-                    : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 hover-lift'
+                className={`group erp-card p-5 text-left ${
+                  disabled ? 'opacity-60 cursor-not-allowed' : 'erp-card-interactive'
                 }`}
               >
-                <div className={`inline-flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br ${p.grad} text-white shadow-lg`}>
-                  <Icon size={22} strokeWidth={2} />
+                <div className={`inline-flex items-center justify-center h-12 w-12 rounded-xl bg-linear-to-br ${p.grad} text-white shadow-md`}>
+                  <Icon size={22} strokeWidth={2} aria-hidden="true" />
                 </div>
-                <h3 className="mt-3 text-base font-bold text-white">{p.label}</h3>
-                <p className="text-xs text-white/50 mt-0.5">{p.tagline}</p>
+                <h3 className="mt-3 text-base font-bold text-gray-900 dark:text-slate-100">{p.label}</h3>
+                <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">{p.tagline}</p>
 
                 {disabled ? (
-                  <p className="mt-3 text-[11px] text-amber-300/80">Provisioned by the administrator — cannot self-register.</p>
+                  <p className="mt-3 text-[11px] text-amber-600 dark:text-amber-400">
+                    Provisioned by the administrator — cannot self-register.
+                  </p>
                 ) : (
-                  <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-white/80 group-hover:text-white">
-                    {isRegister ? 'Register' : 'Login'} <Icons.chevronDown size={13} className="-rotate-90" />
+                  <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-brand-600 dark:text-brand-400">
+                    {isRegister ? 'Register' : 'Login'}
+                    <Icons.chevronDown size={13} className="-rotate-90 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 )}
               </Card>
@@ -69,7 +74,7 @@ const RoleChooser = ({ mode = 'login' }) => {
         <div className="text-center mt-8">
           <button
             onClick={() => navigate(isRegister ? '/login' : '/register')}
-            className="text-xs text-white/60 hover:text-white"
+            className="text-xs font-semibold text-gray-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
           >
             {isRegister ? 'Already have an account? Sign in' : "Don't have an account? Register"}
           </button>

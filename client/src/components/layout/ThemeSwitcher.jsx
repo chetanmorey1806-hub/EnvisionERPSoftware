@@ -1,16 +1,19 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
+import { Icons } from '../common/icons';
 
 const ThemeSwitcher = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const Icon = theme === 'light' ? Icons.moon : Icons.sun;
 
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:ring-2 hover:ring-blue-400 transition"
+      className="erp-icon-btn"
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
       title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
     >
-      {theme === 'light' ? '🌙' : '☀️'}
+      <Icon size={17} aria-hidden="true" />
     </button>
   );
 };

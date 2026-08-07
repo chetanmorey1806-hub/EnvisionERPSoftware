@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { roleApi } from '../../api/roleApi';
 import { usePermissions } from '../../hooks/usePermissions';
 
@@ -54,13 +54,12 @@ const RolesPage = () => {
 
   return (
     <div className="space-y-6">
-      <Breadcrumb items={[{ label: 'Administration' }, { label: 'Roles & Permissions' }]} />
-      <div>
-        <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">Roles & Permissions</h1>
-        <p className="text-xs text-gray-500">
-          Access control is data-driven — grants live in the database and take effect immediately.
-        </p>
-      </div>
+      <PageHero
+        tone="slate"
+        icon={Icons.roles}
+        title="Roles & Permissions"
+        subtitle="Access control is data-driven — grants live in the database and take effect immediately."
+      />
 
       {error && (
         <div className="p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>
@@ -71,7 +70,7 @@ const RolesPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {roles.map((r) => (
-            <div key={r.id} className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800 shadow-xs">
+            <div key={r.id} className="erp-card p-5">
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="font-bold text-gray-800 dark:text-slate-100">{r.label}</h3>
@@ -86,7 +85,7 @@ const RolesPage = () => {
               <p className="text-xs text-gray-500 mt-2 min-h-8">{r.description}</p>
               <div className="flex items-center gap-4 mt-3 text-xs">
                 <span className="text-gray-600 dark:text-slate-400">
-                  <b className="text-blue-600">{r.permission_count}</b> permissions
+                  <b className="text-brand-600">{r.permission_count}</b> permissions
                 </span>
                 <span className="text-gray-600 dark:text-slate-400">
                   <b className="text-emerald-600">{r.user_count}</b> users
@@ -132,8 +131,8 @@ const RolesPage = () => {
                           onClick={() => toggle(p.name)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                             on
-                              ? 'bg-blue-600 text-white border-blue-600'
-                              : 'bg-gray-50 dark:bg-slate-800 text-gray-500 border-gray-200 dark:border-slate-700 hover:border-blue-400'
+                              ? 'bg-brand-600 text-white border-brand-600'
+                              : 'bg-gray-50 dark:bg-slate-800 text-gray-500 border-gray-200 dark:border-slate-700 hover:border-brand-400'
                           }`}
                         >
                           {p.action}
@@ -149,7 +148,7 @@ const RolesPage = () => {
               <button onClick={() => setSelected(null)} className="px-4 py-2 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">
                 Cancel
               </button>
-              <button onClick={save} disabled={saving} className="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white disabled:opacity-60">
+              <button onClick={save} disabled={saving} className="px-4 py-2 text-xs font-semibold rounded-lg bg-brand-600 text-white disabled:opacity-60">
                 {saving ? 'Saving…' : 'Save permissions'}
               </button>
             </div>

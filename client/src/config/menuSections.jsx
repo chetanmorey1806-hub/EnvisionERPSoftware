@@ -61,11 +61,16 @@ import ProfilePage from '../pages/profile/ProfilePage';
  *   Resources     — certificates, library, inventory, placement
  *   Reports       — analytics
  *   Settings      — institute configuration & access control
+ *
+ * `tone` is the section's colour in the navigation and on its page hero. Giving
+ * each area its own hue lets the eye find a module by colour before it reads
+ * the label, and keeps a page visually tied to the menu entry that opened it.
  */
 export const menuSections = [
   {
     key: 'master',
     label: 'Master',
+    tone: 'brand',
     items: [
       { icon: Icons.students, name: 'Students', path: '/students', permission: 'students.view', element: <StudentsPage /> },
       { icon: Icons.faculty, name: 'Trainers', path: '/trainers', permission: 'faculty.view', element: <FacultyPage /> },
@@ -78,6 +83,7 @@ export const menuSections = [
   },
   {
     key: 'admissions',
+    tone: 'amber',
     label: 'Admissions',
     items: [
       { icon: Icons.enquiries, name: 'Enquiries', path: '/enquiries', permission: 'enquiries.view', element: <EnquiryPage /> },
@@ -88,6 +94,7 @@ export const menuSections = [
   },
   {
     key: 'academics',
+    tone: 'violet',
     label: 'Academics',
     items: [
       { icon: Icons.faculty, name: 'My Classes', path: '/my-classes', permission: 'attendance.manage', element: <InstructorPortal /> },
@@ -105,6 +112,7 @@ export const menuSections = [
   },
   {
     key: 'resources',
+    tone: 'cyan',
     label: 'Resources',
     items: [
       { icon: Icons.certificates, name: 'Certificates', path: '/certificates', permission: 'certificates.issue', element: <CertificatesPage /> },
@@ -116,6 +124,7 @@ export const menuSections = [
   },
   {
     key: 'reports',
+    tone: 'green',
     label: 'Reports',
     items: [
       { icon: Icons.reports, name: 'Institute Reports', path: '/reports', permission: 'reports.view', element: <ReportsPage /> },
@@ -124,6 +133,7 @@ export const menuSections = [
   },
   {
     key: 'settings',
+    tone: 'slate',
     label: 'Settings',
     items: [
       { icon: Icons.settings, name: 'Institute Settings', path: '/settings', permission: 'settings.view', element: <SettingsPage /> },

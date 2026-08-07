@@ -63,7 +63,7 @@ const UploadModal = ({ folderId, tags = [], onClose, onDone }) => {
             {t('Cancel')}
           </button>
           <button onClick={save} disabled={saving || !file}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50 press">
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50 press">
             <Icons.upload size={14} /> {saving ? `${t('Uploading…')} ${progress}%` : t('Upload')}
           </button>
         </>
@@ -83,8 +83,8 @@ const UploadModal = ({ folderId, tags = [], onClose, onDone }) => {
           onClick={() => inputRef.current?.click()}
           className={`p-6 rounded-xl border-2 border-dashed text-center cursor-pointer transition ${
             drag
-              ? 'border-blue-500 bg-blue-50/60 dark:bg-blue-950/20'
-              : 'border-gray-200 dark:border-slate-700 hover:border-blue-300'
+              ? 'border-brand-500 bg-brand-50/60 dark:bg-brand-950/20'
+              : 'border-gray-200 dark:border-slate-700 hover:border-brand-300'
           }`}
         >
           <input ref={inputRef} type="file" className="hidden"
@@ -108,7 +108,7 @@ const UploadModal = ({ folderId, tags = [], onClose, onDone }) => {
 
         {saving && (
           <div className="h-1.5 w-full rounded-full bg-gray-100 dark:bg-slate-800 overflow-hidden">
-            <div className="h-full bg-blue-600 transition-all" style={{ width: `${progress}%` }} />
+            <div className="h-full bg-brand-600 transition-all" style={{ width: `${progress}%` }} />
           </div>
         )}
 
@@ -125,7 +125,7 @@ const UploadModal = ({ folderId, tags = [], onClose, onDone }) => {
               <button key={x.name} type="button" onClick={() => toggleTag(x.name)}
                 className={`px-3 py-1.5 rounded-full text-[11px] font-semibold transition press ${
                   picked.includes(x.name)
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-brand-600 text-white'
                     : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200'
                 }`}>
                 {t(x.name)}
@@ -133,7 +133,7 @@ const UploadModal = ({ folderId, tags = [], onClose, onDone }) => {
             ))}
             {picked.filter((p) => !tags.some((x) => x.name === p)).map((p) => (
               <button key={p} type="button" onClick={() => toggleTag(p)}
-                className="px-3 py-1.5 rounded-full text-[11px] font-semibold bg-blue-600 text-white press">
+                className="px-3 py-1.5 rounded-full text-[11px] font-semibold bg-brand-600 text-white press">
                 {p} ✕
               </button>
             ))}

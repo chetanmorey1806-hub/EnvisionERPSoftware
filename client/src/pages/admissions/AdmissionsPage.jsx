@@ -21,7 +21,7 @@ const AdmissionsPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader crumbs={['Admissions', 'Admissions']} icon={<Icons.admissions size={18} />} title="Admissions"
+      <PageHeader tone="amber" icon={<Icons.admissions size={18} />} title="Admissions"
         subtitle="Applications waiting on a decision. Approving one creates the student record." />
       <Flash error={L.error} notice={L.notice} />
 

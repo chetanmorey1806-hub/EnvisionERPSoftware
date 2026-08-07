@@ -15,7 +15,7 @@ const BatchTransfer = ({ selectedStudents = [], onTransferSuccess }) => {
       <p className="text-xs text-amber-800 dark:text-amber-400 font-medium">Selected Migration Cohort Scope Count: {selectedStudents.length} Profiles</p>
       <div className="flex gap-3 items-center">
         <select 
-          className="text-xs bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+          className="text-xs bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg p-2 focus:ring-2 focus:ring-brand-500"
           value={targetBatch} 
           onChange={(e) => setTargetBatch(e.target.value)}
         >

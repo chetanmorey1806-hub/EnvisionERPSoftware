@@ -29,7 +29,7 @@ const RoleRegister = () => {
             Please contact your system administrator to have an admin account created for you.
           </p>
           <Link to="/login/admin"
-            className="inline-block mt-2 px-4 py-2.5 min-h-11 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold press">
+            className="inline-block mt-2 px-4 py-2.5 min-h-11 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold press">
             Go to Admin login
           </Link>
         </div>

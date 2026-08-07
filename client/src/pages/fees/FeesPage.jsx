@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../../components/common/Modal';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { feeApi } from '../../api/feeApi';
@@ -29,7 +29,7 @@ const PILL = {
   pending: 'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400',
   partial: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
   overdue: 'bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400',
-  waived: 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400',
+  waived: 'bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400',
 };
 
 const Pill = ({ s }) => {
@@ -50,7 +50,7 @@ const Stat = ({ label, value, tone = 'gray', hint }) => {
     amber: 'text-amber-600',
   };
   return (
-    <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+    <div className="p-4 rounded-xl erp-card">
       <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">{t(label)}</p>
       <p className={`text-xl font-extrabold mt-1 ${tones[tone]}`}>{value}</p>
       {hint && <p className="text-[11px] text-gray-400 mt-0.5">{t(hint)}</p>}
@@ -220,39 +220,25 @@ const FeesPage = () => {
 
   return (
     <div className="space-y-4">
-      <Breadcrumb items={[{ label: t('Finance') }, { label: t('Fee Collection') }]} />
-
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-extrabold text-gray-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="w-8 h-8 grid place-items-center rounded-lg bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600">
-              <Icons.fees size={18} />
-            </span>
-            {t('Fee Collection')}
-          </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {t('Dues, plans and expenses — every total is calculated by the server.')}
-          </p>
-        </div>
-        {can('fees.manage') && (
-          <button onClick={doSweep} disabled={busy}
-            className="px-3 py-2 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 disabled:opacity-50">
+      <PageHero
+        tone="amber"
+        icon={Icons.fees}
+        title="Fee Collection"
+        subtitle="Dues, plans and expenses — every total is calculated by the server."
+        action={can('fees.manage') && (
+          <button onClick={doSweep} disabled={busy} className="erp-hero-btn px-4 py-2.5 min-h-11 disabled:opacity-50">
             {t('Run overdue check')}
           </button>
         )}
-      </div>
+      />
 
       {err && <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-xs font-semibold text-rose-700">{err}</div>}
       {note && <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-xs font-semibold text-emerald-700">{note}</div>}
 
-      <div className="flex gap-1 border-b border-gray-200 dark:border-slate-800 overflow-x-auto">
+      <div className="erp-tabs">
         {visibleTabs.map((x) => (
           <button key={x.key} onClick={() => setTab(x.key)}
-            className={`px-4 py-2 text-xs font-bold whitespace-nowrap border-b-2 -mb-px transition ${
-              tab === x.key
-                ? 'border-emerald-500 text-emerald-600'
-                : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-slate-200'
-            }`}>
+            className={`erp-tab ${tab === x.key ? 'erp-tab-active' : ''}`}>
             {t(x.label)}
           </button>
         ))}
@@ -345,7 +331,7 @@ const FeesPage = () => {
           ) : (
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {plans.map((p) => (
-                <div key={p.id} className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+                <div key={p.id} className="p-4 rounded-xl erp-card">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="font-bold text-sm text-gray-900 dark:text-slate-100">{p.name}</p>
@@ -439,7 +425,7 @@ const FeesPage = () => {
           </div>
 
           {pnl.by_category?.length > 0 && (
-            <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+            <div className="p-4 rounded-xl erp-card">
               <p className="text-[11px] font-bold uppercase text-gray-500 mb-2">{t('Where the money went')}</p>
               {pnl.by_category.map((c) => {
                 const pct = Number(pnl.spent) ? Math.round((Number(c.total) / Number(pnl.spent)) * 100) : 0;
@@ -518,7 +504,7 @@ const FeesPage = () => {
                     <span className="text-rose-700 dark:text-rose-400">{f.reason}</span>
                     <span className="font-bold text-rose-700">{inr(f.amount)}</span>
                     {can('fees.structure') && (
-                      <button onClick={() => doWaive(f.id)} className="font-bold text-blue-600">{t('Waive')}</button>
+                      <button onClick={() => doWaive(f.id)} className="font-bold text-brand-600">{t('Waive')}</button>
                     )}
                   </div>
                 ))}

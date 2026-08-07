@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { useNavigate } from 'react-router-dom';
 import { dashboardApi } from '../../api/dashboardApi';
 import { useSocket } from '../../context/SocketContext';
 import { Icons } from '../../components/common/icons';
 import { adminApi } from '../../api/adminApi';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useT } from '../../context/LanguageContext';
+import { INSTITUTE } from '../../components/common/Logo';
+import { StatCard, StatGrid, Band, Panel } from '../../components/common/PageShell';
+import { SkeletonCard } from '../../components/common/Skeleton';
 import {
   ChartCard, AreaChart, BarChart, DonutChart, AttendanceStrip,
 } from '../../components/charts/Charts';
@@ -19,30 +22,90 @@ const compact = (n) => {
   return `₹${v}`;
 };
 
-const StatCard = ({ label, value, sub, accent = 'text-gray-800 dark:text-slate-100', icon: Icon }) => (
-  <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800 shadow-xs hover:shadow-md transition-shadow">
-    <div className="flex items-start justify-between">
-      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{label}</h4>
-      {Icon && <Icon size={16} strokeWidth={2} className="text-gray-300 dark:text-slate-600" aria-hidden="true" />}
-    </div>
-    <p className={`text-2xl font-black mt-1 ${accent}`}>{value}</p>
-    {sub && <span className="text-[11px] text-gray-400 font-medium">{sub}</span>}
-  </div>
-);
-
-const SkeletonCard = () => (
-  <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800">
-    <div className="h-3 w-24 bg-gray-100 dark:bg-slate-800 rounded animate-pulse" />
-    <div className="h-7 w-20 bg-gray-100 dark:bg-slate-800 rounded mt-2 animate-pulse" />
-  </div>
-);
+/**
+ * The Indian academic year runs April → March, so "this year" on 7 August 2026
+ * is 2026-2027. Deriving it beats storing it — it can never go stale.
+ */
+const academicYears = () => {
+  const now = new Date();
+  const start = now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1;
+  return [start + 1, start, start - 1, start - 2].map((y) => `${y}-${y + 1}`);
+};
 
 const activityIcon = { student: Icons.students, fee: Icons.fees, enquiry: Icons.enquiries };
+
+/**
+ * The welcome band. A live clock is the one thing on this page that must not
+ * be fetched, so it ticks locally on a 1s interval.
+ */
+const WelcomeHero = ({ year, onYearChange, years }) => {
+  const { t } = useT();
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <header className="erp-hero">
+      <div className="relative z-10 flex flex-wrap items-center justify-between gap-5">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-extrabold leading-tight">
+            {t('Welcome to')} {INSTITUTE.short}
+          </h1>
+          <p className="text-[13px] sm:text-sm font-semibold text-white/85 mt-1">
+            {t('Training Institute ERP')} · {t('Live Overview')}
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="erp-hero-chip">
+            <span className="block text-[9px] font-bold uppercase tracking-[0.14em] text-white/70 mb-1">
+              {t('Academic Year')}
+            </span>
+            <select
+              value={year}
+              onChange={(e) => onYearChange(e.target.value)}
+              className="bg-transparent text-sm font-bold text-white outline-none cursor-pointer"
+            >
+              {years.map((y) => (
+                /* The options render on the native menu surface, not the band,
+                   so they need their own dark-on-light colours. */
+                <option key={y} value={y} className="text-gray-900">
+                  {t('FY')} {y}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <div className="erp-hero-chip flex items-center gap-3">
+            <Icons.clock size={22} strokeWidth={1.8} className="text-white/80" aria-hidden="true" />
+            <div>
+              <p className="text-[11px] font-semibold text-white/85 whitespace-nowrap">
+                {now.toLocaleDateString('en-IN', {
+                  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                })}
+              </p>
+              <p className="text-lg font-extrabold leading-tight tabular-nums">
+                {now.toLocaleTimeString('en-IN', { hour12: true })}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
 
 const Dashboard = () => {
   const { socket } = useSocket();
   const { can } = usePermissions();
   const { t } = useT();
+  const navigate = useNavigate();
+
+  const years = academicYears();
+  const [year, setYear] = useState(years[1]);
   const [stats, setStats] = useState(null);
   const [charts, setCharts] = useState(null);
   const [activity, setActivity] = useState([]);
@@ -81,48 +144,81 @@ const Dashboard = () => {
   }, [socket]);
 
   return (
-    <div className="space-y-6">
-      <Breadcrumb items={[]} />
-      <div>
-        <h1 className="text-2xl font-black text-gray-900 dark:text-slate-50">{t('Command Center')}</h1>
-        <p className="text-sm text-gray-500">{t('Live metrics across the institute — updates in real time.')}</p>
-      </div>
+    <div className="space-y-5">
+      <WelcomeHero year={year} onYearChange={setYear} years={years} />
 
       {error && (
-        <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs font-medium">
+        <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs font-semibold animate-fade-in">
           {error}
         </div>
       )}
 
       {!stats ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatGrid>
           {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
-        </div>
+        </StatGrid>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard icon={Icons.students} label="Total Students" value={stats.students.total}
-              sub={`${stats.students.active} active · ${stats.students.graduated} graduated`} />
-            <StatCard icon={Icons.courses} label="Active Courses" value={stats.courses.active}
-              sub={`${stats.courses.total} total in catalog`} />
-            <StatCard icon={Icons.batches} label="Active Batches" value={stats.batches.active}
-              sub={`${stats.batches.total} total batches`} />
-            <StatCard icon={Icons.admissions} label="Pending Admissions" value={stats.admissions.pending}
-              accent="text-amber-500"
-              sub={`${stats.admissions.approved} approved of ${stats.admissions.total}`} />
-          </div>
+          {/* The headline figure, stated once and loudly. */}
+          <Band
+            icon={Icons.reports}
+            label="Fees Collected (This Month)"
+            value={money(stats.fees.collectedThisMonth)}
+            note={new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+            footnote={`${stats.fees.transactions} ${t('transactions')}`}
+          />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard icon={Icons.fees} label="Fees Collected" value={money(stats.fees.collected)}
-              accent="text-emerald-500"
-              sub={`${stats.fees.transactions} transactions`} />
-            <StatCard icon={Icons.attendance} label="Collected This Month" value={money(stats.fees.collectedThisMonth)}
-              accent="text-emerald-500" sub={`${stats.fees.collectionRate}% of expected`} />
-            <StatCard icon={Icons.warning} label="Outstanding Dues" value={money(stats.fees.due)}
-              accent="text-rose-500" sub={`of ${money(stats.fees.payable)} payable`} />
-            <StatCard icon={Icons.enquiries} label="Enquiry Conversion" value={`${stats.enquiries.conversionRate}%`}
-              sub={`${stats.enquiries.converted} of ${stats.enquiries.total} converted`} />
-          </div>
+          <StatGrid>
+            <StatCard
+              icon={Icons.students} tone="brand"
+              value={stats.students.total} label="Total Students"
+              sub={`${stats.students.active} active · ${stats.students.graduated} graduated`}
+              onClick={can('students.view') ? () => navigate('/students') : undefined}
+            />
+            <StatCard
+              icon={Icons.courses} tone="violet"
+              value={stats.courses.active} label="Active Courses"
+              sub={`${stats.courses.total} total in catalog`}
+              onClick={can('courses.view') ? () => navigate('/courses') : undefined}
+            />
+            <StatCard
+              icon={Icons.batches} tone="cyan"
+              value={stats.batches.active} label="Active Batches"
+              sub={`${stats.batches.total} total batches`}
+              onClick={can('batches.view') ? () => navigate('/batches') : undefined}
+            />
+            <StatCard
+              icon={Icons.admissions} tone="amber"
+              value={stats.admissions.pending} label="Pending Admissions"
+              sub={`${stats.admissions.approved} approved of ${stats.admissions.total}`}
+              onClick={can('admissions.view') ? () => navigate('/admissions') : undefined}
+            />
+          </StatGrid>
+
+          <StatGrid>
+            <StatCard
+              icon={Icons.fees} tone="green"
+              value={money(stats.fees.collected)} label="Fees Collected"
+              sub={`${stats.fees.transactions} transactions`}
+              onClick={can('fees.manage') ? () => navigate('/fees') : undefined}
+            />
+            <StatCard
+              icon={Icons.attendance} tone="green"
+              value={money(stats.fees.collectedThisMonth)} label="Collected This Month"
+              sub={`${stats.fees.collectionRate}% of expected`}
+            />
+            <StatCard
+              icon={Icons.warning} tone="rose"
+              value={money(stats.fees.due)} label="Outstanding Dues"
+              sub={`of ${money(stats.fees.payable)} payable`}
+            />
+            <StatCard
+              icon={Icons.enquiries} tone="brand"
+              value={`${stats.enquiries.conversionRate}%`} label="Enquiry Conversion"
+              sub={`${stats.enquiries.converted} of ${stats.enquiries.total} converted`}
+              onClick={can('enquiries.view') ? () => navigate('/enquiries') : undefined}
+            />
+          </StatGrid>
 
           {/* --- Charts. Every series is live; an empty one says so rather than
                   drawing a flat line at zero. --- */}
@@ -181,11 +277,13 @@ const Dashboard = () => {
           {(risks.length > 0 || escalations.length > 0) && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {risks.length > 0 && (
-                <div className="p-5 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Icons.warning size={16} className="text-rose-600" />
+                <div className="p-5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900 shadow-sm">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <span className="erp-chip erp-chip-rose h-9 w-9">
+                      <Icons.warning size={16} aria-hidden="true" />
+                    </span>
                     <h4 className="text-xs font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider">
-                      Drop-out risk ({risks.length})
+                      {t('Drop-out risk')} ({risks.length})
                     </h4>
                   </div>
                   <ul className="space-y-1.5 max-h-40 overflow-y-auto">
@@ -200,11 +298,13 @@ const Dashboard = () => {
               )}
 
               {escalations.length > 0 && (
-                <div className="p-5 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Icons.star size={16} className="text-amber-600" />
+                <div className="p-5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900 shadow-sm">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <span className="erp-chip erp-chip-amber h-9 w-9">
+                      <Icons.star size={16} aria-hidden="true" />
+                    </span>
                     <h4 className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">
-                      Escalated feedback ({escalations.length})
+                      {t('Escalated feedback')} ({escalations.length})
                     </h4>
                   </div>
                   <ul className="space-y-1.5 max-h-40 overflow-y-auto">
@@ -215,56 +315,57 @@ const Dashboard = () => {
                       </li>
                     ))}
                   </ul>
-                  <p className="text-[10px] text-gray-400 mt-2">Anonymous · hidden from the trainer.</p>
+                  <p className="text-[10px] text-gray-400 mt-2">{t('Anonymous · hidden from the trainer.')}</p>
                 </div>
               )}
             </div>
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800">
-              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Today's Attendance</h4>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <Panel title="Today's Attendance" icon={Icons.attendance} tone="green">
               {stats.attendanceToday.marked === 0 ? (
-                <p className="text-xs text-gray-400">No attendance marked today.</p>
+                <p className="text-xs text-gray-400">{t('No attendance marked today.')}</p>
               ) : (
                 <>
-                  <p className="text-2xl font-black text-gray-800 dark:text-slate-100">
-                    {stats.attendanceToday.percentage}%
-                  </p>
-                  <div className="w-full h-2 bg-gray-100 dark:bg-slate-800 rounded-full mt-2 overflow-hidden">
-                    <div className="h-full bg-emerald-500 rounded-full transition-all duration-500"
-                      style={{ width: `${stats.attendanceToday.percentage}%` }} />
+                  <p className="erp-stat-value">{stats.attendanceToday.percentage}%</p>
+                  <div className="w-full h-2 bg-gray-100 dark:bg-slate-800 rounded-full mt-3 overflow-hidden">
+                    <div
+                      className="h-full bg-verdant-500 rounded-full transition-all duration-500"
+                      style={{ width: `${stats.attendanceToday.percentage}%` }}
+                    />
                   </div>
-                  <span className="text-[11px] text-gray-400">
+                  <span className="text-[11px] text-gray-400 mt-2 inline-block">
                     {stats.attendanceToday.present} present of {stats.attendanceToday.marked} marked
                   </span>
                 </>
               )}
-            </div>
+            </Panel>
 
-            <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800">
-              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Upcoming Exams</h4>
-              <p className="text-2xl font-black text-gray-800 dark:text-slate-100">{stats.exams.upcoming}</p>
-              <span className="text-[11px] text-gray-400">scheduled from today onward</span>
-            </div>
+            <Panel title="Upcoming Exams" icon={Icons.exams} tone="violet">
+              <p className="erp-stat-value">{stats.exams.upcoming}</p>
+              <span className="text-[11px] text-gray-400 mt-2 inline-block">
+                {t('scheduled from today onward')}
+              </span>
+            </Panel>
 
-            <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800">
-              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Recent Activity</h4>
+            <Panel title="Recent Activity" icon={Icons.bell} tone="brand">
               {activity.length === 0 ? (
-                <p className="text-xs text-gray-400">No recent activity.</p>
+                <p className="text-xs text-gray-400">{t('No recent activity.')}</p>
               ) : (
                 <ul className="space-y-2 max-h-40 overflow-y-auto">
                   {activity.map((a, i) => (
                     <li key={i} className="flex items-center gap-2 text-xs text-gray-600 dark:text-slate-400">
-                      {(() => { const AIcon = activityIcon[a.kind] || Icons.bell;
-                        return <AIcon size={14} className="shrink-0 text-gray-400" aria-hidden="true" />; })()}
+                      {(() => {
+                        const AIcon = activityIcon[a.kind] || Icons.bell;
+                        return <AIcon size={14} className="shrink-0 text-gray-400" aria-hidden="true" />;
+                      })()}
                       <span className="font-semibold text-gray-800 dark:text-slate-200 truncate">{a.title}</span>
                       <span className="text-gray-400 truncate">{a.detail}</span>
                     </li>
                   ))}
                 </ul>
               )}
-            </div>
+            </Panel>
           </div>
         </>
       )}

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
+import { Icons } from '../../components/common/icons';
 import { enquiryApi } from '../../api/enquiryApi';
 import { courseApi } from '../../api/courseApi';
 import { usePermissions } from '../../hooks/usePermissions';
@@ -12,7 +13,7 @@ const TEMPS = {
   cold: { label: 'Cold', ring: 'ring-sky-200 dark:ring-sky-900', pill: 'bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-400', dot: 'bg-sky-500' },
 };
 const STATUS_PILL = {
-  new: 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400',
+  new: 'bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400',
   contacted: 'bg-violet-100 text-violet-700 dark:bg-violet-950/50 dark:text-violet-400',
   converted: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400',
   closed: 'bg-gray-100 text-gray-500 dark:bg-slate-800 dark:text-slate-400',
@@ -45,7 +46,7 @@ const Field = ({ label, children, required }) => (
 );
 
 const inputCls =
-  'w-full px-3 py-2 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 placeholder-gray-400 focus:ring-2 focus:ring-blue-500/40 outline-none transition';
+  'w-full px-3 py-2 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 placeholder-gray-400 focus:ring-2 focus:ring-brand-500/40 outline-none transition';
 
 const Modal = ({ title, onClose, children, footer }) => (
   <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
@@ -137,23 +138,17 @@ const EnquiryPage = () => {
 
   return (
     <div className="space-y-5">
-      <Breadcrumb items={[{ label: 'Growth' }, { label: 'Lead Management' }]} />
-
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">Lead Management &amp; Admissions</h1>
-          <p className="text-xs text-gray-500">Log inquiries, track follow-ups, and convert leads into students.</p>
-        </div>
-        {can('enquiries.create') && (
-          <button
-            onClick={() => setNewLead({ ...EMPTY_LEAD })}
-            className="px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white hover:bg-blue-700 active:scale-95 transition shadow-sm"
-          >
-            + Log New Lead
+      <PageHero
+        tone="amber"
+        icon={Icons.enquiries}
+        title="Lead Management & Admissions"
+        subtitle="Log inquiries, track follow-ups, and convert leads into students."
+        action={can('enquiries.create') && (
+          <button onClick={() => setNewLead({ ...EMPTY_LEAD })} className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> Log New Lead
           </button>
         )}
-      </div>
+      />
 
       {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>}
 
@@ -192,7 +187,7 @@ const EnquiryPage = () => {
       </SearchFilter>
 
       {/* Lead table */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800 overflow-hidden">
+      <div className="erp-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs min-w-3xl">
             <thead>
@@ -285,7 +280,7 @@ const EnquiryPage = () => {
         <Modal title="Log New Lead" onClose={() => setNewLead(null)}
           footer={<>
             <button onClick={() => setNewLead(null)} className="px-4 py-2 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">Cancel</button>
-            <button onClick={saveLead} className="px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white">Save Lead</button>
+            <button onClick={saveLead} className="px-4 py-2 text-xs font-bold rounded-lg bg-brand-600 text-white">Save Lead</button>
           </>}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Full name" required>
@@ -335,7 +330,7 @@ const EnquiryPage = () => {
         <Modal title={`Schedule callback — ${callbackFor.name}`} onClose={() => setCallbackFor(null)}
           footer={<>
             <button onClick={() => setCallbackFor(null)} className="px-4 py-2 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">Cancel</button>
-            <button onClick={saveCallback} disabled={!callbackAt} className="px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50">Schedule</button>
+            <button onClick={saveCallback} disabled={!callbackAt} className="px-4 py-2 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50">Schedule</button>
           </>}>
           <div className="space-y-4">
             <Field label="Callback date & time" required>

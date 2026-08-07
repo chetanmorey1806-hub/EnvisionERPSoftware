@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { Icons } from '../../components/common/icons';
 import { attendanceApi } from '../../api/attendanceApi';
 import { useT } from '../../context/LanguageContext';
@@ -45,18 +45,18 @@ const MyAttendance = () => {
 
   return (
     <div className="space-y-5 max-w-xl">
-      <Breadcrumb items={[{ label: t('My Attendance') }]} />
-
-      <div>
-        <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">{t('My Attendance')}</h1>
-        <p className="text-xs text-gray-500">{t('Mark yourself present when your trainer opens check-in.')}</p>
-      </div>
+      <PageHero
+        tone="violet"
+        icon={Icons.attendance}
+        title="My Attendance"
+        subtitle="Mark yourself present when your trainer opens check-in."
+      />
 
       {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs font-medium">{error}</div>}
       {notice && <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-bold">{notice}</div>}
 
       {/* Overall percentage */}
-      <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+      <div className="p-5 rounded-xl erp-card">
         <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400">{t('Overall attendance')}</p>
         <p className={`text-3xl font-black mt-1 ${
           (status?.percentage ?? 0) >= 85 ? 'text-emerald-600' : (status?.percentage ?? 0) >= 60 ? 'text-amber-500' : 'text-rose-600'
@@ -65,7 +65,7 @@ const MyAttendance = () => {
       </div>
 
       {/* Today */}
-      <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+      <div className="p-5 rounded-xl erp-card">
         <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">{t('Today')}</p>
 
         {today ? (
@@ -89,10 +89,10 @@ const MyAttendance = () => {
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 inputMode="numeric"
                 placeholder="______"
-                className="flex-1 px-3 py-3 text-center text-xl font-black tracking-[0.4em] tabular-nums bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-900 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/40"
+                className="flex-1 px-3 py-3 text-center text-xl font-black tracking-[0.4em] tabular-nums bg-white dark:bg-slate-900 border-2 border-brand-200 dark:border-brand-900 rounded-lg outline-none focus:ring-2 focus:ring-brand-500/40"
               />
               <button onClick={checkIn} disabled={busy || code.length < 6}
-                className="px-5 py-3 rounded-lg bg-blue-600 text-white text-sm font-bold disabled:opacity-50">
+                className="px-5 py-3 rounded-lg bg-brand-600 text-white text-sm font-bold disabled:opacity-50">
                 {busy ? t('…') : t('Check in')}
               </button>
             </div>

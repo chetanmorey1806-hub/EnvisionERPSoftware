@@ -7,7 +7,7 @@ import { shareApi } from '../../api/shareApi';
  * `attachmentUrl` must be an /uploads/... path — the server rejects anything else.
  */
 const inputCls =
-  'w-full px-3 py-2.5 min-h-11 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none transition';
+  'w-full px-3 py-2.5 min-h-11 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/40 outline-none transition';
 
 const ShareByEmail = ({ open, onClose, title = 'Send by email', defaultTo = '', subject = '', link = '', attachmentUrl = '' }) => {
   const [to, setTo] = useState(defaultTo);
@@ -35,7 +35,7 @@ const ShareByEmail = ({ open, onClose, title = 'Send by email', defaultTo = '', 
       footer={<>
         <button onClick={onClose} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">Cancel</button>
         <button onClick={send} disabled={busy || !to || !subj}
-          className="px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50">
+          className="px-4 py-2.5 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50">
           {busy ? 'Sending…' : 'Send email'}
         </button>
       </>}>

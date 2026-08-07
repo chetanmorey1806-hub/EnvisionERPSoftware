@@ -53,7 +53,7 @@ const Tick = ({ msg }) => {
 
 const Avatar = ({ name, online, size = 8 }) => (
   <span className="relative shrink-0">
-    <span className={`h-${size} w-${size} rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 grid place-items-center text-[11px] font-black`}>
+    <span className={`h-${size} w-${size} rounded-full bg-brand-100 dark:bg-brand-950 text-brand-700 dark:text-brand-300 grid place-items-center text-[11px] font-black`}>
       {(name || '?').charAt(0).toUpperCase()}
     </span>
     {online && (
@@ -140,7 +140,7 @@ const ChatWindow = ({ chat, index, me, socket, onlineIds, onClose, onToggle, onP
           <div ref={listRef} className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
             {chat.has_more && (
               <button onClick={loadOlder}
-                className="w-full py-1.5 text-[10px] font-bold text-blue-600 hover:underline">
+                className="w-full py-1.5 text-[10px] font-bold text-brand-600 hover:underline">
                 {t('Load older messages')}
               </button>
             )}
@@ -165,7 +165,7 @@ const ChatWindow = ({ chat, index, me, socket, onlineIds, onClose, onToggle, onP
                   <div className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] rounded-2xl px-3 py-1.5 ${
                       mine
-                        ? 'bg-blue-600 text-white rounded-br-sm'
+                        ? 'bg-brand-600 text-white rounded-br-sm'
                         : 'bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-slate-100 rounded-bl-sm'
                     }`}>
                       <p className="text-xs whitespace-pre-wrap break-words">{m.body}</p>
@@ -204,10 +204,10 @@ const ChatWindow = ({ chat, index, me, socket, onlineIds, onClose, onToggle, onP
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
                 placeholder={t('Write a message…')}
                 disabled={!chat.room_id}
-                className="flex-1 px-3 py-2 text-xs bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full outline-none focus:ring-2 focus:ring-blue-500/40 disabled:opacity-50"
+                className="flex-1 px-3 py-2 text-xs bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full outline-none focus:ring-2 focus:ring-brand-500/40 disabled:opacity-50"
               />
               <button onClick={send} disabled={!draft.trim() || !chat.room_id}
-                className="px-3 rounded-full bg-blue-600 text-white disabled:opacity-40" aria-label={t('Send')}>
+                className="px-3 rounded-full bg-brand-600 text-white disabled:opacity-40" aria-label={t('Send')}>
                 <Icons.send size={14} />
               </button>
             </div>

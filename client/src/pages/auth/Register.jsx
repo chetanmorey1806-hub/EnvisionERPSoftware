@@ -23,7 +23,7 @@ const Register = () => {
         <div className="text-center pt-2">
           <p className="text-xs text-gray-500">
             Already mapped?{' '}
-            <Link to="/login" className="font-semibold text-blue-600 hover:underline">
+            <Link to="/login" className="font-semibold text-brand-600 hover:underline">
               Authenticate Existing Gateway
             </Link>
           </p>

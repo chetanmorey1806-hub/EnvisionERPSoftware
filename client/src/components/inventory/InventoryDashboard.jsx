@@ -1,10 +1,13 @@
 import React from 'react';
+import { StatCard, StatGrid } from '../common/PageShell';
+import { Icons } from '../common/icons';
 
+/* NOTE: placeholder figures — not yet wired to the inventory API. */
 const InventoryDashboard = () => (
-  <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border dark:border-slate-800 text-xs mb-6 flex justify-between items-center">
-    <div><span className="text-gray-400 block">Critical Procurement Outages</span><b className="text-rose-600">2 Low-Stock Warnings</b></div>
-    <span className="bg-rose-50 text-rose-600 px-2 py-0.5 rounded font-bold">Audit Required</span>
-  </div>
+  <StatGrid cols={3}>
+    <StatCard icon={Icons.warning} tone="rose" value="2" label="Low-stock warnings" sub="At or below reorder level" />
+    <StatCard icon={Icons.inventory} tone="cyan" value="—" label="Items tracked" sub="Hardware, licences, consumables" />
+  </StatGrid>
 );
 
 export default InventoryDashboard;

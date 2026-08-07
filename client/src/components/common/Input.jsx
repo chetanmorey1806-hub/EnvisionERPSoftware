@@ -23,7 +23,7 @@ const Input = ({
         </label>
       )}
 
-      <div className="relative rounded-lg shadow-xs">
+      <div className="relative rounded-xl">
         {iconLeft && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 text-sm">
             {iconLeft}
@@ -39,13 +39,13 @@ const Input = ({
           disabled={disabled}
           required={required}
           aria-invalid={!!error}
-          className={`w-full text-sm px-3.5 py-2.5 min-h-11 border rounded-lg focus:outline-none focus:ring-2
+          className={`w-full text-sm px-3.5 py-2.5 min-h-11 border rounded-xl shadow-2xs focus:outline-none focus:ring-2
             bg-white dark:bg-slate-900 transition-all ${iconLeft ? 'pl-9' : ''} ${iconRight ? 'pr-9' : ''} ${
             disabled ? 'bg-gray-50 dark:bg-slate-800 text-gray-400 cursor-not-allowed border-gray-200 dark:border-slate-700' : ''
           } ${
             error
               ? 'border-rose-400 focus:ring-rose-200 focus:border-rose-500 text-rose-900 dark:text-rose-300 placeholder-rose-300'
-              : 'border-gray-300 dark:border-slate-700 focus:ring-blue-500/30 focus:border-blue-500 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500'
+              : 'border-gray-200 dark:border-slate-700 focus:ring-brand-500/30 focus:border-brand-500 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500'
           }`}
         />
 
@@ -58,7 +58,7 @@ const Input = ({
 
       {error && (
         <p className="text-xs text-rose-600 dark:text-rose-400 font-medium mt-0.5 flex items-center gap-1 animate-fade-in">
-          <span aria-hidden="true">⚠️</span> {error}
+          <span aria-hidden="true">⚠</span> {error}
         </p>
       )}
     </div>

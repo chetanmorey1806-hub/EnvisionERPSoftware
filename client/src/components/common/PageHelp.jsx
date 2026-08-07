@@ -28,32 +28,32 @@ const PageHelp = () => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 px-3 py-2 min-h-9 rounded-lg text-[11px] font-bold
-                   bg-blue-50 text-blue-700 hover:bg-blue-100
-                   dark:bg-blue-950/40 dark:text-blue-300 dark:hover:bg-blue-950/70
-                   border border-blue-100 dark:border-blue-900 transition press"
+        className="inline-flex items-center gap-1.5 px-3 h-9 rounded-xl text-[11px] font-bold uppercase tracking-wide
+                   bg-brand-50 text-brand-700 hover:bg-brand-100
+                   dark:bg-brand-500/15 dark:text-brand-300 dark:hover:bg-brand-500/25
+                   border border-brand-100 dark:border-brand-900/60 transition press"
         title={label}
       >
-        <Icons.help size={14} />
-        {label}
+        <Icons.help size={14} aria-hidden="true" />
+        <span className="hidden lg:inline">{t('How to use')}</span>
       </button>
 
       {open && (
         <Modal isOpen size="xl" title={h.title} onClose={() => setOpen(false)}
           footer={
             <button onClick={() => setOpen(false)}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white press">
+              className="erp-btn-primary px-4 py-2.5 text-xs">
               {t('Got it')}
             </button>
           }>
           <div className="space-y-5">
             {/* Language toggle — changes the whole app, not just this panel. */}
-            <div className="flex items-center gap-1 p-1 rounded-lg bg-gray-100 dark:bg-slate-800 w-fit">
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-gray-100 dark:bg-slate-800 w-fit">
               {languages.map((o) => (
                 <button key={o.code} onClick={() => setLang(o.code)}
                   className={`px-3 py-1.5 rounded-md text-[11px] font-bold transition ${
                     lang === o.code
-                      ? 'bg-white dark:bg-slate-700 text-blue-700 dark:text-blue-300 shadow-sm'
+                      ? 'bg-white dark:bg-slate-700 text-brand-700 dark:text-brand-300 shadow-sm'
                       : 'text-gray-500 hover:text-gray-700'
                   }`}>
                   {o.label}
@@ -73,7 +73,7 @@ const PageHelp = () => {
                 <ol className="space-y-2">
                   {h.steps.map((s, i) => (
                     <li key={i} className="flex gap-2.5 text-xs text-gray-700 dark:text-slate-300 leading-relaxed">
-                      <span className="shrink-0 grid place-items-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 text-[10px] font-black">
+                      <span className="shrink-0 grid place-items-center h-5 w-5 rounded-full bg-brand-100 dark:bg-brand-500/20 text-brand-700 dark:text-brand-300 text-[10px] font-black">
                         {i + 1}
                       </span>
                       <span>{s}</span>

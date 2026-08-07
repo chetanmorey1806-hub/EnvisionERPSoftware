@@ -10,7 +10,7 @@ const STATUS_TONE = {
   present: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400',
   late: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
   absent: 'bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400',
-  leave: 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400',
+  leave: 'bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400',
 };
 
 /**
@@ -61,7 +61,7 @@ const AttendancePage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader crumbs={['Academics', 'Attendance']} icon={<Icons.attendance size={18} />} title="Attendance"
+      <PageHeader tone="violet" icon={<Icons.attendance size={18} />} title="Attendance"
         subtitle="A read-only view of any batch's register. Marking is done by the batch's trainer under My Classes." />
       <Flash error={error} notice="" />
 
@@ -83,7 +83,7 @@ const AttendancePage = () => {
                 {data.session && (
                   <span className={`px-2 py-1 rounded-lg font-bold ${
                     data.session.status === 'open'
-                      ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700'
+                      ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-700'
                       : 'bg-gray-100 dark:bg-slate-800 text-gray-500'
                   }`}>
                     {t('Check-in')} {t(data.session.status)}

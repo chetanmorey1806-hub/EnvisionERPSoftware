@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import DataTable from '../../components/common/DataTable';
 import Modal from '../../components/common/Modal';
 import SearchFilter from '../../components/common/SearchFilter';
@@ -10,7 +10,7 @@ import { usePermissions } from '../../hooks/usePermissions';
 const EMPTY = { code: '', name: '', type: 'classroom', capacity: '', location: '' };
 
 const inputCls =
-  'w-full px-3 py-2.5 min-h-11 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none transition';
+  'w-full px-3 py-2.5 min-h-11 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/40 outline-none transition';
 
 const Field = ({ label, required, children }) => (
   <label className="block">
@@ -65,7 +65,7 @@ const RoomsPage = () => {
         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
           r.type === 'lab'
             ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400'
-            : 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400'}`}>
+            : 'bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400'}`}>
           {r.type}
         </span>
       ),
@@ -90,20 +90,18 @@ const RoomsPage = () => {
 
   return (
     <div className="space-y-5">
-      <Breadcrumb items={[{ label: 'Master' }, { label: 'Classrooms & Labs' }]} />
-
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">Classrooms &amp; Labs</h1>
-          <p className="text-xs text-gray-500">Physical rooms a batch can be scheduled into — seating capacity is enforced.</p>
-        </div>
-        {can('classrooms.create') && (
+      <PageHero
+        tone="brand"
+        icon={Icons.team}
+        title="Classrooms & Labs"
+        subtitle="Physical rooms a batch can be scheduled into — seating capacity is enforced."
+        action={can('classrooms.create') && (
           <button onClick={() => { setForm({ ...EMPTY }); setError(''); }}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-xs font-bold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition shadow-sm press">
-            <Icons.plus size={15} /> Add Room
+            className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> Add Room
           </button>
         )}
-      </div>
+      />
 
       {error && !form && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>}
 
@@ -122,7 +120,7 @@ const RoomsPage = () => {
           footer={<>
             <button onClick={() => setForm(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">Cancel</button>
             <button onClick={save} disabled={saving || !form.code || !form.name}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50">
+              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50">
               {saving ? 'Saving…' : 'Add room'}
             </button>
           </>}>

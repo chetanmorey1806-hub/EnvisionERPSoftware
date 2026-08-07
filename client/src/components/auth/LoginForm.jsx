@@ -34,7 +34,7 @@ const LoginForm = ({ onForgotPasswordClick }) => {
       <Input label="Security Password" type="password" name="password" value={credentials.password} onChange={handleChange} required placeholder="••••••••" />
 
       <div className="flex items-center justify-end">
-        <button type="button" onClick={onForgotPasswordClick} className="text-xs text-blue-600 hover:underline">Forgot Access Key?</button>
+        <button type="button" onClick={onForgotPasswordClick} className="text-xs text-brand-600 hover:underline">Forgot Access Key?</button>
       </div>
 
       <Button type="submit" variant="primary" loading={loading} className="w-full">Authorize & Secure Entry</Button>

@@ -37,7 +37,7 @@ const FolderModal = ({ mode = 'new', folder, parentId, onClose, onDone }) => {
             {t('Cancel')}
           </button>
           <button onClick={save} disabled={saving || !name.trim()}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50 press">
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50 press">
             <Icons.check size={14} /> {saving ? t('Saving…') : isRename ? t('Rename') : t('Create folder')}
           </button>
         </>

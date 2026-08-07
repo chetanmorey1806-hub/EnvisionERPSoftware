@@ -45,7 +45,7 @@ const Navbar = () => {
             <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
           </span>
-          <span className="text-sm font-black tracking-tight text-blue-600 dark:text-blue-400 truncate">
+          <span className="text-sm font-black tracking-tight text-brand-600 dark:text-brand-400 truncate">
             Envision
             <span className="hidden lg:inline font-semibold text-gray-400 dark:text-slate-500">
               {' '}Computer Training Institute

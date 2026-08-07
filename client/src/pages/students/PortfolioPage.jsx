@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { portfolioApi } from '../../api/portfolioApi';
@@ -86,19 +86,12 @@ const PortfolioPage = () => {
 
   return (
     <div className="space-y-4">
-      <Breadcrumb items={[{ label: t('Placements') }, { label: t('My Portfolio') }]} />
-
-      <div>
-        <h1 className="text-lg font-extrabold text-gray-900 dark:text-slate-100 flex items-center gap-2">
-          <span className="w-8 h-8 grid place-items-center rounded-lg bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600">
-            <Icons.briefcase size={18} />
-          </span>
-          {t('My Portfolio')}
-        </h1>
-        <p className="text-xs text-gray-500 mt-0.5">
-          {t('What recruiters see when the placement team searches for candidates.')}
-        </p>
-      </div>
+      <PageHero
+        tone="cyan"
+        icon={Icons.briefcase}
+        title="My Portfolio"
+        subtitle="What recruiters see when the placement team searches for candidates."
+      />
 
       {err && <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-xs font-semibold text-rose-700">{err}</div>}
       {note && <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-xs font-semibold text-emerald-700">{note}</div>}
@@ -132,7 +125,7 @@ const PortfolioPage = () => {
 
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Resume + links */}
-        <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 space-y-3">
+        <div className="p-4 rounded-xl erp-card space-y-3">
           <p className="text-xs font-bold uppercase text-gray-500">{t('Resume & links')}</p>
 
           <div className="p-3 rounded-lg bg-gray-50 dark:bg-slate-950/40 flex items-center justify-between gap-2">
@@ -180,7 +173,7 @@ const PortfolioPage = () => {
         </div>
 
         {/* Skills */}
-        <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 space-y-3">
+        <div className="p-4 rounded-xl erp-card space-y-3">
           <p className="text-xs font-bold uppercase text-gray-500">{t('Skills')}</p>
           <p className="text-[11px] text-gray-500">
             {t('A skill you add yourself is a claim. Only a trainer-verified skill is shown to recruiters — that is what makes it worth something.')}

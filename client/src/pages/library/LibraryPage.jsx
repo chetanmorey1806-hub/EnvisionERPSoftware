@@ -34,12 +34,12 @@ const LibraryPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader crumbs={['Resources', 'Library']} icon={<Icons.library size={18} />} title="Library"
+      <PageHeader tone="cyan" icon={<Icons.library size={18} />} title="Library"
         subtitle="Books and courseware, and how many copies are on the shelf right now."
         action={can('library.create') && (
           <button onClick={() => setForm({ title: '', author: '', isbn: '', category: '', total_copies: 1 })}
-            className="px-3 py-2 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900">
-            + {t('Add book')}
+            className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> {t('Add book')}
           </button>
         )} />
       <Flash error={L.error} notice={L.notice} />
@@ -77,7 +77,7 @@ const LibraryPage = () => {
           footer={<>
             <button onClick={() => setForm(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">{t('Cancel')}</button>
             <button onClick={save} disabled={busy || !form.title}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 disabled:opacity-50">
+              className="erp-btn-primary px-4 py-2.5 text-xs">
               {busy ? t('Saving…') : t('Save')}
             </button>
           </>}>

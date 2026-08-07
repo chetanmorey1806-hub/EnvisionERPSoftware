@@ -1,10 +1,15 @@
 import React from 'react';
+import { Band } from '../common/PageShell';
+import { Icons } from '../common/icons';
 
+/* NOTE: placeholder figure — not yet wired to the enquiry API. */
 const EnquiryDashboard = () => (
-  <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border dark:border-slate-800 mb-6 text-center">
-    <span className="text-xs font-bold uppercase text-gray-400 tracking-wider block">Inbound Funnel Leads (This Week)</span>
-    <span className="text-3xl font-black text-blue-600 block mt-1">342 Leads</span>
-  </div>
+  <Band
+    icon={Icons.enquiries}
+    label="Inbound leads (this week)"
+    value="342"
+    note="All sources"
+  />
 );
 
 export default EnquiryDashboard;

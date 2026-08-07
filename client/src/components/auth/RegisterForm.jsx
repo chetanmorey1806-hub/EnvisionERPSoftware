@@ -18,7 +18,7 @@ const ROLES = [
  * No token is issued until the emailed code is confirmed, so nobody can sign up
  * with an address they don't control.
  */
-const RegisterForm = ({ onSuccessRedirection, lockedRole, solidBtn = 'bg-blue-600 hover:bg-blue-700', accentText = 'text-blue-600' }) => {
+const RegisterForm = ({ onSuccessRedirection, lockedRole, solidBtn = 'bg-brand-600 hover:bg-brand-700', accentText = 'text-brand-600' }) => {
   const { applySession } = useContext(AuthContext);
   const [step, setStep] = useState('details');
   const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', role: lockedRole || 'student' });
@@ -75,10 +75,10 @@ const RegisterForm = ({ onSuccessRedirection, lockedRole, solidBtn = 'bg-blue-60
     return (
       <form onSubmit={verify} className="space-y-4">
         {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 text-rose-600 rounded-lg text-xs">{error}</div>}
-        {info && <div className="p-3 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 rounded-lg text-xs">{info}</div>}
+        {info && <div className="p-3 bg-brand-50 dark:bg-brand-950/30 text-brand-700 dark:text-brand-300 rounded-lg text-xs">{info}</div>}
 
         <div className="text-center py-2">
-          <Icons.mail size={32} strokeWidth={1.6} className="mx-auto text-blue-500 mb-2" />
+          <Icons.mail size={32} strokeWidth={1.6} className="mx-auto text-brand-500 mb-2" />
           <p className="text-xs text-gray-500 dark:text-slate-400">Enter the 6-digit code we sent you.</p>
         </div>
 
@@ -89,7 +89,7 @@ const RegisterForm = ({ onSuccessRedirection, lockedRole, solidBtn = 'bg-blue-60
           autoComplete="one-time-code"
           placeholder="000000"
           aria-label="Verification code"
-          className="w-full text-center text-2xl font-black tracking-[0.5em] py-3 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none"
+          className="w-full text-center text-2xl font-black tracking-[0.5em] py-3 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/40 outline-none"
         />
 
         <button type="submit" disabled={loading || code.length !== 6}
@@ -126,7 +126,7 @@ const RegisterForm = ({ onSuccessRedirection, lockedRole, solidBtn = 'bg-blue-60
         <div className="flex flex-col gap-1.5 mb-4">
           <label className="text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">I am a</label>
           <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}
-            className="w-full text-sm px-3.5 py-2.5 min-h-11 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none">
+            className="w-full text-sm px-3.5 py-2.5 min-h-11 border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/40 outline-none">
             {ROLES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
           </select>
         </div>

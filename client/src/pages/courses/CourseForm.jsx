@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Breadcrumb from '../../components/common/Breadcrumb';
 import { Icons } from '../../components/common/icons';
 import { Field, Section, FormHeader, FormError, FormSkeleton, DayPicker, inputCls } from '../../components/form/FormKit';
 import { useT } from '../../context/LanguageContext';
@@ -97,8 +96,6 @@ const CourseForm = () => {
 
   return (
     <form onSubmit={save} className="space-y-5">
-      <Breadcrumb items={[{ label: t('Master') }, { label: t('Courses'), path: '/courses' }, { label: isEdit ? t('Edit') : t('New') }]} />
-
       <FormHeader
         title={isEdit ? 'Edit Course' : 'New Course'}
         subtitle={isEdit
@@ -140,9 +137,9 @@ const CourseForm = () => {
 
       {!isEdit && (
         <>
-          <label className="flex items-center gap-2.5 p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 cursor-pointer">
+          <label className="flex items-center gap-2.5 p-4 rounded-xl erp-card cursor-pointer">
             <input type="checkbox" checked={schedule} onChange={(e) => setSchedule(e.target.checked)}
-              className="h-4 w-4 rounded accent-blue-600" />
+              className="h-4 w-4 rounded accent-brand-600" />
             <span className="text-xs font-semibold text-gray-700 dark:text-slate-300">
               {t('Schedule the first batch now')}
             </span>

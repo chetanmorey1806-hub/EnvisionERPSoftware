@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../../components/common/Modal';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { placementApi } from '../../api/placementApi';
@@ -36,7 +36,7 @@ const ROUNDS = ['internal_screening', 'client_round_1', 'client_round_2', 'techn
 
 const TONE = {
   job_ready: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400',
-  placed: 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400',
+  placed: 'bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400',
   offered: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400',
   remedial_required: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
   in_training: 'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400',
@@ -58,10 +58,10 @@ const Stat = ({ label, value, tone = 'gray' }) => {
   const { t } = useT();
   const tones = {
     gray: 'text-gray-900 dark:text-slate-100', emerald: 'text-emerald-600',
-    amber: 'text-amber-600', blue: 'text-blue-600',
+    amber: 'text-amber-600', blue: 'text-brand-600',
   };
   return (
-    <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+    <div className="p-3 rounded-xl erp-card">
       <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">{t(label)}</p>
       <p className={`text-lg font-extrabold mt-0.5 ${tones[tone]}`}>{value}</p>
     </div>
@@ -216,31 +216,22 @@ const PlacementPage = () => {
 
   return (
     <div className="space-y-4">
-      <Breadcrumb items={[{ label: t('Resources') }, { label: t('Placements') }]} />
-
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-extrabold text-gray-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="w-8 h-8 grid place-items-center rounded-lg bg-blue-100 dark:bg-blue-950/50 text-blue-600">
-              <Icons.placements size={18} />
-            </span>
-            {t('Placements')}
-          </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {t('Match Job-Ready students to openings, run the rounds, and send what goes wrong back to the trainer.')}
-          </p>
-        </div>
-        {can('placements.create') && (
+      <PageHero
+        tone="cyan"
+        icon={Icons.placements}
+        title="Placements"
+        subtitle="Match Job-Ready students to openings, run the rounds, and send what goes wrong back to the trainer."
+        action={can('placements.create') && (
           <button
             onClick={() => setJobForm({
               company: '', role: '', package: '', location: '', jd: '', hr_name: '', hr_email: '',
               openings: 1, min_attendance_pct: 85, min_score_pct: 75, require_job_ready: 1, skills: [],
             })}
-            className="px-3 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white">
-            + {t('Post a job')}
+            className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> {t('Post a job')}
           </button>
         )}
-      </div>
+      />
 
       {err && <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-xs font-semibold text-rose-700">{err}</div>}
       {note && <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-xs font-semibold text-emerald-700">{note}</div>}
@@ -255,14 +246,10 @@ const PlacementPage = () => {
         </div>
       )}
 
-      <div className="flex gap-1 border-b border-gray-200 dark:border-slate-800 overflow-x-auto">
+      <div className="erp-tabs">
         {TABS.map((x) => (
           <button key={x.key} onClick={() => setTab(x.key)}
-            className={`px-4 py-2 text-xs font-bold whitespace-nowrap border-b-2 -mb-px ${
-              tab === x.key
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-slate-200'
-            }`}>
+            className={`erp-tab ${tab === x.key ? 'erp-tab-active' : ''}`}>
             {t(x.label)}
           </button>
         ))}
@@ -280,7 +267,7 @@ const PlacementPage = () => {
         ) : (
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {jobs.map((j) => (
-              <div key={j.id} className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+              <div key={j.id} className="p-4 rounded-xl erp-card">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-bold text-sm text-gray-900 dark:text-slate-100">{j.role}</p>
@@ -302,7 +289,7 @@ const PlacementPage = () => {
                 <div className="mt-3 flex flex-wrap gap-2">
                   {can('placements.match') && (
                     <button onClick={() => openMatch(j)} disabled={busy}
-                      className="px-2.5 py-1.5 text-[11px] font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50">
+                      className="px-2.5 py-1.5 text-[11px] font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50">
                       {t('Find candidates')}
                     </button>
                   )}
@@ -312,7 +299,7 @@ const PlacementPage = () => {
                   </button>
                   {can('placements.update') && (
                     <button onClick={() => setJobForm({ ...j, skills: [] })}
-                      className="px-2.5 py-1.5 text-[11px] font-bold text-blue-600">{t('Edit')}</button>
+                      className="px-2.5 py-1.5 text-[11px] font-bold text-brand-600">{t('Edit')}</button>
                   )}
                 </div>
               </div>
@@ -389,7 +376,7 @@ const PlacementPage = () => {
               <div className="space-y-2">
                 {match.near_misses.map((c) => (
                   <div key={c.student_id}
-                    className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+                    className="p-3 rounded-xl erp-card">
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <div>
                         <p className="font-bold text-xs text-gray-800 dark:text-slate-200 flex items-center gap-2">
@@ -432,7 +419,7 @@ const PlacementPage = () => {
           ) : (
             <div className="space-y-2">
               {pipeline.rows.map((r) => (
-                <div key={r.id} className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+                <div key={r.id} className="p-3 rounded-xl erp-card">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <p className="font-bold text-sm text-gray-900 dark:text-slate-100 flex items-center gap-2">
@@ -454,7 +441,7 @@ const PlacementPage = () => {
                             round: 'client_round_1', result: 'passed',
                             interviewer: '', feedback: '', deficiencies: [],
                           })}
-                          className="px-2.5 py-1.5 text-[11px] font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900">
+                          className="erp-btn-primary px-2.5 py-1.5 text-[11px]">
                           {t('Log interview')}
                         </button>
                       )}
@@ -463,7 +450,7 @@ const PlacementPage = () => {
                           className={`px-2.5 py-1.5 text-[11px] font-bold rounded-lg ${
                             s === 'rejected'
                               ? 'border border-rose-300 text-rose-600'
-                              : 'bg-blue-600 text-white'
+                              : 'bg-brand-600 text-white'
                           }`}>
                           {t(s.replace(/_/g, ' '))}
                         </button>
@@ -492,7 +479,7 @@ const PlacementPage = () => {
             <div className="space-y-2">
               {gaps.map((g) => (
                 <div key={g.id}
-                  className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 flex items-center justify-between gap-3">
+                  className="p-3 rounded-xl erp-card flex items-center justify-between gap-3">
                   <div>
                     <p className="font-bold text-sm text-gray-900 dark:text-slate-100">{g.skill}</p>
                     <p className="text-[11px] text-gray-500">{t('cited by')}: {g.cited_by}</p>
@@ -514,7 +501,7 @@ const PlacementPage = () => {
           footer={<>
             <button onClick={() => setJobForm(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">{t('Cancel')}</button>
             <button onClick={saveJob} disabled={busy || !jobForm.company || !jobForm.role}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50">
+              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50">
               {busy ? t('Saving…') : t('Save job')}
             </button>
           </>}>
@@ -557,7 +544,7 @@ const PlacementPage = () => {
                     <button key={s.id} type="button" onClick={() => toggleJobSkill(s.id)}
                       className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border ${
                         on
-                          ? 'bg-blue-600 text-white border-blue-600'
+                          ? 'bg-brand-600 text-white border-brand-600'
                           : 'bg-white dark:bg-slate-900 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-700'
                       }`}>
                       {s.name}
@@ -600,7 +587,7 @@ const PlacementPage = () => {
             <button onClick={() => setInterview(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">{t('Cancel')}</button>
             <button onClick={saveInterview}
               disabled={busy || (interview.result === 'failed' && !interview.feedback?.trim())}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 disabled:opacity-50">
+              className="erp-btn-primary px-4 py-2.5 text-xs">
               {busy ? t('Saving…') : t('Save interview')}
             </button>
           </>}>

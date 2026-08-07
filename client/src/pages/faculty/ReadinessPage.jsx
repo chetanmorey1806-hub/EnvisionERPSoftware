@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../../components/common/Modal';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { trainerEvalApi } from '../../api/trainerEvalApi';
@@ -22,7 +22,7 @@ import { useT } from '../../context/LanguageContext';
 
 const TONE = {
   job_ready: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400',
-  placed: 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400',
+  placed: 'bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400',
   remedial_required: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
   in_training: 'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400',
   unskilled: 'bg-gray-100 text-gray-500 dark:bg-slate-800 dark:text-slate-500',
@@ -193,35 +193,26 @@ const ReadinessPage = () => {
 
   return (
     <div className="space-y-4">
-      <Breadcrumb items={[{ label: t('Academics') }, { label: t('Student Readiness') }]} />
-
-      <div>
-        <h1 className="text-lg font-extrabold text-gray-900 dark:text-slate-100 flex items-center gap-2">
-          <span className="w-8 h-8 grid place-items-center rounded-lg bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600">
-            <Icons.results size={18} />
-          </span>
-          {t('Student Readiness')}
-        </h1>
-        <p className="text-xs text-gray-500 mt-0.5">
-          {t('Benchmark skills and sign off soft skills. Job-Ready is then derived — you cannot set it by hand.')}
-        </p>
-      </div>
+      <PageHero
+        tone="violet"
+        icon={Icons.results}
+        title="Student Readiness"
+        subtitle="Benchmark skills and sign off soft skills. Job-Ready is then derived — you cannot set it by hand."
+      />
 
       {err && <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-xs font-semibold text-rose-700">{err}</div>}
       {note && <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-xs font-semibold text-emerald-700">{note}</div>}
 
-      <div className="flex gap-1 border-b border-gray-200 dark:border-slate-800">
+      <div className="erp-tabs">
         {[
           { key: 'readiness', label: 'Readiness' },
           { key: 'remedials', label: `Remedial tasks${openTasks ? ` (${openTasks})` : ''}` },
         ].map((x) => (
           <button key={x.key} onClick={() => setTab(x.key)}
-            className={`px-4 py-2 text-xs font-bold border-b-2 -mb-px ${
-              tab === x.key
-                ? 'border-emerald-500 text-emerald-600'
-                : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-slate-200'
-            }`}>
-            {x.key === 'remedials' && openTasks > 0 && <span className="mr-1">🔴</span>}
+            className={`erp-tab ${tab === x.key ? 'erp-tab-active' : ''}`}>
+            {x.key === 'remedials' && openTasks > 0 && (
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-500" aria-hidden="true" />
+            )}
             {t(x.label.replace(/\s\(\d+\)$/, ''))}{x.key === 'remedials' && openTasks ? ` (${openTasks})` : ''}
           </button>
         ))}
@@ -246,7 +237,7 @@ const ReadinessPage = () => {
                 <span className="px-2 py-1 rounded-lg bg-amber-100 dark:bg-amber-950/50 text-amber-700 font-bold">
                   {summary.remedial} {t('remedial')}
                 </span>
-                <span className="px-2 py-1 rounded-lg bg-blue-100 dark:bg-blue-950/50 text-blue-700 font-bold">
+                <span className="px-2 py-1 rounded-lg bg-brand-100 dark:bg-brand-950/50 text-brand-700 font-bold">
                   {summary.placed} {t('placed')}
                 </span>
               </div>

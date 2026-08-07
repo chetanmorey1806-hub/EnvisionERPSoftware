@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Breadcrumb from '../../components/common/Breadcrumb';
 import { Icons } from '../../components/common/icons';
 import { Field, Section, FormHeader, FormError, FormSkeleton, DayPicker, inputCls } from '../../components/form/FormKit';
 import { useT } from '../../context/LanguageContext';
@@ -91,8 +90,6 @@ const BatchForm = () => {
 
   return (
     <form onSubmit={save} className="space-y-5">
-      <Breadcrumb items={[{ label: t('Master') }, { label: t('Batches'), path: '/batches' }, { label: isEdit ? t('Edit') : t('New') }]} />
-
       <FormHeader
         title={isEdit ? 'Edit Batch' : 'New Batch'}
         subtitle="Timings, trainer and room are checked for clashes before the batch is saved."

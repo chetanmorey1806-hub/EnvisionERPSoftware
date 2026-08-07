@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import EmptyState from '../../components/common/EmptyState';
 import { Icons } from '../../components/common/icons';
 import { partnerApi } from '../../api/partnerApi';
@@ -9,7 +9,7 @@ import { useT } from '../../context/LanguageContext';
 
 const TYPE_BADGE = {
   hiring: 'bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-400',
-  training: 'bg-blue-100 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400',
+  training: 'bg-brand-100 dark:bg-brand-950/50 text-brand-700 dark:text-brand-400',
   both: 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400',
 };
 
@@ -84,37 +84,27 @@ const PartnersPage = () => {
 
   return (
     <div className="space-y-5">
-      <Breadcrumb items={[{ label: t('Master') }, { label: t('Corporate Partners') }]} />
-
-      {/* header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="grid place-items-center h-11 w-11 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
-            <Icons.team size={20} />
-          </span>
-          <div>
-            <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">{t('Corporate Partners')}</h1>
-            <p className="text-xs text-gray-500">{t('Companies that sponsor training and hire our students.')}</p>
+      <PageHero
+        tone="brand"
+        icon={Icons.team}
+        title="Corporate Partners"
+        subtitle="Companies that sponsor training and hire our students."
+        action={(
+          <div className="flex gap-2">
+            <button
+              onClick={() => setDeleted((d) => !d)}
+              className={`erp-hero-btn px-4 py-2.5 min-h-11 ${deleted ? 'bg-white/35' : ''}`}
+            >
+              <Icons.trash size={15} aria-hidden="true" /> {deleted ? t('Back to active') : t('Deleted')}
+            </button>
+            {can('partners.create') && !deleted && (
+              <Link to="/partners/new" className="erp-hero-btn px-4 py-2.5 min-h-11">
+                <Icons.plus size={15} aria-hidden="true" /> {t('Add Partner')}
+              </Link>
+            )}
           </div>
-        </div>
-
-        <div className="flex gap-2">
-          <button onClick={() => setDeleted((d) => !d)}
-            className={`inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-xs font-bold rounded-lg transition press ${
-              deleted
-                ? 'bg-rose-600 text-white hover:bg-rose-700'
-                : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-200'
-            }`}>
-            <Icons.trash size={15} /> {deleted ? t('Back to active') : t('Deleted')}
-          </button>
-          {can('partners.create') && !deleted && (
-            <Link to="/partners/new"
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-xs font-bold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition shadow-sm press">
-              <Icons.plus size={15} /> {t('Add Partner')}
-            </Link>
-          )}
-        </div>
-      </div>
+        )}
+      />
 
       {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>}
       {notice && (
@@ -137,7 +127,7 @@ const PartnersPage = () => {
           placeholder={t('Search by company, PAN, GSTIN or city…')}
           className="w-full pl-9 pr-3 py-2.5 min-h-11 text-xs rounded-lg bg-white dark:bg-slate-900
                      border border-gray-200 dark:border-slate-700 text-gray-800 dark:text-slate-100
-                     focus:ring-2 focus:ring-blue-500/40 outline-none"
+                     focus:ring-2 focus:ring-brand-500/40 outline-none"
         />
       </div>
 
@@ -192,12 +182,12 @@ const PartnersPage = () => {
                             <>
                               {can('partners.update') && (
                                 <button onClick={() => navigate(`/partners/${p.id}/edit`)} title={t('Edit')}
-                                  className="p-1.5 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-400 hover:text-blue-600 hover:border-blue-300 press">
+                                  className="p-1.5 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-400 hover:text-brand-600 hover:border-brand-300 press">
                                   <Icons.edit size={13} />
                                 </button>
                               )}
                               <button onClick={() => toggleContacts(p)} title={t('Contacts')}
-                                className="p-1.5 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-400 hover:text-blue-600 hover:border-blue-300 press">
+                                className="p-1.5 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-400 hover:text-brand-600 hover:border-brand-300 press">
                                 <Icons.menu size={13} />
                               </button>
                               {can('partners.delete') && (
@@ -213,7 +203,7 @@ const PartnersPage = () => {
 
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="grid place-items-center h-8 w-8 shrink-0 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
+                          <span className="grid place-items-center h-8 w-8 shrink-0 rounded-lg bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400">
                             <Icons.team size={15} />
                           </span>
                           <span className="min-w-0">
@@ -249,7 +239,7 @@ const PartnersPage = () => {
                       <td className="px-4 py-3 text-right">
                         <button onClick={() => toggleContacts(p)}
                           className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-bold
-                                     bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 hover:bg-blue-100 press">
+                                     bg-brand-50 dark:bg-brand-950/40 text-brand-700 dark:text-brand-300 hover:bg-brand-100 press">
                           <Icons.students size={12} /> {p.contact_count}
                           <Icons.chevronDown size={11} className={expanded === p.id ? 'rotate-180 transition-transform' : 'transition-transform'} />
                         </button>
@@ -269,7 +259,7 @@ const PartnersPage = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
                               {contacts[p.id].map((c) => (
                                 <div key={c.id}
-                                  className="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+                                  className="p-2.5 rounded-lg erp-card">
                                   <div className="flex items-center gap-1.5">
                                     <span className="text-xs font-bold text-gray-800 dark:text-slate-100 truncate">{c.name}</span>
                                     {!!c.is_primary && (
@@ -280,8 +270,8 @@ const PartnersPage = () => {
                                   </div>
                                   {c.designation && <p className="text-[10px] text-gray-400">{c.designation}</p>}
                                   <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-gray-500">
-                                    {c.phone && <a href={`tel:${c.phone}`} className="hover:text-blue-600">{c.phone}</a>}
-                                    {c.email && <a href={`mailto:${c.email}`} className="hover:text-blue-600 truncate">{c.email}</a>}
+                                    {c.phone && <a href={`tel:${c.phone}`} className="hover:text-brand-600">{c.phone}</a>}
+                                    {c.email && <a href={`mailto:${c.email}`} className="hover:text-brand-600 truncate">{c.email}</a>}
                                   </div>
                                 </div>
                               ))}
@@ -315,7 +305,7 @@ const PartnersPage = () => {
                     ) : (
                       <>
                         {can('partners.update') && (
-                          <button onClick={() => navigate(`/partners/${p.id}/edit`)} className="p-2 rounded-lg text-gray-400 hover:text-blue-600 press">
+                          <button onClick={() => navigate(`/partners/${p.id}/edit`)} className="p-2 rounded-lg text-gray-400 hover:text-brand-600 press">
                             <Icons.edit size={15} />
                           </button>
                         )}
@@ -339,7 +329,7 @@ const PartnersPage = () => {
                       {[p.corp_city, p.corp_state].filter(Boolean).join(', ') || '—'}
                     </dd></div>
                   <div><dt className="text-[10px] font-bold uppercase text-gray-400">{t('Contacts')}</dt>
-                    <dd><button onClick={() => toggleContacts(p)} className="text-xs font-bold text-blue-600 press">
+                    <dd><button onClick={() => toggleContacts(p)} className="text-xs font-bold text-brand-600 press">
                       {p.contact_count} {t('contacts')}
                     </button></dd></div>
                 </dl>

@@ -22,7 +22,7 @@ const DataTable = ({
 
   if (isLoading) {
     return (
-      <div className="w-full rounded-xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+      <div className="erp-card w-full p-4">
         {Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)}
       </div>
     );
@@ -43,7 +43,7 @@ const DataTable = ({
           <div
             key={row.id || i}
             style={{ '--i': i }}
-            className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-xs"
+            className="erp-card erp-card-interactive p-4"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 text-sm font-bold text-gray-800 dark:text-slate-100 truncate">
@@ -69,10 +69,10 @@ const DataTable = ({
       </div>
 
       {/* ---------------- Desktop: table ---------------- */}
-      <div className="hidden md:block w-full overflow-hidden rounded-xl border border-gray-100 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+      <div className="erp-card hidden md:block w-full overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
-            <thead className="sticky top-0 z-10 bg-gray-50/90 dark:bg-slate-900/90 backdrop-blur-sm border-b border-gray-100 dark:border-slate-800 select-none">
+            <thead className="sticky top-0 z-10 bg-gray-50/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-gray-100 dark:border-slate-800 select-none">
               <tr>
                 {columns.map((col, idx) => (
                   <th
@@ -94,7 +94,7 @@ const DataTable = ({
                 <tr
                   key={row.id || rowIndex}
                   style={{ '--i': rowIndex }}
-                  className="animate-fade-up hover:bg-blue-50/40 dark:hover:bg-slate-800/40 transition-colors"
+                  className="animate-fade-up hover:bg-brand-50/50 dark:hover:bg-slate-800/40 transition-colors"
                 >
                   {columns.map((col, colIndex) => (
                     <td

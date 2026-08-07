@@ -1,45 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Icons } from '../common/icons';
 
-const DashboardOverview = () => {
-  const dynamicNodes = [
-    { title: 'Core Student Lifecycle', desc: 'Active Profiles, Retention Curves & Outflows', link: '/students', color: 'border-blue-500' },
-    { title: 'Admissions & Funnels', desc: 'Verification Pipeline, Document Audits & Queue Logs', link: '/admissions', color: 'border-emerald-500' },
-    { title: 'Treasury & Revenue Accounts', desc: 'Invoices Issued, Collected Balances & Outstanding Dues', link: '/fees', color: 'border-amber-500' },
-    { title: 'Academic Course Matrix', desc: 'Program Catalogs, Syllabus Pipelines & Capacities', link: '/courses', color: 'border-indigo-500' }
-  ];
+/** The four areas most people jump to from the dashboard. */
+const SEGMENTS = [
+  { title: 'Students', desc: 'Active profiles, retention and outflow', link: '/students', icon: Icons.students, tone: 'brand' },
+  { title: 'Admissions', desc: 'Verification pipeline and document audits', link: '/admissions', icon: Icons.admissions, tone: 'green' },
+  { title: 'Fees & Revenue', desc: 'Invoices, collections and outstanding dues', link: '/fees', icon: Icons.fees, tone: 'amber' },
+  { title: 'Courses', desc: 'Catalogue, syllabus and capacity', link: '/courses', icon: Icons.courses, tone: 'violet' },
+];
 
-  return (
-    <div className="space-y-4">
-      <div className="bg-slate-900 text-slate-100 p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h2 className="text-lg font-black tracking-tight text-white">Cluster Health Metric: Optimal</h2>
-          <p className="text-xs text-slate-400 mt-0.5">All secondary functional modules are currently reporting healthy execution cycles.</p>
+const DashboardOverview = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {SEGMENTS.map((s) => (
+      <Link
+        key={s.link}
+        to={s.link}
+        className="erp-card erp-card-interactive p-5 flex items-center gap-4 group"
+      >
+        <span className={`erp-chip erp-chip-${s.tone}`}>
+          <s.icon size={20} strokeWidth={2} aria-hidden="true" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-sm font-bold text-gray-900 dark:text-slate-100">{s.title}</h3>
+          <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5 leading-relaxed">{s.desc}</p>
         </div>
-        <div className="flex gap-2 text-xs font-mono bg-slate-950 p-2 rounded-xl border border-slate-800">
-          <span className="text-emerald-400">● Core DB: Online</span>
-          <span className="text-slate-600">|</span>
-          <span className="text-blue-400">Broker: Active</span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {dynamicNodes.map((node, i) => (
-          <div key={i} className={`p-5 bg-white dark:bg-slate-900 border-l-4 ${node.color} rounded-xl border border-y-gray-100 border-r-gray-100 dark:border-y-slate-800/40 dark:border-r-slate-800/40 shadow-xs flex flex-col justify-between`}>
-            <div>
-              <h3 className="text-sm font-bold text-gray-800 dark:text-slate-200">{node.title}</h3>
-              <p className="text-xs text-gray-400 dark:text-slate-500 mt-1 leading-relaxed">{node.desc}</p>
-            </div>
-            <div className="pt-4 flex justify-end">
-              <Link to={node.link} className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
-                Access System Segment ➔
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+        <Icons.chevronRight
+          size={16}
+          aria-hidden="true"
+          className="shrink-0 text-gray-300 dark:text-slate-600 transition-transform group-hover:translate-x-0.5"
+        />
+      </Link>
+    ))}
+  </div>
+);
 
 export default DashboardOverview;

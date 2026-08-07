@@ -20,7 +20,7 @@ const EMPTY_H = 'h-40';
 const NoData = ({ hint }) => {
   const { t } = useT();
   return (
-    <div className={`${EMPTY_H} grid place-items-center rounded-lg border border-dashed border-gray-200 dark:border-slate-800`}>
+    <div className={`${EMPTY_H} grid place-items-center rounded-xl border-2 border-dashed border-gray-200 dark:border-slate-800`}>
       <div className="text-center px-4">
         <p className="text-xs font-bold text-gray-400 dark:text-slate-600">{t('No data yet')}</p>
         {hint && <p className="text-[11px] text-gray-400 dark:text-slate-600 mt-0.5">{t(hint)}</p>}
@@ -32,7 +32,7 @@ const NoData = ({ hint }) => {
 export const ChartCard = ({ title, subtitle, right, children }) => {
   const { t } = useT();
   return (
-    <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800">
+    <div className="erp-card p-5">
       <div className="flex items-start justify-between gap-2 mb-3">
         <div>
           <h4 className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">{t(title)}</h4>

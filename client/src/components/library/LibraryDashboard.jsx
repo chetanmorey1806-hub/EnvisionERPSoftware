@@ -1,10 +1,13 @@
 import React from 'react';
+import { StatCard, StatGrid } from '../common/PageShell';
+import { Icons } from '../common/icons';
 
+/* NOTE: placeholder figures — this strip is not yet wired to the library API. */
 const LibraryDashboard = () => (
-  <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border dark:border-slate-800 flex justify-around mb-6 text-xs text-center">
-    <div><span className="text-gray-400 block">Catalog Volume Count</span><b className="text-gray-800 dark:text-slate-200">12,400 Volumes</b></div>
-    <div><span className="text-gray-400 block">Active Circulations</span><b className="text-amber-600">314 Checked Out</b></div>
-  </div>
+  <StatGrid cols={3}>
+    <StatCard icon={Icons.library} tone="cyan" value="12,400" label="Catalogue volumes" sub="Titles on the shelf" />
+    <StatCard icon={Icons.clock} tone="amber" value="314" label="On loan" sub="Copies currently checked out" />
+  </StatGrid>
 );
 
 export default LibraryDashboard;

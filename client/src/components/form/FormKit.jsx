@@ -10,9 +10,9 @@ import { useT } from '../../context/LanguageContext';
  */
 
 export const inputCls =
-  'w-full px-3 py-2.5 min-h-11 text-sm bg-white dark:bg-slate-900 border border-gray-200 ' +
-  'dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 ' +
-  'focus:ring-2 focus:ring-blue-500/40 outline-none transition';
+  'w-full px-3.5 py-2.5 min-h-11 text-sm bg-white dark:bg-slate-900 border border-gray-200 ' +
+  'dark:border-slate-700 rounded-xl shadow-2xs text-gray-800 dark:text-slate-100 ' +
+  'focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition';
 
 /**
  * Same input, shorter. For forms that must fit one screen without scrolling.
@@ -20,8 +20,8 @@ export const inputCls =
  */
 export const inputClsCompact =
   'w-full px-3 py-2 min-h-10 text-sm bg-white dark:bg-slate-900 border border-gray-200 ' +
-  'dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 ' +
-  'focus:ring-2 focus:ring-blue-500/40 outline-none transition';
+  'dark:border-slate-700 rounded-xl shadow-2xs text-gray-800 dark:text-slate-100 ' +
+  'focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition';
 
 /** One labelled input. `required` paints the asterisk; validation stays with the form. */
 export const Field = ({ label, required, hint, children }) => {
@@ -48,9 +48,7 @@ export const Section = ({ icon: Icon = Icons.courses, title, children, cols = 2,
   const { t } = useT();
   return (
     <section
-      className={`bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800 ${
-        dense ? 'p-4' : 'p-5'
-      } ${className}`}
+      className={`erp-card ${dense ? 'p-4' : 'p-5'} ${className}`}
     >
       <h2 className={`flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-gray-400 pb-2 border-b border-gray-100 dark:border-slate-800 ${
         dense ? 'mb-3' : 'mb-4'
@@ -65,32 +63,46 @@ export const Section = ({ icon: Icon = Icons.courses, title, children, cols = 2,
 };
 
 /** Title + subtitle + Cancel/Save — identical on every form. */
-export const FormHeader = ({ title, subtitle, onCancel, saving, saveLabel, disabled }) => {
+/**
+ * Title + subtitle + Cancel/Save, rendered as the same banded hero every other
+ * screen opens with — so a form does not look like it belongs to a different
+ * application than the list that linked to it.
+ *
+ * The buttons sit on the band as glass controls; Save keeps a solid white fill
+ * because it is the one action the page exists for.
+ */
+export const FormHeader = ({ title, subtitle, onCancel, saving, saveLabel, disabled, tone = 'brand' }) => {
   const { t } = useT();
+  const band = tone === 'brand' ? 'erp-hero-blue' : '';
+
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-      <div>
-        <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">{t(title)}</h1>
-        {subtitle && <p className="text-xs text-gray-500">{t(subtitle)}</p>}
+    <header className={`erp-hero ${band}`}>
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-extrabold leading-tight truncate">{t(title)}</h1>
+          {subtitle && <p className="text-[13px] font-medium text-white/85 mt-1">{t(subtitle)}</p>}
+        </div>
+        <div className="flex gap-2 shrink-0">
+          <button type="button" onClick={onCancel} className="erp-hero-btn px-4 py-2.5 min-h-11">
+            {t('Cancel')}
+          </button>
+          <button
+            type="submit"
+            disabled={saving || disabled}
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-[11px] font-bold rounded-xl bg-white text-gray-900 shadow-sm hover:bg-white/90 disabled:opacity-50 disabled:pointer-events-none press"
+          >
+            <Icons.check size={15} aria-hidden="true" /> {saving ? t('Saving…') : t(saveLabel)}
+          </button>
+        </div>
       </div>
-      <div className="flex gap-2">
-        <button type="button" onClick={onCancel}
-          className="px-4 py-2.5 min-h-11 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800 press">
-          {t('Cancel')}
-        </button>
-        <button type="submit" disabled={saving || disabled}
-          className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-xs font-bold rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 press">
-          <Icons.check size={15} /> {saving ? t('Saving…') : t(saveLabel)}
-        </button>
-      </div>
-    </div>
+    </header>
   );
 };
 
 /** The red band above a form. Conflict-engine rejections land here verbatim. */
 export const FormError = ({ error }) =>
   error ? (
-    <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs flex items-start gap-2">
+    <div className="p-3.5 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 rounded-xl text-xs font-medium flex items-start gap-2 animate-fade-in">
       <Icons.warning size={14} className="shrink-0 mt-px" />
       <span className="whitespace-pre-line">{error}</span>
     </div>
@@ -100,7 +112,7 @@ export const FormError = ({ error }) =>
 export const FormSkeleton = () => (
   <div className="space-y-3">
     {[1, 2, 3].map((i) => (
-      <div key={i} className="h-40 rounded-xl bg-gray-100 dark:bg-slate-800 animate-pulse" />
+      <div key={i} className="h-40 rounded-2xl bg-gray-100 dark:bg-slate-800 animate-pulse" />
     ))}
   </div>
 );
@@ -125,7 +137,7 @@ export const DayPicker = ({ value = [], onChange }) => {
           onClick={() => toggle(d.v)}
           className={`px-3 py-2 min-h-9 rounded-lg text-[11px] font-bold transition press ${
             value.includes(d.v)
-              ? 'bg-blue-600 text-white'
+              ? 'bg-brand-600 text-white'
               : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-gray-200'
           }`}
         >

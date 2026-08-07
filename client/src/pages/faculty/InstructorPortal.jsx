@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { facultyPortalApi } from '../../api/facultyPortalApi';
 // The full attendance client (register + session open/close), not the stub in
 // facultyPortalApi which only had submitBulk.
@@ -19,7 +19,7 @@ const STATUS = {
 const TYPE_ICON = { material: '📄', assignment: '📝', lab: '🧪' };
 
 const inputCls =
-  'w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none transition';
+  'w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/40 outline-none transition';
 
 const Tab = ({ active, onClick, children, badge }) => (
   <button
@@ -161,19 +161,22 @@ const InstructorPortal = () => {
 
   return (
     <div className="space-y-5 max-w-5xl mx-auto">
-      <Breadcrumb items={[{ label: 'Faculty' }, { label: 'Instructor Portal' }]} />
-
-      {/* Greeting + date picker */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">
-            {faculty ? `Welcome, ${faculty.name}` : 'Instructor Portal'}
-          </h1>
-          <p className="text-xs text-gray-500">{prettyDate(date)} · {classes.length} class{classes.length === 1 ? '' : 'es'} scheduled</p>
-        </div>
-        <input type="date" value={date} onChange={(e) => { setDate(e.target.value); setActive(null); }}
-          className={`${inputCls} sm:w-44`} />
-      </div>
+      <PageHero
+        tone="violet"
+        icon={Icons.faculty}
+        title={faculty ? `Welcome, ${faculty.name}` : 'Instructor Portal'}
+        subtitle={`${prettyDate(date)} · ${classes.length} class${classes.length === 1 ? '' : 'es'} scheduled`}
+        action={(
+          <label className="erp-hero-chip">
+            <span className="block text-[9px] font-bold uppercase tracking-[0.14em] text-white/70 mb-1">Date</span>
+            <input
+              type="date" value={date}
+              onChange={(e) => { setDate(e.target.value); setActive(null); }}
+              className="bg-transparent text-sm font-bold text-white outline-none [color-scheme:dark]"
+            />
+          </label>
+        )}
+      />
 
       {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>}
       {notice && <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium">✓ {notice}</div>}
@@ -184,7 +187,7 @@ const InstructorPortal = () => {
         {loading ? (
           <div className="space-y-2">{[1, 2].map((i) => <div key={i} className="h-20 bg-gray-100 dark:bg-slate-800 rounded-xl animate-pulse" />)}</div>
         ) : classes.length === 0 ? (
-          <div className="p-10 text-center bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800">
+          <div className="p-10 text-center erp-card">
             <div className="text-3xl mb-2">🌤️</div>
             <p className="text-sm text-gray-500">No classes scheduled for this day.</p>
           </div>
@@ -195,14 +198,14 @@ const InstructorPortal = () => {
               return (
                 <button key={c.batch_id} onClick={() => openClass(c)}
                   className={`text-left p-4 rounded-xl border transition-all bg-white dark:bg-slate-900 hover:shadow-md ${
-                    selected ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-gray-100 dark:border-slate-800'
+                    selected ? 'border-brand-500 ring-2 ring-brand-500/20' : 'border-gray-100 dark:border-slate-800'
                   }`}>
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="font-bold text-sm text-gray-800 dark:text-slate-100 truncate">{c.batch_name}</p>
                       <p className="text-[11px] text-gray-400 truncate">{c.course_name} · {c.code}</p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-blue-600 whitespace-nowrap">
+                    <span className="text-xs font-mono font-bold text-brand-600 whitespace-nowrap">
                       {fmtTime(c.start_time)}–{fmtTime(c.end_time)}
                     </span>
                   </div>
@@ -226,7 +229,7 @@ const InstructorPortal = () => {
 
       {/* ---------------- Class workspace ---------------------------------- */}
       {active && (
-        <section className="bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800 overflow-hidden">
+        <section className="erp-card overflow-hidden">
           <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <h3 className="font-bold text-sm text-gray-800 dark:text-slate-100">{active.batch_name}</h3>
@@ -245,25 +248,25 @@ const InstructorPortal = () => {
               {/* In-class check-in: students self-mark present with this code */}
               <div className={`rounded-xl border p-3 ${
                 session?.status === 'open'
-                  ? 'border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900'
+                  ? 'border-brand-200 bg-brand-50 dark:bg-brand-950/30 dark:border-brand-900'
                   : 'border-gray-100 dark:border-slate-800'
               }`}>
                 {session?.status === 'open' ? (
                   <div className="flex items-center justify-between gap-3 flex-wrap">
                     <div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-blue-600">Check-in is open</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-brand-600">Check-in is open</p>
                       <p className="text-xs text-gray-500">Read this code out in class — students enter it to mark themselves present.</p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl font-black tracking-[0.3em] text-blue-700 dark:text-blue-400 tabular-nums">
+                      <span className="text-2xl font-black tracking-[0.3em] text-brand-700 dark:text-brand-400 tabular-nums">
                         {session.code}
                       </span>
                       <button onClick={refreshRegister}
-                        className="px-3 py-1.5 text-[11px] font-bold rounded-lg bg-white dark:bg-slate-800 border border-blue-200 text-blue-700">
+                        className="px-3 py-1.5 text-[11px] font-bold rounded-lg bg-white dark:bg-slate-800 border border-brand-200 text-brand-700">
                         Refresh
                       </button>
                       <button onClick={closeCheckIn}
-                        className="px-3 py-1.5 text-[11px] font-bold rounded-lg bg-blue-600 text-white">
+                        className="px-3 py-1.5 text-[11px] font-bold rounded-lg bg-brand-600 text-white">
                         Close & finalise
                       </button>
                     </div>
@@ -276,7 +279,7 @@ const InstructorPortal = () => {
                         : 'Let students mark their own presence: open check-in and show them the code.'}
                     </p>
                     <button onClick={openCheckIn}
-                      className="px-3 py-1.5 text-[11px] font-bold rounded-lg bg-blue-600 text-white">
+                      className="px-3 py-1.5 text-[11px] font-bold rounded-lg bg-brand-600 text-white">
                       {session?.status === 'closed' ? 'Reopen check-in' : 'Open check-in'}
                     </button>
                   </div>
@@ -324,7 +327,7 @@ const InstructorPortal = () => {
                   </ul>
 
                   <button onClick={saveAttendance} disabled={saving}
-                    className="w-full py-2.5 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 active:scale-[0.99] transition disabled:opacity-60">
+                    className="w-full py-2.5 rounded-lg bg-brand-600 text-white text-xs font-bold hover:bg-brand-700 active:scale-[0.99] transition disabled:opacity-60">
                     {saving ? 'Saving…' : 'Save Attendance'}
                   </button>
                 </>
@@ -346,7 +349,7 @@ const InstructorPortal = () => {
               </label>
               <p className="text-[11px] text-gray-400">Saving again for the same day updates the existing log.</p>
               <button onClick={saveTopics} disabled={saving || !topics.trim()}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-blue-600 text-white text-xs font-bold disabled:opacity-50">
+                className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-brand-600 text-white text-xs font-bold disabled:opacity-50">
                 {saving ? 'Saving…' : 'Log Topics'}
               </button>
             </div>
@@ -365,10 +368,10 @@ const InstructorPortal = () => {
                 </select>
                 <input type="date" value={upload.due_date} onChange={(e) => setUpload({ ...upload, due_date: e.target.value })} className={inputCls} />
                 <input type="file" onChange={(e) => setUpload({ ...upload, file: e.target.files[0] })}
-                  className="text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700" />
+                  className="text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-50 file:text-brand-700" />
                 <div className="sm:col-span-2">
                   <button onClick={saveMaterial} disabled={saving || !upload.file || !upload.title}
-                    className="w-full py-2.5 rounded-lg bg-blue-600 text-white text-xs font-bold disabled:opacity-50">
+                    className="w-full py-2.5 rounded-lg bg-brand-600 text-white text-xs font-bold disabled:opacity-50">
                     {saving ? 'Uploading…' : 'Upload'}
                   </button>
                 </div>
@@ -388,7 +391,7 @@ const InstructorPortal = () => {
                         </p>
                       </div>
                       <a href={m.file_url} target="_blank" rel="noreferrer"
-                        className="text-[11px] font-bold text-blue-600 hover:underline shrink-0">Open</a>
+                        className="text-[11px] font-bold text-brand-600 hover:underline shrink-0">Open</a>
                     </li>
                   ))}
                 </ul>

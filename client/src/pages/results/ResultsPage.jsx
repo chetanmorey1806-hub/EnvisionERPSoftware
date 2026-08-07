@@ -71,7 +71,7 @@ const ResultsPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader crumbs={['Academics', 'Results']} icon={<Icons.results size={18} />} title="Results"
+      <PageHeader tone="violet" icon={<Icons.results size={18} />} title="Results"
         subtitle="Enter marks for an exam. The grade and pass/fail follow from the exam's own total and passing mark." />
       <Flash error={error} notice={notice} />
 

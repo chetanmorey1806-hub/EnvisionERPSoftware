@@ -46,7 +46,7 @@ const MobileMenuDrawer = () => {
               <NavLink key={l.path} to={l.path} onClick={closeSidebar}
                 className={`flex items-center gap-2.5 px-3 py-2.5 min-h-11 rounded-lg text-sm font-semibold ${
                   isActive(l.path)
-                    ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300'
+                    ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-700 dark:text-brand-300'
                     : 'text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800'}`}>
                 <LinkIcon size={17} /> {t(l.name)}
               </NavLink>
@@ -74,7 +74,7 @@ const MobileMenuDrawer = () => {
                         <NavLink key={item.path} to={item.path} onClick={closeSidebar}
                           className={`flex items-center gap-2.5 px-3 py-2.5 min-h-11 rounded-lg text-sm ${
                             isActive(item.path)
-                              ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-semibold'
+                              ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-700 dark:text-brand-300 font-semibold'
                               : 'text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800'}`}>
                           <ItemIcon size={16} className="shrink-0" />
                           <span className="truncate">{t(item.name)}</span>

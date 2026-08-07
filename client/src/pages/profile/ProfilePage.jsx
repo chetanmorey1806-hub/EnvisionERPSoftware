@@ -1,24 +1,53 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { PageHero, Panel } from '../../components/common/PageShell';
+import { Icons } from '../../components/common/icons';
+
+/** One read-only attribute of the signed-in account. */
+const Detail = ({ label, children }) => (
+  <div className="py-3 border-b border-gray-100 dark:border-slate-800 last:border-0">
+    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500">
+      {label}
+    </p>
+    <div className="mt-1 text-sm text-gray-800 dark:text-slate-100">{children}</div>
+  </div>
+);
 
 const ProfilePage = () => {
   const { user } = useContext(AuthContext);
+
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-xl font-black">Operator Profile Context</h1>
-      <div className="p-6 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-xl space-y-4">
-        <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold text-white uppercase">
-          {user?.name?.charAt(0) || 'A'}
+    <div className="max-w-2xl mx-auto space-y-5">
+      <PageHero
+        tone="slate"
+        icon={Icons.staff}
+        title="My Profile"
+        subtitle="The account you are signed in with."
+      />
+
+      <Panel title="Account" icon={Icons.staff} tone="brand">
+        <div className="flex items-center gap-4 pb-4 border-b border-gray-100 dark:border-slate-800">
+          <div className="h-16 w-16 rounded-2xl bg-brand-600 grid place-items-center text-2xl font-black text-white uppercase shadow-md shadow-brand-600/25">
+            {user?.name?.charAt(0) || 'A'}
+          </div>
+          <div className="min-w-0">
+            <p className="text-lg font-extrabold text-gray-900 dark:text-slate-50 truncate">
+              {user?.name || 'Account holder'}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-slate-400 capitalize">{user?.role || 'user'}</p>
+          </div>
         </div>
-        <div>
-          <label className="text-xs font-bold text-gray-400 block uppercase">Identity Handle Designation</label>
-          <span className="text-base font-medium">{user?.name || 'Administrative Agent'}</span>
+
+        <div className="mt-2">
+          <Detail label="Full name">{user?.name || '—'}</Detail>
+          <Detail label="Email">{user?.email || '—'}</Detail>
+          <Detail label="Role">
+            <span className="status-pill bg-brand-50 text-brand-700 border-brand-100 dark:bg-brand-500/15 dark:text-brand-300 dark:border-brand-900/60 capitalize">
+              {user?.role || 'user'}
+            </span>
+          </Detail>
         </div>
-        <div>
-          <label className="text-xs font-bold text-gray-400 block uppercase">Routing Security Scope Role</label>
-          <span className="text-xs font-mono bg-gray-100 dark:bg-slate-800 p-1 rounded capitalize">{user?.role || 'System Operator'}</span>
-        </div>
-      </div>
+      </Panel>
     </div>
   );
 };

@@ -28,12 +28,12 @@ const StaffPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader crumbs={['Master', 'Staff']} icon={<Icons.staff size={18} />} title="Staff"
+      <PageHeader tone="brand" icon={<Icons.staff size={18} />} title="Staff"
         subtitle="Front desk, accounts and administration — the people who are not trainers."
         action={can('staff.create') && (
           <button onClick={() => setForm({ name: '', email: '', phone: '', department: '', designation: '', status: 'active' })}
-            className="px-3 py-2 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900">
-            + {t('Add staff')}
+            className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> {t('Add staff')}
           </button>
         )} />
       <Flash error={L.error} notice={L.notice} />
@@ -68,7 +68,7 @@ const StaffPage = () => {
           footer={<>
             <button onClick={() => setForm(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">{t('Cancel')}</button>
             <button onClick={save} disabled={busy || !form.name}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 disabled:opacity-50">
+              className="erp-btn-primary px-4 py-2.5 text-xs">
               {busy ? t('Saving…') : t('Save')}
             </button>
           </>}>

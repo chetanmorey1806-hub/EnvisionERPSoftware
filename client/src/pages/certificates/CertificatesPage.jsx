@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../../components/common/Modal';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { certificateApi } from '../../api/certificateApi';
@@ -96,27 +96,18 @@ const CertificatesPage = () => {
 
   return (
     <div className="space-y-4">
-      <Breadcrumb items={[{ label: t('Academics') }, { label: t('Certificates') }]} />
-
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-extrabold text-gray-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="w-8 h-8 grid place-items-center rounded-lg bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600">
-              <Icons.certificates size={18} />
-            </span>
-            {t('Certificates')}
-          </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {t('Issued only when the course is finished, the marks are in and the fees are clear.')}
-          </p>
-        </div>
-        {can('certificates.issue') && (
+      <PageHero
+        tone="cyan"
+        icon={Icons.certificates}
+        title="Certificates"
+        subtitle="Issued only when the course is finished, the marks are in and the fees are clear."
+        action={can('certificates.issue') && (
           <button onClick={() => { setIssuing({ student_id: '', remarks: '', override_reason: '' }); setCheck(null); }}
-            className="px-3 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white">
-            + {t('Issue certificate')}
+            className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> {t('Issue certificate')}
           </button>
         )}
-      </div>
+      />
 
       {err && <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-xs font-semibold text-rose-700">{err}</div>}
       {note && <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-xs font-semibold text-emerald-700">{note}</div>}

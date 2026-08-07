@@ -1,10 +1,13 @@
 import React from 'react';
+import { StatCard, StatGrid } from '../common/PageShell';
+import { Icons } from '../common/icons';
 
+/* NOTE: placeholder figures — not yet wired to the follow-up API. */
 const FollowupDashboard = () => (
-  <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border dark:border-slate-800 text-xs flex justify-between mb-6">
-    <div><span className="text-gray-400 block">High Priority Actions</span><b className="text-sm text-amber-600">18 Pending</b></div>
-    <div><span className="text-gray-400 block">Conversion Yield Metrics</span><b className="text-sm text-emerald-600">24.2% Ratio</b></div>
-  </div>
+  <StatGrid cols={3}>
+    <StatCard icon={Icons.clock} tone="amber" value="18" label="High-priority actions" sub="Due now" />
+    <StatCard icon={Icons.reports} tone="green" value="24.2%" label="Conversion yield" sub="Leads that became admissions" />
+  </StatGrid>
 );
 
 export default FollowupDashboard;

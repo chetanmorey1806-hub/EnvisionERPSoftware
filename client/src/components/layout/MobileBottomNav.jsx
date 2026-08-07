@@ -31,8 +31,8 @@ const MobileBottomNav = () => {
 
   return (
     <nav
-      className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md
-                 border-t border-gray-200 dark:border-slate-800 pb-safe"
+      className="md:hidden fixed bottom-2 inset-x-2 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md
+                 border border-gray-100 dark:border-slate-800 rounded-2xl shadow-lg pb-safe overflow-hidden"
       aria-label="Primary"
     >
       <ul className="flex items-stretch">
@@ -44,7 +44,7 @@ const MobileBottomNav = () => {
                 to={item.path}
                 aria-current={active ? 'page' : undefined}
                 className={`flex flex-col items-center justify-center gap-0.5 min-h-14 py-1.5 transition-colors press ${
-                  active ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-slate-500'
+                  active ? 'text-brand-600 dark:text-brand-400' : 'text-gray-400 dark:text-slate-500'
                 }`}
               >
                 <item.icon
@@ -56,7 +56,7 @@ const MobileBottomNav = () => {
                 <span className="text-[10px] font-bold tracking-tight">{t(item.name)}</span>
                 <span
                   className={`h-0.5 w-6 rounded-full transition-all ${
-                    active ? 'bg-blue-600 dark:bg-blue-400' : 'bg-transparent'
+                    active ? 'bg-brand-600 dark:bg-brand-400' : 'bg-transparent'
                   }`}
                 />
               </Link>

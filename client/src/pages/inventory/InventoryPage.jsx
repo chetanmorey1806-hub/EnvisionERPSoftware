@@ -38,12 +38,12 @@ const InventoryPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader crumbs={['Resources', 'Inventory']} icon={<Icons.inventory size={18} />} title="Inventory"
+      <PageHeader tone="cyan" icon={<Icons.inventory size={18} />} title="Inventory"
         subtitle="Lab hardware, licences and consumables. Anything at or below its reorder level is flagged."
         action={can('inventory.create') && (
           <button onClick={() => setForm({ name: '', sku: '', category: '', quantity: 0, unit: 'unit', reorder_level: 0 })}
-            className="px-3 py-2 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900">
-            + {t('Add item')}
+            className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> {t('Add item')}
           </button>
         )} />
       <Flash error={L.error} notice={L.notice} />
@@ -84,7 +84,7 @@ const InventoryPage = () => {
           footer={<>
             <button onClick={() => setForm(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">{t('Cancel')}</button>
             <button onClick={save} disabled={busy || !form.name}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 disabled:opacity-50">
+              className="erp-btn-primary px-4 py-2.5 text-xs">
               {busy ? t('Saving…') : t('Save')}
             </button>
           </>}>
@@ -105,7 +105,7 @@ const InventoryPage = () => {
           footer={<>
             <button onClick={() => setStock(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">{t('Cancel')}</button>
             <button onClick={move} disabled={busy || !(Number(stock.quantity) > 0)}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 disabled:opacity-50">
+              className="erp-btn-primary px-4 py-2.5 text-xs">
               {busy ? t('Saving…') : t('Save')}
             </button>
           </>}>

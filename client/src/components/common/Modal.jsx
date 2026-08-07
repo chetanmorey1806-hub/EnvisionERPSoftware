@@ -39,7 +39,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'lg' }) => {
       <div
         className={`relative z-10 w-full ${widths[size]} bg-white dark:bg-slate-900
           border border-gray-100 dark:border-slate-800 shadow-2xl
-          rounded-t-2xl sm:rounded-2xl
+          rounded-t-3xl sm:rounded-2xl
           max-h-[92vh] sm:max-h-[88vh] flex flex-col
           animate-sheet-up sm:animate-scale-up`}
       >
@@ -49,11 +49,11 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'lg' }) => {
         </div>
 
         <div className="px-5 py-3.5 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center shrink-0">
-          <h3 className="text-sm font-bold text-gray-900 dark:text-slate-100">{typeof title === 'string' ? t(title) : title}</h3>
+          <h3 className="text-sm font-bold text-gray-900 dark:text-slate-100 truncate pr-2">{typeof title === 'string' ? t(title) : title}</h3>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="h-8 w-8 grid place-items-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 transition press"
+            className="erp-icon-btn h-8 w-8"
           >
             ✕
           </button>

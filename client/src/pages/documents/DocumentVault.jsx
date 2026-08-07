@@ -8,6 +8,7 @@ import UploadModal from './UploadModal';
 import FolderModal from './FolderModal';
 import ShareModal from './ShareModal';
 import { FileIcon, formatSize } from './fileKind';
+import { PageHero } from '../../components/common/PageShell';
 
 const TABS = [
   { key: 'all', label: 'All Files', icon: Icons.folder, adminOnly: true },
@@ -188,52 +189,36 @@ const DocumentVault = () => {
 
   return (
     <div className="space-y-5">
-      {/* ---- header ---- */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="grid place-items-center h-11 w-11 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
-            <Icons.admissions size={20} />
-          </span>
-          <div>
-            <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">{t('Document Vault')}</h1>
-            <p className="text-xs text-gray-500">
-              {t('Your private documents — upload, organize, tag & share securely.')}
-            </p>
+      <PageHero
+        tone="brand"
+        icon={Icons.folder}
+        title="Document Vault"
+        subtitle="Your private documents — upload, organize, tag & share securely."
+        action={can('documents.create') && (
+          <div className="flex gap-2">
+            <button onClick={() => setFolderModal({ mode: 'new' })} className="erp-hero-btn px-4 py-2.5 min-h-11">
+              <Icons.plus size={15} aria-hidden="true" /> {t('New Folder')}
+            </button>
+            <button
+              onClick={() => setUpload(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-[11px] font-bold rounded-xl bg-white text-gray-900 shadow-sm hover:bg-white/90 press"
+            >
+              <Icons.upload size={15} aria-hidden="true" /> {t('Upload')}
+            </button>
           </div>
-        </div>
-
-        <div className="flex gap-2">
-          {can('documents.create') && (
-            <>
-              <button onClick={() => setFolderModal({ mode: 'new' })}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-xs font-bold rounded-lg
-                           bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-200 transition press">
-                <Icons.plus size={15} /> {t('New Folder')}
-              </button>
-              <button onClick={() => setUpload(true)}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-xs font-bold rounded-lg
-                           bg-blue-600 text-white hover:bg-blue-700 transition shadow-sm press">
-                <Icons.upload size={15} /> {t('Upload')}
-              </button>
-            </>
-          )}
-        </div>
-      </div>
+        )}
+      />
 
       {/* ---- tabs ---- */}
-      <div className="flex items-center gap-1 border-b border-gray-200 dark:border-slate-800 overflow-x-auto">
+      <div className="erp-tabs">
         {visibleTabs.map((x) => {
           const TabIcon = x.icon;
           const on = tab === x.key;
           return (
             <button key={x.key}
               onClick={() => { setTab(x.key); setFolderId(null); setPage(1); clearFilters(); }}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold whitespace-nowrap border-b-2 transition ${
-                on
-                  ? 'text-blue-600 border-blue-600 dark:text-blue-400 dark:border-blue-400'
-                  : 'text-gray-500 dark:text-slate-400 border-transparent hover:text-gray-800 dark:hover:text-slate-200'
-              }`}>
-              <TabIcon size={15} /> {t(x.label)}
+              className={`erp-tab ${on ? 'erp-tab-active' : ''}`}>
+              <TabIcon size={15} aria-hidden="true" /> {t(x.label)}
             </button>
           );
         })}
@@ -258,7 +243,7 @@ const DocumentVault = () => {
               <button key={c.value} onClick={() => { setType(c.value); setPage(1); }}
                 className={`px-3.5 py-2 min-h-9 rounded-lg text-[11px] font-bold transition press ${
                   type === c.value
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-brand-600 text-white'
                     : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-gray-200'
                 }`}>
                 {t(c.label)}
@@ -269,7 +254,7 @@ const DocumentVault = () => {
           {isAdmin && tab === 'all' && (
             <select value={ownerId} onChange={(e) => { setOwnerId(e.target.value); setPage(1); }}
               className="px-3 py-2 min-h-9 text-xs rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700
-                         text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none lg:w-44">
+                         text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/40 outline-none lg:w-44">
               <option value="">{t('All users')}</option>
               {owners.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
             </select>
@@ -282,7 +267,7 @@ const DocumentVault = () => {
               placeholder={t('Search folders & files by name…')}
               className="w-full pl-9 pr-8 py-2 min-h-9 text-xs rounded-lg bg-white dark:bg-slate-900
                          border border-gray-200 dark:border-slate-700 text-gray-800 dark:text-slate-100
-                         focus:ring-2 focus:ring-blue-500/40 outline-none"
+                         focus:ring-2 focus:ring-brand-500/40 outline-none"
             />
           </div>
         </div>
@@ -306,7 +291,7 @@ const DocumentVault = () => {
           ))}
           {activeFilters > 0 && (
             <button onClick={clearFilters}
-              className="text-[11px] font-bold text-blue-600 hover:underline press">
+              className="text-[11px] font-bold text-brand-600 hover:underline press">
               {t('Clear')} ({activeFilters})
             </button>
           )}
@@ -316,7 +301,7 @@ const DocumentVault = () => {
       {/* ---- breadcrumb (inside a folder) ---- */}
       {tab === 'mine' && folderId && (
         <div className="flex items-center gap-1.5 text-xs">
-          <button onClick={() => setFolderId(null)} className="font-semibold text-blue-600 hover:underline press">
+          <button onClick={() => setFolderId(null)} className="font-semibold text-brand-600 hover:underline press">
             {t('My Files')}
           </button>
           {trail.map((f, i) => (
@@ -325,7 +310,7 @@ const DocumentVault = () => {
               {i === trail.length - 1 ? (
                 <span className="font-bold text-gray-700 dark:text-slate-200">{f.name}</span>
               ) : (
-                <button onClick={() => setFolderId(f.id)} className="font-semibold text-blue-600 hover:underline press">
+                <button onClick={() => setFolderId(f.id)} className="font-semibold text-brand-600 hover:underline press">
                   {f.name}
                 </button>
               )}
@@ -356,8 +341,8 @@ const DocumentVault = () => {
           {/* folders */}
           {folders.map((f, i) => (
             <div key={`fo-${f.id}`} style={{ '--i': i }}
-              className="group relative p-3 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800
-                         hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-md transition cursor-pointer">
+              className="group relative p-3 rounded-xl erp-card
+                         hover:border-brand-300 dark:hover:border-brand-800 hover:shadow-md transition cursor-pointer">
               <button onClick={() => openFolder(f)} className="w-full flex items-center gap-2.5 text-left min-w-0">
                 <Icons.folder size={22} className="shrink-0 text-amber-500" />
                 <span className="min-w-0">
@@ -370,16 +355,16 @@ const DocumentVault = () => {
               </button>
 
               <div className="absolute right-1.5 top-1.5 hidden group-hover:flex items-center gap-0.5
-                              bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-100 dark:border-slate-800">
+                              erp-card">
                 {can('documents.share') && tab === 'mine' && (
                   <button onClick={() => setShareTarget({ itemType: 'folder', itemId: f.id, name: f.name })}
-                    title={t('Share')} className="p-1.5 rounded text-gray-400 hover:text-blue-600 press">
+                    title={t('Share')} className="p-1.5 rounded text-gray-400 hover:text-brand-600 press">
                     <Icons.share size={13} />
                   </button>
                 )}
                 {tab === 'mine' && can('documents.update') && (
                   <button onClick={() => setFolderModal({ mode: 'rename', folder: f })}
-                    title={t('Rename')} className="p-1.5 rounded text-gray-400 hover:text-blue-600 press">
+                    title={t('Rename')} className="p-1.5 rounded text-gray-400 hover:text-brand-600 press">
                     <Icons.edit size={13} />
                   </button>
                 )}
@@ -396,8 +381,8 @@ const DocumentVault = () => {
           {/* files */}
           {files.map((f, i) => (
             <div key={`fi-${f.id}`} style={{ '--i': folders.length + i }}
-              className="group relative p-3 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800
-                         hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-md transition">
+              className="group relative p-3 rounded-xl erp-card
+                         hover:border-brand-300 dark:hover:border-brand-800 hover:shadow-md transition">
               <button onClick={() => doPreview(f)} className="w-full flex items-center gap-2.5 text-left min-w-0">
                 <FileIcon ext={f.ext} />
                 <span className="min-w-0">
@@ -411,7 +396,7 @@ const DocumentVault = () => {
               {f.tags?.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1">
                   {f.tags.slice(0, 2).map((x) => (
-                    <span key={x} className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300">
+                    <span key={x} className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-brand-50 dark:bg-brand-950/40 text-brand-700 dark:text-brand-300">
                       {x}
                     </span>
                   ))}
@@ -420,14 +405,14 @@ const DocumentVault = () => {
               )}
 
               <div className="absolute right-1.5 top-1.5 hidden group-hover:flex items-center gap-0.5
-                              bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-100 dark:border-slate-800">
+                              erp-card">
                 <button onClick={() => doDownload(f)} title={t('Download')}
-                  className="p-1.5 rounded text-gray-400 hover:text-blue-600 press">
+                  className="p-1.5 rounded text-gray-400 hover:text-brand-600 press">
                   <Icons.download size={13} />
                 </button>
                 {can('documents.share') && tab === 'mine' && (
                   <button onClick={() => setShareTarget({ itemType: 'file', itemId: f.id, name: f.name })}
-                    title={t('Share')} className="p-1.5 rounded text-gray-400 hover:text-blue-600 press">
+                    title={t('Share')} className="p-1.5 rounded text-gray-400 hover:text-brand-600 press">
                     <Icons.share size={13} />
                   </button>
                 )}
@@ -444,7 +429,7 @@ const DocumentVault = () => {
           {/* shares (Shared with me / by me) */}
           {shares.map((s, i) => (
             <div key={`sh-${s.share_id}`} style={{ '--i': i }}
-              className="group relative p-3 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800
+              className="group relative p-3 rounded-xl erp-card
                          hover:shadow-md transition">
               <div className="flex items-center gap-2.5 min-w-0">
                 {s.item_type === 'folder'
@@ -467,7 +452,7 @@ const DocumentVault = () => {
                 </span>
                 {tab === 'withMe' && s.item_type === 'file' && (
                   <button onClick={() => doDownload({ id: s.item_id, name: s.item_name, file_name: s.item_name })}
-                    className="text-[10px] font-bold text-blue-600 hover:underline press">
+                    className="text-[10px] font-bold text-brand-600 hover:underline press">
                     {t('Open')}
                   </button>
                 )}
@@ -486,7 +471,7 @@ const DocumentVault = () => {
       {/* ---- footer / pagination ---- */}
       {!loading && total > 0 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-xl
-                        bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+                        erp-card">
           <p className="text-xs text-gray-500">
             {t('Showing')} <b>{showing.from}–{showing.to}</b> {t('of')} <b>{total}</b>
           </p>
@@ -504,7 +489,7 @@ const DocumentVault = () => {
                   className="p-1.5 rounded-lg border border-gray-200 dark:border-slate-700 disabled:opacity-40 press">
                   <Icons.chevronDown size={14} className="rotate-90" />
                 </button>
-                <span className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold">{page}</span>
+                <span className="px-3 py-1.5 rounded-lg bg-brand-600 text-white text-xs font-bold">{page}</span>
                 <span className="text-xs text-gray-400">/ {pages}</span>
                 <button disabled={page >= pages} onClick={() => setPage((p) => p + 1)}
                   className="p-1.5 rounded-lg border border-gray-200 dark:border-slate-700 disabled:opacity-40 press">

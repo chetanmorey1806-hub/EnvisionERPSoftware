@@ -9,7 +9,7 @@ const FollowupPage = () => {
 
   return (
     <div className="space-y-4">
-      <PageHeader crumbs={['Admissions', 'Follow-ups']} icon={<Icons.followups size={18} />} title="Follow-ups"
+      <PageHeader tone="amber" icon={<Icons.followups size={18} />} title="Follow-ups"
         subtitle="Callbacks that are due. Every one belongs to an enquiry — raise them from the Enquiries page." />
       <Flash error={L.error} notice={L.notice} />
 

@@ -7,8 +7,8 @@ const Select = ({ label, name, value, onChange, options, error, className = '' }
       name={name}
       value={value}
       onChange={onChange}
-      className={`px-3 py-2.5 min-h-11 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition ${
-        error ? 'border-rose-500 focus:ring-rose-400' : 'border-gray-300 dark:border-slate-700 focus:ring-blue-500/30'
+      className={`px-3 py-2.5 min-h-11 border rounded-xl shadow-2xs focus:outline-none focus:ring-2 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition ${
+        error ? 'border-rose-400 focus:ring-rose-300' : 'border-gray-200 dark:border-slate-700 focus:ring-brand-500/30 focus:border-brand-500'
       }`}
     >
       <option value="">Select Option</option>

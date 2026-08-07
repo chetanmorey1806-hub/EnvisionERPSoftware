@@ -1,8 +1,9 @@
 import React from 'react';
+import { Icons } from './icons';
 
 const NoData = ({ message = 'No records match the current filters.' }) => (
-  <div className="p-4 w-full text-center text-xs text-gray-400 dark:text-slate-500 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-lg">
-    <span className="mr-1">🗂️</span> {message}
+  <div className="erp-card p-5 w-full flex items-center justify-center gap-2 text-xs text-gray-400 dark:text-slate-500">
+    <Icons.empty size={15} strokeWidth={1.8} aria-hidden="true" /> {message}
   </div>
 );
 

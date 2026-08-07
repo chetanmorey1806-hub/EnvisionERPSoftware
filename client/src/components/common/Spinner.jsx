@@ -10,7 +10,7 @@ const Spinner = ({ size = 'sm', className = '' }) => {
     <div
       role="status"
       aria-label="Loading"
-      className={`animate-spin rounded-full border-gray-200 dark:border-slate-700 border-t-blue-600 dark:border-t-blue-400 ${dimensions[size]} ${className}`}
+      className={`animate-spin rounded-full border-gray-200 dark:border-slate-700 border-t-brand-600 dark:border-t-brand-400 ${dimensions[size]} ${className}`}
     />
   );
 };

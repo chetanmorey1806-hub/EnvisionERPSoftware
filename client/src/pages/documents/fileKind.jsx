@@ -4,7 +4,7 @@ import { Icons } from '../../components/common/icons';
 /** Extension → icon + colour, so a PDF reads differently from a spreadsheet. */
 const KINDS = [
   { exts: ['pdf'], icon: Icons.admissions, cls: 'text-rose-500' },
-  { exts: ['doc', 'docx', 'odt', 'rtf', 'txt', 'md'], icon: Icons.admissions, cls: 'text-blue-500' },
+  { exts: ['doc', 'docx', 'odt', 'rtf', 'txt', 'md'], icon: Icons.admissions, cls: 'text-brand-500' },
   { exts: ['xls', 'xlsx', 'csv', 'ods'], icon: Icons.reports, cls: 'text-emerald-500' },
   { exts: ['ppt', 'pptx', 'odp'], icon: Icons.faculty, cls: 'text-orange-500' },
   { exts: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp'], icon: Icons.view, cls: 'text-violet-500' },

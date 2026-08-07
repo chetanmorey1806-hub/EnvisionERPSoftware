@@ -32,7 +32,7 @@ const NotificationMenu = () => {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setIsOpen((o) => !o)}
-        className="relative p-2 bg-gray-100 dark:bg-slate-800 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+        className="erp-icon-btn relative"
         aria-label="Notifications"
       >
         <Icons.bell size={18} strokeWidth={2} aria-hidden="true" />
@@ -44,8 +44,8 @@ const NotificationMenu = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-xl z-50 overflow-hidden animate-scale-up origin-top-right">
-          <div className="px-4 py-3 bg-gray-50 dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
+        <div className="absolute right-0 mt-2 w-80 erp-card shadow-xl z-50 overflow-hidden animate-scale-up origin-top-right">
+          <div className="px-4 py-3 bg-gray-50/70 dark:bg-slate-800/40 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-sm font-bold text-gray-700 dark:text-slate-200">Notifications</span>
               <span
@@ -59,7 +59,7 @@ const NotificationMenu = () => {
               </span>
             </div>
             {unread > 0 && (
-              <button onClick={markAllRead} className="text-[11px] text-blue-600 hover:underline font-medium">
+              <button onClick={markAllRead} className="text-[11px] text-brand-600 hover:underline font-semibold">
                 Mark all read
               </button>
             )}
@@ -77,7 +77,7 @@ const NotificationMenu = () => {
                   key={n.id}
                   onClick={() => !n.is_read && markRead(n.id)}
                   className={`w-full text-left p-3 flex gap-3 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors ${
-                    n.is_read ? '' : 'bg-blue-50/40 dark:bg-blue-900/10'
+                    n.is_read ? '' : 'bg-brand-50/50 dark:bg-brand-500/10'
                   }`}
                 >
                   {(() => {
@@ -91,7 +91,7 @@ const NotificationMenu = () => {
                     {n.message && <p className="text-[11px] text-gray-500 dark:text-slate-500 mt-0.5 line-clamp-2">{n.message}</p>}
                     <p className="text-[10px] text-gray-400 mt-1">{timeAgo(n.created_at)}</p>
                   </div>
-                  {!n.is_read && <span className="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0 mt-1" />}
+                  {!n.is_read && <span className="h-2 w-2 rounded-full bg-brand-500 shrink-0 mt-1" />}
                 </button>
               ))
             )}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Breadcrumb from '../../components/common/Breadcrumb';
 import { Icons } from '../../components/common/icons';
 import { Field, Section, FormHeader, FormError, FormSkeleton, inputCls } from '../../components/form/FormKit';
 import { useT } from '../../context/LanguageContext';
@@ -65,8 +64,6 @@ const TrainerForm = () => {
 
   return (
     <form onSubmit={save} className="space-y-5">
-      <Breadcrumb items={[{ label: t('Master') }, { label: t('Trainers'), path: '/trainers' }, { label: isEdit ? t('Edit') : t('New') }]} />
-
       <FormHeader
         title={isEdit ? 'Edit Trainer' : 'New Trainer'}
         subtitle={isEdit

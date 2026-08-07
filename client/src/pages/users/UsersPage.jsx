@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../../components/common/Modal';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { userApi } from '../../api/userApi';
@@ -26,7 +26,7 @@ const ROLE_TONE = {
   branch_head: 'bg-purple-100 text-purple-700 dark:bg-purple-950/50 dark:text-purple-400',
   coordinator: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400',
   faculty: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400',
-  placement: 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400',
+  placement: 'bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400',
   registrar: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
   staff: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
   student: 'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400',
@@ -138,28 +138,19 @@ const UsersPage = () => {
 
   return (
     <div className="space-y-4">
-      <Breadcrumb items={[{ label: t('Settings') }, { label: t('User Management') }]} />
-
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-extrabold text-gray-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="w-8 h-8 grid place-items-center rounded-lg bg-rose-100 dark:bg-rose-950/50 text-rose-600">
-              <Icons.users size={18} />
-            </span>
-            {t('User Management')}
-          </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {t('Create the accounts for trainers, the placement team, staff and students — and control who can sign in.')}
-          </p>
-        </div>
-        {can('users.create') && (
+      <PageHero
+        tone="slate"
+        icon={Icons.users}
+        title="User Management"
+        subtitle="Create the accounts for trainers, the placement team, staff and students — and control who can sign in."
+        action={can('users.create') && (
           <button
             onClick={() => setForm({ name: '', email: '', password: '', phone: '', role: 'faculty', status: 'active' })}
-            className="px-3 py-2 text-xs font-bold rounded-lg bg-rose-600 text-white">
-            + {t('Add user')}
+            className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> {t('Add user')}
           </button>
         )}
-      </div>
+      />
 
       {err && <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-xs font-semibold text-rose-700">{err}</div>}
       {note && <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-xs font-semibold text-emerald-700">{note}</div>}

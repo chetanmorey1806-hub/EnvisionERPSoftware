@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import Modal from '../../components/common/Modal';
 import EmptyState from '../../components/common/EmptyState';
 import SearchFilter from '../../components/common/SearchFilter';
@@ -11,7 +11,7 @@ import ContactActions from '../../components/common/ContactActions';
 import ShareByEmail from '../../components/common/ShareByEmail';
 
 const KINDS = [
-  { value: 'classwork', label: 'Classwork', icon: Icons.courses, tone: 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400' },
+  { value: 'classwork', label: 'Classwork', icon: Icons.courses, tone: 'bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:text-brand-400' },
   { value: 'homework', label: 'Homework', icon: Icons.admissions, tone: 'bg-violet-100 text-violet-700 dark:bg-violet-950/50 dark:text-violet-400' },
   { value: 'lab', label: 'Lab', icon: Icons.exams, tone: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400' },
   { value: 'material', label: 'Material', icon: Icons.library, tone: 'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-300' },
@@ -21,7 +21,7 @@ const kindOf = (v) => KINDS.find((k) => k.value === v) || KINDS[3];
 const EMPTY = { batch_id: '', title: '', type: 'classwork', instructions: '', duration_minutes: '', due_date: '', file: null };
 
 const inputCls =
-  'w-full px-3 py-2.5 min-h-11 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none transition';
+  'w-full px-3 py-2.5 min-h-11 text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/40 outline-none transition';
 
 const Field = ({ label, required, children }) => (
   <label className="block">
@@ -113,22 +113,17 @@ const ClassroomPage = () => {
 
   return (
     <div className="space-y-5">
-      <Breadcrumb items={[{ label: 'Academics' }, { label: 'Classroom' }]} />
-
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">Classroom</h1>
-          <p className="text-xs text-gray-500">Publish classwork and homework to your batches — students are notified instantly.</p>
-        </div>
-        {can('classroom.create') && (
-          <button
-            onClick={() => setForm({ ...EMPTY })}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-xs font-bold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition shadow-sm press"
-          >
-            <Icons.plus size={15} /> Publish work
+      <PageHero
+        tone="violet"
+        icon={Icons.courses}
+        title="Classroom"
+        subtitle="Publish classwork and homework to your batches — students are notified instantly."
+        action={can('classroom.create') && (
+          <button onClick={() => setForm({ ...EMPTY })} className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> Publish work
           </button>
         )}
-      </div>
+      />
 
       {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>}
       {notice && <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium">✓ {notice}</div>}
@@ -164,7 +159,7 @@ const ClassroomPage = () => {
             const overdue = isOverdue(i.due_date);
             return (
               <article key={i.id} style={{ '--i': idx }}
-                className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-xs hover-lift">
+                className="p-4 rounded-xl erp-card shadow-xs hover-lift">
                 <div className="flex items-start justify-between gap-2">
                   <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${k.tone}`}>
                     <K size={11} /> {k.label}
@@ -194,7 +189,7 @@ const ClassroomPage = () => {
 
                 {i.file_url && (
                   <a href={i.file_url} target="_blank" rel="noreferrer"
-                    className="mt-3 flex items-center gap-1.5 text-[11px] font-bold text-blue-600 hover:underline">
+                    className="mt-3 flex items-center gap-1.5 text-[11px] font-bold text-brand-600 hover:underline">
                     <Icons.download size={13} /> {i.file_name} ({i.size_kb} KB)
                   </a>
                 )}
@@ -225,7 +220,7 @@ const ClassroomPage = () => {
                     <p className="text-[10px] text-gray-400 font-mono truncate">{s.student_uid}</p>
                     {s.file_url ? (
                       <a href={s.file_url} target="_blank" rel="noreferrer"
-                        className="text-[11px] font-semibold text-blue-600 hover:underline inline-flex items-center gap-1 mt-0.5">
+                        className="text-[11px] font-semibold text-brand-600 hover:underline inline-flex items-center gap-1 mt-0.5">
                         <Icons.download size={12} /> {s.file_name} ({s.size_kb} KB)
                       </a>
                     ) : <p className="text-[11px] text-gray-400 italic">No file — note only</p>}
@@ -234,7 +229,7 @@ const ClassroomPage = () => {
 
                   <span className={`shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
                     s.status === 'late' ? 'bg-amber-100 text-amber-700'
-                      : s.status === 'graded' ? 'bg-blue-100 text-blue-700'
+                      : s.status === 'graded' ? 'bg-brand-100 text-brand-700'
                       : 'bg-emerald-100 text-emerald-700'}`}>
                     {s.grade ? `Grade ${s.grade}` : s.status}
                   </span>
@@ -245,7 +240,7 @@ const ClassroomPage = () => {
 
                   {can('classroom.update') && (
                     <button onClick={() => gradeSub(s)}
-                      className="shrink-0 px-3 py-2 rounded-lg text-[11px] font-bold bg-blue-600 text-white press">
+                      className="shrink-0 px-3 py-2 rounded-lg text-[11px] font-bold bg-brand-600 text-white press">
                       Grade
                     </button>
                   )}
@@ -273,7 +268,7 @@ const ClassroomPage = () => {
           footer={<>
             <button onClick={() => setForm(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">Cancel</button>
             <button onClick={publish} disabled={saving || !form.batch_id || !form.title}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50">
+              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50">
               {saving ? 'Publishing…' : 'Publish'}
             </button>
           </>}
@@ -312,7 +307,7 @@ const ClassroomPage = () => {
             <div className="sm:col-span-2">
               <Field label="Attachment (optional)">
                 <input type="file" onChange={(e) => setForm({ ...form, file: e.target.files[0] })}
-                  className="text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700" />
+                  className="text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-50 file:text-brand-700" />
               </Field>
             </div>
           </div>

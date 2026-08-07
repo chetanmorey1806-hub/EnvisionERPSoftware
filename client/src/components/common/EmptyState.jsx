@@ -11,7 +11,7 @@ const EmptyState = ({
 }) => {
   const { t } = useT();
   return (
-  <div className="w-full text-center py-14 px-4 rounded-xl border-2 border-dashed border-gray-200 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/40 animate-fade-up">
+  <div className="w-full text-center py-14 px-4 rounded-2xl border-2 border-dashed border-gray-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/40 animate-fade-up">
     <Icon size={40} strokeWidth={1.5} className="mx-auto mb-3 text-gray-300 dark:text-slate-700" aria-hidden="true" />
     <h3 className="text-sm font-bold text-gray-800 dark:text-slate-100 mb-1">{t(title)}</h3>
     {description && (
@@ -20,7 +20,7 @@ const EmptyState = ({
     {actionLabel && onAction && (
       <button
         onClick={onAction}
-        className="inline-flex items-center px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm transition press"
+        className="erp-btn-primary px-4 py-2 text-xs"
       >
         {t(actionLabel)}
       </button>

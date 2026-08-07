@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import DataTable from '../../components/common/DataTable';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import SearchFilter from '../../components/common/SearchFilter';
 import { Icons } from '../../components/common/icons';
 import { facultyApi } from '../../api/facultyApi';
@@ -67,22 +67,17 @@ const FacultyPage = () => {
 
   return (
     <div className="space-y-5">
-      <Breadcrumb items={[{ label: t('Master') }, { label: t('Trainers') }]} />
-
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">{t('Trainers')}</h1>
-          <p className="text-xs text-gray-500">
-            {t('Everyone who teaches. Assign them to batches from the batch form.')}
-          </p>
-        </div>
-        {can('faculty.create') && (
-          <Link to="/trainers/new"
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-11 text-xs font-bold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition shadow-sm press">
-            <Icons.plus size={15} /> {t('Add Trainer')}
+      <PageHero
+        tone="brand"
+        icon={Icons.faculty}
+        title="Trainers"
+        subtitle="Everyone who teaches. Assign them to batches from the batch form."
+        action={can('faculty.create') && (
+          <Link to="/trainers/new" className="erp-hero-btn px-4 py-2.5 min-h-11">
+            <Icons.plus size={15} aria-hidden="true" /> {t('Add Trainer')}
           </Link>
         )}
-      </div>
+      />
 
       {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>}
 
@@ -105,7 +100,7 @@ const FacultyPage = () => {
           <button
             onClick={() => navigate(`/trainers/${row.id}/edit`)}
             aria-label={`${t('Edit')} ${row.name}`}
-            className="p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition press"
+            className="p-2 rounded-lg text-gray-400 hover:text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/30 transition press"
           >
             <Icons.edit size={15} />
           </button>

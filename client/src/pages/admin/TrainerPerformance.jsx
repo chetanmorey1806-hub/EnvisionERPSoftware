@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import Modal from '../../components/common/Modal';
 import EmptyState from '../../components/common/EmptyState';
 import { Icons } from '../../components/common/icons';
@@ -79,14 +79,12 @@ const TrainerPerformance = () => {
 
   return (
     <div className="space-y-5">
-      <Breadcrumb items={[{ label: 'Administration' }, { label: 'Trainer Performance' }]} />
-
-      <div>
-        <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">Trainer Performance &amp; Communications</h1>
-        <p className="text-xs text-gray-500">
-          Anonymous student ratings — trainers cannot see this page. Ratings go straight to the admin.
-        </p>
-      </div>
+      <PageHero
+        tone="green"
+        icon={Icons.star}
+        title="Trainer Performance & Communications"
+        subtitle="Anonymous student ratings — trainers cannot see this page. Ratings go straight to the admin."
+      />
 
       {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>}
       {notice && <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium">✓ {notice}</div>}
@@ -98,16 +96,16 @@ const TrainerPerformance = () => {
           {TRIGGERS.map((t) => (
             <button key={t.key} onClick={() => trigger(t.key, t.fn)} disabled={!!busy} title={t.hint}
               className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-gray-50 dark:bg-slate-800/60 hover:bg-gray-100 dark:hover:bg-slate-800 transition press disabled:opacity-50">
-              <t.icon size={18} className="text-blue-600" />
+              <t.icon size={18} className="text-brand-600" />
               <span className="text-[11px] font-bold text-gray-700 dark:text-slate-300 text-center">
                 {busy === t.key ? 'Sending…' : t.label}
               </span>
             </button>
           ))}
           <button onClick={() => setBroadcast({ subject: '', message: '', audience: 'active' })} disabled={!!busy}
-            className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 transition press">
-            <Icons.mail size={18} className="text-blue-600" />
-            <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300">Broadcast</span>
+            className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-brand-50 dark:bg-brand-950/40 hover:bg-brand-100 transition press">
+            <Icons.mail size={18} className="text-brand-600" />
+            <span className="text-[11px] font-bold text-brand-700 dark:text-brand-300">Broadcast</span>
           </button>
         </div>
       </section>
@@ -151,7 +149,7 @@ const TrainerPerformance = () => {
               <div className="mt-3 pt-3 border-t border-gray-50 dark:border-slate-800 flex items-center justify-between text-[11px] text-gray-500">
                 <span>{t.active_batches} batches · {t.students_taught} students · {t.responses} responses</span>
                 <button onClick={() => openComments(t)} disabled={!t.responses}
-                  className="font-bold text-blue-600 hover:underline disabled:opacity-40 disabled:no-underline">
+                  className="font-bold text-brand-600 hover:underline disabled:opacity-40 disabled:no-underline">
                   Read comments
                 </button>
               </div>
@@ -192,7 +190,7 @@ const TrainerPerformance = () => {
           footer={<>
             <button onClick={() => setBroadcast(null)} className="px-4 py-2.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-slate-800">Cancel</button>
             <button onClick={sendBroadcast} disabled={busy === 'broadcast' || !broadcast.subject || !broadcast.message}
-              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-blue-600 text-white disabled:opacity-50">
+              className="px-4 py-2.5 text-xs font-bold rounded-lg bg-brand-600 text-white disabled:opacity-50">
               {busy === 'broadcast' ? 'Sending…' : 'Send broadcast'}
             </button>
           </>}>

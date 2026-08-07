@@ -44,11 +44,11 @@ const SearchFilter = ({
     (chips?.value ? 1 : 0) + selects.filter((s) => s.value).length + (value ? 1 : 0);
 
   const inputCls =
-    'w-full text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg ' +
-    'text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none transition';
+    'w-full text-xs bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xs ' +
+    'text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition';
 
   return (
-    <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-gray-100 dark:border-slate-800 flex flex-col lg:flex-row gap-3 lg:items-center">
+    <div className="erp-card p-3 flex flex-col lg:flex-row gap-3 lg:items-center">
       {/* Search */}
       <div className="relative lg:max-w-xs w-full">
         <Icons.search
@@ -82,8 +82,8 @@ const SearchFilter = ({
             onClick={() => chips.onChange('')}
             className={`px-3 py-1.5 rounded-lg text-[11px] font-bold whitespace-nowrap transition press ${
               !chips.value
-                ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900'
-                : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-gray-200'
+                ? 'bg-brand-600 text-white shadow-sm shadow-brand-600/25'
+                : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-700'
             }`}
           >
             {t('All')}
@@ -94,8 +94,8 @@ const SearchFilter = ({
               onClick={() => chips.onChange(o.value)}
               className={`px-3 py-1.5 rounded-lg text-[11px] font-bold whitespace-nowrap transition press ${
                 chips.value === o.value
-                  ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900'
-                  : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-gray-200'
+                  ? 'bg-brand-600 text-white shadow-sm shadow-brand-600/25'
+                  : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-700'
               }`}
             >
               {t(o.label)}
@@ -132,7 +132,7 @@ const SearchFilter = ({
         {activeFilters > 0 && onClear && (
           <button
             onClick={() => { setLocal(''); onClear(); }}
-            className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:underline whitespace-nowrap press"
+            className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-600 hover:underline whitespace-nowrap press"
           >
             <Icons.filter size={12} aria-hidden="true" />
             {t('Clear')} ({activeFilters})

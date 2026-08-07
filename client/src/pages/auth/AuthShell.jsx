@@ -12,9 +12,9 @@ const AuthShell = ({ portal, title, subtitle, children, backTo = '/login' }) => 
   const grad = portal?.grad || 'from-slate-800 to-slate-900';
 
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-2 bg-white dark:bg-slate-950">
+    <div className="erp-shell min-h-screen lg:grid lg:grid-cols-2">
       {/* Brand / role panel */}
-      <aside className={`hidden lg:flex flex-col justify-between p-10 relative overflow-hidden bg-gradient-to-br ${grad}`}>
+      <aside className={`hidden lg:flex flex-col justify-between p-10 relative overflow-hidden bg-linear-to-br ${grad}`}>
         <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10 blur-3xl animate-glow" />
         <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-black/10 blur-3xl animate-glow" style={{ animationDelay: '2.5s' }} />
 
@@ -39,8 +39,8 @@ const AuthShell = ({ portal, title, subtitle, children, backTo = '/login' }) => 
       </aside>
 
       {/* Form panel */}
-      <main className="flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-linear-to-br from-slate-900 via-slate-950 to-slate-900 lg:bg-none lg:bg-white dark:lg:bg-slate-950">
-        <div className="w-full max-w-md space-y-6 bg-white dark:bg-slate-950 p-8 rounded-2xl shadow-2xl lg:shadow-none border border-slate-100 dark:border-slate-900 lg:border-0 animate-scale-up">
+      <main className="flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-6 erp-card shadow-xl p-8 animate-scale-up">
           {/* Mobile logo (brand panel is hidden < lg) */}
           <div className="lg:hidden text-center">
             <div className="inline-flex items-center justify-center rounded-xl bg-white px-4 py-3 shadow-sm">
@@ -59,7 +59,7 @@ const AuthShell = ({ portal, title, subtitle, children, backTo = '/login' }) => 
           {children}
 
           <div className="pt-2 text-center">
-            <Link to={backTo} className="inline-flex items-center gap-1 text-[11px] text-gray-400 hover:text-gray-600 dark:hover:text-slate-300">
+            <Link to={backTo} className="inline-flex items-center gap-1 text-[11px] font-semibold text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
               <Icons.chevronDown size={12} className="rotate-90" /> Choose a different portal
             </Link>
           </div>

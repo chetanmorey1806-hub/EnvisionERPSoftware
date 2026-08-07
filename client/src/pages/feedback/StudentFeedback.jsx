@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Breadcrumb from '../../components/common/Breadcrumb';
+import { PageHero } from '../../components/common/PageShell';
 import EmptyState from '../../components/common/EmptyState';
 import { Icons } from '../../components/common/icons';
 import { feedbackApi } from '../../api/adminApi';
@@ -67,13 +67,12 @@ const StudentFeedback = () => {
 
   return (
     <div className="space-y-5 max-w-2xl mx-auto">
-      <Breadcrumb items={[{ label: 'Feedback' }]} />
-      <div>
-        <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">Rate your trainer</h1>
-        <p className="text-xs text-gray-500">
-          Your response is <b>anonymous</b>. Your trainer never sees who submitted it — only the admin sees the ratings.
-        </p>
-      </div>
+      <PageHero
+        tone="violet"
+        icon={Icons.star}
+        title="Rate your trainer"
+        subtitle="Your response is anonymous. Your trainer never sees who submitted it — only the admin sees the ratings."
+      />
 
       {error && <div className="p-3 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 text-rose-600 rounded-lg text-xs">{error}</div>}
       {done && <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium">✓ {done}</div>}
@@ -88,12 +87,12 @@ const StudentFeedback = () => {
           <div className="space-y-3">
             {pending.map((p) => (
               <button key={`${p.faculty_id}-${p.batch_id}`} onClick={() => open(p)}
-                className="w-full text-left p-4 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 hover-lift flex items-center justify-between gap-3">
+                className="w-full text-left p-4 rounded-xl erp-card hover-lift flex items-center justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-gray-800 dark:text-slate-100 truncate">{p.trainer_name}</p>
                   <p className="text-[11px] text-gray-400 truncate">{p.course_name} · {p.batch_name}</p>
                 </div>
-                <span className="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold text-blue-600">
+                <span className="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold text-brand-600">
                   Rate <Icons.star size={13} />
                 </span>
               </button>
@@ -103,7 +102,7 @@ const StudentFeedback = () => {
       )}
 
       {active && (
-        <div className="p-5 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 animate-fade-up">
+        <div className="p-5 rounded-xl erp-card animate-fade-up">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-sm font-bold text-gray-800 dark:text-slate-100">{active.trainer_name}</h2>
@@ -121,10 +120,10 @@ const StudentFeedback = () => {
 
           <textarea rows={3} value={comments} onChange={(e) => setComments(e.target.value)}
             placeholder="Anything else? (optional, anonymous)"
-            className="mt-3 w-full px-3 py-2.5 text-xs border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500/40 outline-none" />
+            className="mt-3 w-full px-3 py-2.5 text-xs border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-brand-500/40 outline-none" />
 
           <button onClick={submit} disabled={busy || !complete}
-            className="mt-3 w-full py-2.5 min-h-11 rounded-lg bg-blue-600 text-white text-xs font-bold disabled:opacity-50 press">
+            className="mt-3 w-full py-2.5 min-h-11 rounded-lg bg-brand-600 text-white text-xs font-bold disabled:opacity-50 press">
             {busy ? 'Submitting…' : complete ? 'Submit anonymously' : 'Rate all four areas'}
           </button>
           <p className="text-[10px] text-gray-400 text-center mt-2">One response per trainer per cycle.</p>

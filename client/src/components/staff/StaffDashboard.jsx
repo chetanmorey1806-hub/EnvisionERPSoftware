@@ -1,10 +1,18 @@
 import React from 'react';
+import { StatCard, StatGrid } from '../common/PageShell';
+import { Icons } from '../common/icons';
 
+/*
+ * NOTE: these figures are placeholders carried over from the original stub —
+ * this strip is not yet wired to an API. Point it at the staff endpoint before
+ * anyone treats the numbers as real.
+ */
 const StaffDashboard = () => (
-  <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border dark:border-slate-800 mb-6 text-xs text-gray-600 dark:text-slate-400">
-    <h4 className="font-bold uppercase text-gray-400 tracking-wider mb-2">Staff Deployment Sectors</h4>
-    <p>Administration Desk: <b>14 FTE</b> | Finance Control Node: <b>6 FTE</b> | Operations Logistics: <b>8 FTE</b></p>
-  </div>
+  <StatGrid cols={3}>
+    <StatCard icon={Icons.staff} tone="brand" value="14" label="Administration desk" sub="Full-time equivalents" />
+    <StatCard icon={Icons.fees} tone="green" value="6" label="Finance" sub="Full-time equivalents" />
+    <StatCard icon={Icons.inventory} tone="cyan" value="8" label="Operations" sub="Full-time equivalents" />
+  </StatGrid>
 );
 
 export default StaffDashboard;

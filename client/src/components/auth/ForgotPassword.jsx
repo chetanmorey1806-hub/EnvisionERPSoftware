@@ -24,7 +24,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <p className="text-xs text-gray-500">Provide verified system tracking email parameters to deploy password reset maps.</p>
-      {message && <div className="p-3 bg-blue-50 text-blue-600 rounded-lg text-xs">{message}</div>}
+      {message && <div className="p-3 bg-brand-50 text-brand-600 rounded-lg text-xs">{message}</div>}
       <Input label="Recovery Vector Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       <Button type="submit" loading={loading} className="w-full">Request Vector Tokens</Button>
       <button type="button" onClick={onBackToLogin} className="text-xs text-gray-500 block w-full text-center hover:underline">Return to Portal Gate</button>

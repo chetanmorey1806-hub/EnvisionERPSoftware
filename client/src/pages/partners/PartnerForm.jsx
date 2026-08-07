@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Breadcrumb from '../../components/common/Breadcrumb';
 import { Icons } from '../../components/common/icons';
 import { Field, Section, FormHeader, FormError, FormSkeleton, inputCls } from '../../components/form/FormKit';
 import { useT } from '../../context/LanguageContext';
@@ -118,12 +117,6 @@ const PartnerForm = () => {
 
   return (
     <form onSubmit={save} className="space-y-5">
-      <Breadcrumb items={[
-        { label: t('Master') },
-        { label: t('Corporate Partners'), path: '/partners' },
-        { label: isEdit ? t('Edit') : t('New') },
-      ]} />
-
       <FormHeader
         title={isEdit ? 'Edit Partner' : 'New Partner'}
         subtitle="The company, its tax identity for invoicing, and the people you deal with."
@@ -173,7 +166,7 @@ const PartnerForm = () => {
             <Icons.warning size={14} className="shrink-0 mt-px" /> {mismatch}
           </div>
         )}
-        <div className="sm:col-span-2 p-3 rounded-lg bg-blue-50/60 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900 text-[11px] text-blue-800 dark:text-blue-300">
+        <div className="sm:col-span-2 p-3 rounded-lg bg-brand-50/60 dark:bg-brand-950/20 border border-brand-100 dark:border-brand-900 text-[11px] text-brand-800 dark:text-brand-300">
           {t('Both are optional — but a GST invoice cannot be raised without a valid GSTIN.')}
         </div>
       </Section>
@@ -202,7 +195,7 @@ const PartnerForm = () => {
       </Section>
 
       {/* ---- contacts ---- */}
-      <section className="bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800 p-5">
+      <section className="erp-card p-5">
         <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100 dark:border-slate-800">
           <h2 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-gray-400">
             <Icons.students size={14} /> {t('Contact people')}
@@ -234,7 +227,7 @@ const PartnerForm = () => {
                 </div>
                 <div className="mt-2.5 flex items-center justify-between">
                   <label className="inline-flex items-center gap-2 text-[11px] font-semibold text-gray-600 dark:text-slate-400 cursor-pointer">
-                    <input type="checkbox" checked={!!c.is_primary} className="h-3.5 w-3.5 rounded accent-blue-600"
+                    <input type="checkbox" checked={!!c.is_primary} className="h-3.5 w-3.5 rounded accent-brand-600"
                       onChange={(e) => setContact(i, 'is_primary', e.target.checked)} />
                     {t('Primary contact')}
                   </label>

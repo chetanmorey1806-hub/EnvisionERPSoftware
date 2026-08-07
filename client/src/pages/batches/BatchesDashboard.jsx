@@ -34,7 +34,7 @@ const BatchesDashboard = () => {
       {metrics.map((item, index) => (
         <div 
           key={index} 
-          className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800/80 rounded-xl p-5 shadow-xs flex items-center justify-between transition-all hover:border-gray-200 dark:hover:border-slate-700"
+          className="erp-card erp-card-interactive p-5 flex items-center justify-between transition-all hover:border-gray-200 dark:hover:border-slate-700"
         >
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest block">

@@ -1,14 +1,26 @@
 import React from 'react';
 import ExaminationDashboard from '../../components/examination/ExaminationDashboard';
+import { PageHero } from '../../components/common/PageShell';
+import EmptyState from '../../components/common/EmptyState';
+import { Icons } from '../../components/common/icons';
 
 const ExaminationPage = () => {
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-bold">Academic Assessment Boards</h1>
+    <div className="space-y-5">
+      <PageHero
+        tone="violet"
+        icon={Icons.exams}
+        title="Examinations"
+        subtitle="Assessment schedule, question papers and marks entry."
+      />
+
       <ExaminationDashboard />
-      <div className="bg-white dark:bg-slate-900 rounded-xl border dark:border-slate-800 text-sm">
-        No active examination blocks currently deployed onto current cycle timeline coordinates.
-      </div>
+
+      <EmptyState
+        icon={Icons.exams}
+        title="No examinations scheduled"
+        description="Nothing is on the calendar for the current cycle. Schedule an exam and it will appear here."
+      />
     </div>
   );
 };

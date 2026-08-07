@@ -63,7 +63,7 @@ const ContactActions = ({ name, phone, email, message = '', onShare, size = 'md'
         aria-label={email ? `Email ${name}` : 'No email on file'}
         title={email ? `Email ${email}` : 'No email on file'}
         className={`${btn} ${mail
-          ? 'bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950/40 dark:text-blue-400'
+          ? 'bg-brand-50 text-brand-600 hover:bg-brand-100 dark:bg-brand-950/40 dark:text-brand-400'
           : 'bg-gray-100 text-gray-300 dark:bg-slate-800 pointer-events-none'}`}
       >
         <Icons.mail size={16} />
