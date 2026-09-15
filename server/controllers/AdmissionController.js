@@ -4,6 +4,7 @@
  */
 const { pick, insert, update, findById, query } = require('../utils/crud');
 const { admissionNo } = require('../helpers/generators');
+const { nextNumber } = require('../helpers/numbering');
 const { today } = require('../helpers/dateUtils');
 const NotificationService = require('../services/NotificationService');
 const { success, created, fail } = require('../utils/response');
@@ -72,7 +73,7 @@ const AdmissionController = {
         phone: admission.phone,
         course_id: admission.course_id,
         batch_id: admission.batch_id,
-        admission_no: admissionNo(),
+        admission_no: (await nextNumber('admission')) || admissionNo(),
         admission_date: today(),
       });
       patch.student_id = studentId;

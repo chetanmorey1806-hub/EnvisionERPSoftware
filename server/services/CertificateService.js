@@ -20,6 +20,7 @@
 const { query } = require('../config/db');
 const FeeService = require('./FeeService');
 const { certificateNumber } = require('../helpers/generators');
+const { nextNumber } = require('../helpers/numbering');
 
 function httpError(message, status, extra = {}) {
   const e = new Error(message);
@@ -129,11 +130,12 @@ const CertificateService = {
       ? `[OVERRIDE] ${override_reason} — failed: ${failed.map((f) => f.key).join(', ')}${remarks ? `. ${remarks}` : ''}`
       : remarks;
 
+    const number = (await nextNumber('certificate')) || certificateNumber();
     const r = await query(
       `INSERT INTO certificates_issued
          (certificate_number, student_id, template_id, approved_by, issued_date, remarks)
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [certificateNumber(), student_id, template_id, issued_by, new Date().toISOString().slice(0, 10), note]
+      [number, student_id, template_id, issued_by, new Date().toISOString().slice(0, 10), note]
     );
     const [cert] = await query('SELECT * FROM certificates_issued WHERE id = ?', [r.insertId]);
     return { certificate: cert, already: false, overridden: !eligible };

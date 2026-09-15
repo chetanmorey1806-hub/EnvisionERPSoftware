@@ -11,6 +11,7 @@
  */
 const { query } = require('../config/db');
 const { admissionNo } = require('../helpers/generators');
+const { nextNumber } = require('../helpers/numbering');
 const { today } = require('../helpers/dateUtils');
 const logger = require('../logs/logger');
 
@@ -56,7 +57,8 @@ async function provisionStudent(user) {
   const r = await query(
     `INSERT INTO students (user_id, name, email, phone, admission_no, admission_date, status)
      VALUES (?, ?, ?, ?, ?, ?, 'active')`,
-    [user.id, user.name, user.email, user.phone || null, admissionNo(), today()]
+    [user.id, user.name, user.email, user.phone || null,
+      (await nextNumber('admission')) || admissionNo(), today()]
   );
   logger.info(`[provision] created student ${r.insertId} for user ${user.id}`);
   return r.insertId;

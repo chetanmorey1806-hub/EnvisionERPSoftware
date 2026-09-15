@@ -27,6 +27,7 @@
 const { query } = require('../config/db');
 const { withTransaction } = require('../utils/transaction');
 const { receiptNo } = require('../helpers/generators');
+const { nextNumber } = require('../helpers/numbering');
 
 function httpError(message, status) {
   const e = new Error(message);
@@ -336,7 +337,8 @@ const FeeService = {
         left = money(left - put);
       }
 
-      const receipt = receiptNo();
+      // Same transaction as the payment: a rolled-back payment never burns a serial.
+      const receipt = (await nextNumber('fee_receipt', { conn })) || receiptNo();
       const [ins] = await conn.execute(
         `INSERT INTO fee_transactions
            (student_id, installment_id, amount, mode, reference_no, receipt_no, remarks, collected_by)

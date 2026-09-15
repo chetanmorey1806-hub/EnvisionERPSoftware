@@ -1084,15 +1084,20 @@ const pageHelpEnMr = {
 
   '/settings': {
     en: {
-      title: 'Institute Settings',
-      purpose: 'Institute profile and scheduling policy.',
+      title: 'Settings',
+      purpose: 'How the portal behaves on this device, and the way into Global Settings and the masters.',
       steps: [
-        'Set the institute name, address, phone and academic year.',
-        'Set OPERATING HOURS — batches outside these hours are rejected.',
-        'Set MAX BATCHES PER TRAINER PER DAY — the system blocks any assignment beyond this.',
+        'APPEARANCE: choose Light or Dark, a brand colour and a page background. "Open the Switcher" has every layout option; "Reset" restores the shipped look.',
+        'LANGUAGE & TYPING: pick English, Marathi or Hindi. Turn CapsLock on to force names and codes into UPPERCASE as they are typed.',
+        'INSTITUTE LETTERHEAD: a summary of the institute details. Press "Open Global Settings" to change them, the scheduling policy or the document numbering.',
+        'MASTERS: shortcuts to courses, batches, rooms, trainers, staff, library, inventory, partners, users and roles.',
+        'DATA & BACKUPS: the last five backups. "Back up now" takes another.',
       ],
-      submit: 'Change the values and click Save. The new rules apply immediately to every new batch.',
-      tips: ['Lowering the max-batches limit does not remove existing batches; it only blocks new ones.'],
+      submit: 'Appearance, language and CapsLock save the moment you change them. There is no Save button, and they apply to this browser only. Global Settings has a Save button on every card.',
+      tips: [
+        'CapsLock never touches passwords, emails, numbers, dates or the sign-in screens.',
+        'Operating hours, the trainer daily limit and document numbering are on Global Settings.',
+      ],
     },
     mr: {
       title: 'संस्था सेटिंग्ज',

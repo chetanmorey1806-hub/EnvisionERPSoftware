@@ -9,6 +9,7 @@
 const Enquiry = require('../models/EnquiryModel');
 const { query, insert, findById } = require('../utils/crud');
 const { admissionNo } = require('../helpers/generators');
+const { nextNumber } = require('../helpers/numbering');
 const { today } = require('../helpers/dateUtils');
 const NotificationService = require('../services/NotificationService');
 const { success, created, fail } = require('../utils/response');
@@ -209,7 +210,7 @@ const EnquiryController = {
       phone: lead.phone,
       course_id: courseId,
       batch_id: batchId,
-      admission_no: admissionNo(),
+      admission_no: (await nextNumber('admission')) || admissionNo(),
       admission_date: today(),
       status: 'active',
     });

@@ -4,6 +4,7 @@
  */
 const Student = require('../models/StudentModel');
 const { admissionNo } = require('../helpers/generators');
+const { nextNumber } = require('../helpers/numbering');
 const { success, created, fail } = require('../utils/response');
 
 const StudentController = {
@@ -21,7 +22,7 @@ const StudentController = {
   async create(req, res) {
     // Auto-assign an admission number when the client didn't supply one.
     const payload = { ...req.body };
-    if (!payload.admission_no) payload.admission_no = admissionNo();
+    if (!payload.admission_no) payload.admission_no = (await nextNumber('admission')) || admissionNo();
     const student = await Student.create(payload);
     return created(res, { data: student }, 'Student enrolled.');
   },

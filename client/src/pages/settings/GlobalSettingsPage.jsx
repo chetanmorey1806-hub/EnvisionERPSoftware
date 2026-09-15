@@ -149,7 +149,7 @@ const GlobalSettingsPage = () => {
         <Panel
           key={row.doc_type}
           title={`${row.label} numbering`}
-          subtitle={`The running number on every ${row.label.toLowerCase()} raised this year`}
+          subtitle={row.note || `The running number on every ${row.label.toLowerCase()} raised this year`}
           icon={Icons.hash}
           tone="slate"
           action={editable && (
@@ -199,8 +199,8 @@ const GlobalSettingsPage = () => {
 
       {/* ── institute details ────────────────────────────────────────── */}
       <Panel
-        title="Institute details (for documents)"
-        subtitle="The letterhead every receipt, invoice and certificate prints"
+        title="Institute details"
+        subtitle="The institute's official details, kept in one place for documents"
         icon={Icons.team}
         tone="brand"
         action={editable && (
@@ -224,7 +224,7 @@ const GlobalSettingsPage = () => {
             <Input value={profile.legal_name ?? ''} disabled={!editable}
               onChange={(e) => setProf('legal_name', e.target.value)} />
           </Field>
-          <Field label="Tagline (under the logo)" hint="prints beside the name on PDFs">
+          <Field label="Tagline" hint="a short line that goes with the name">
             <Input value={profile.tagline ?? ''} placeholder="Skills that get hired" disabled={!editable}
               onChange={(e) => setProf('tagline', e.target.value)} />
           </Field>
@@ -287,10 +287,46 @@ const GlobalSettingsPage = () => {
         </FieldGrid>
       </Panel>
 
+      {/* ── scheduling policy ───────────────────────────────────────── */}
+      {/* The batch conflict checks read these on every save: a batch outside
+          the operating hours, or a trainer's batch over the daily limit, is
+          refused. */}
+      <Panel
+        title="Scheduling policy"
+        subtitle="The rules every new or changed batch is checked against"
+        icon={Icons.clock}
+        tone="violet"
+        action={editable && (
+          <SaveButton
+            saving={busy === 'Scheduling policy'}
+            onClick={() => saveProfile(
+              ['open_time', 'close_time', 'max_batches_per_trainer_per_day'],
+              'Scheduling policy'
+            )}
+          />
+        )}
+      >
+        <FieldGrid>
+          <Field label="Opens at" hint="no batch may start before this">
+            <Input type="time" value={String(profile.open_time ?? '').slice(0, 5)} disabled={!editable}
+              onChange={(e) => setProf('open_time', e.target.value)} />
+          </Field>
+          <Field label="Closes at" hint="no batch may run past this">
+            <Input type="time" value={String(profile.close_time ?? '').slice(0, 5)} disabled={!editable}
+              onChange={(e) => setProf('close_time', e.target.value)} />
+          </Field>
+          <Field label="Max batches per trainer per day" hint="lowering it never removes existing batches">
+            <Input inputMode="numeric" value={profile.max_batches_per_trainer_per_day ?? ''} placeholder="4"
+              disabled={!editable}
+              onChange={(e) => setProf('max_batches_per_trainer_per_day', e.target.value.replace(/\D/g, ''))} />
+          </Field>
+        </FieldGrid>
+      </Panel>
+
       {/* ── bank + signatory ─────────────────────────────────────────── */}
       <Panel
-        title="Bank details & signatory (printed on receipts)"
-        subtitle="Where a fee is paid, and who signs for it"
+        title="Bank details & signatory"
+        subtitle="Where a fee is paid, and who signs for the institute"
         icon={Icons.bank}
         tone="green"
         action={editable && (
@@ -325,11 +361,11 @@ const GlobalSettingsPage = () => {
             <Input value={profile.ifsc ?? ''} disabled={!editable}
               onChange={(e) => setProf('ifsc', e.target.value.toUpperCase())} />
           </Field>
-          <Field label="UPI ID" hint="printed as the QR line on a receipt">
+          <Field label="UPI ID" hint="for students paying by UPI">
             <Input value={profile.upi_id ?? ''} disabled={!editable}
               onChange={(e) => setProf('upi_id', e.target.value)} />
           </Field>
-          <Field label="Signatory name" hint="prints above “Authorised Signatory”">
+          <Field label="Signatory name" hint="the authorised signatory">
             <Input value={profile.signatory_name ?? ''} disabled={!editable}
               onChange={(e) => setProf('signatory_name', e.target.value)} />
           </Field>
@@ -340,23 +376,23 @@ const GlobalSettingsPage = () => {
         </FieldGrid>
       </Panel>
 
-      {/* ── printed terms ────────────────────────────────────────────── */}
+      {/* ── default terms ────────────────────────────────────────────── */}
       <Panel
-        title="Printed terms"
-        subtitle="Used when the document itself leaves them blank"
+        title="Default terms"
+        subtitle="The standard wording for receipts and certificates"
         icon={Icons.terms}
         tone="amber"
         action={editable && (
           <SaveButton
-            saving={busy === 'Printed terms'}
-            onClick={() => saveProfile(['receipt_terms', 'certificate_note'], 'Printed terms')}
+            saving={busy === 'Default terms'}
+            onClick={() => saveProfile(['receipt_terms', 'certificate_note'], 'Default terms')}
           />
         )}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Field
             label="Fee receipt terms"
-            hint="Refund rule, instalment dates, the cheque-bounce line — printed at the foot of a receipt."
+            hint="Refund rule, instalment dates, the cheque-bounce line."
           >
             <textarea
               rows={5}
