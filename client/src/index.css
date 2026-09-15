@@ -22,23 +22,27 @@
      Every surface in the reference design is noticeably rounder than the
      Tailwind default. Bumping the scale (rather than rewriting thousands of
      `rounded-*` utilities) carries that softness everywhere. */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-  --radius-xl: 1.125rem;
-  --radius-2xl: 1.375rem;
-  --radius-3xl: 1.75rem;
+  /* bk-steels radii: 6 / 10 / 14px — squarer and more industrial than the
+     rounded shell this app had before. The whole product follows from here. */
+  --radius-sm: 0.375rem;   /* 6px  — controls, buttons */
+  --radius-md: 0.5rem;     /* 8px  — dropdown items, chips */
+  --radius-lg: 0.625rem;   /* 10px — the standard card */
+  --radius-xl: 0.75rem;    /* 12px — dropdown panels, logo tile */
+  --radius-2xl: 0.875rem;  /* 14px — large cards, hero bands */
+  --radius-3xl: 1rem;      /* 16px — dialogs */
 
   /* --- Elevation -------------------------------------------------------
      Wide, low-opacity, slightly blue-black. Cards should look like they are
      resting on the page, never stamped onto it. */
-  --shadow-2xs: 0 1px 2px 0 rgb(15 23 42 / 0.04);
-  --shadow-xs: 0 1px 3px 0 rgb(15 23 42 / 0.05), 0 1px 2px -1px rgb(15 23 42 / 0.04);
-  --shadow-sm: 0 2px 8px -2px rgb(15 23 42 / 0.07), 0 1px 3px -1px rgb(15 23 42 / 0.05);
-  --shadow-md: 0 8px 20px -6px rgb(15 23 42 / 0.10), 0 3px 8px -4px rgb(15 23 42 / 0.06);
-  --shadow-lg: 0 16px 34px -10px rgb(15 23 42 / 0.13), 0 6px 14px -8px rgb(15 23 42 / 0.07);
-  --shadow-xl: 0 26px 52px -14px rgb(15 23 42 / 0.18), 0 10px 20px -12px rgb(15 23 42 / 0.09);
-  --shadow-2xl: 0 34px 68px -18px rgb(15 23 42 / 0.26);
+  /* bk-steels elevation — a tight two-step shadow, and one big "pop" for
+     anything that floats (dropdowns, dialogs). Much flatter than before. */
+  --shadow-2xs: 0 1px 2px rgb(20 24 32 / 0.05);
+  --shadow-xs: 0 1px 2px rgb(20 24 32 / 0.06), 0 2px 5px rgb(20 24 32 / 0.05);
+  --shadow-sm: 0 1px 2px rgb(20 24 32 / 0.06), 0 2px 5px rgb(20 24 32 / 0.05);
+  --shadow-md: 0 1px 3px rgb(20 24 32 / 0.08), 0 4px 12px rgb(20 24 32 / 0.08);
+  --shadow-lg: 0 10px 34px rgb(20 24 32 / 0.14);
+  --shadow-xl: 0 10px 34px rgb(20 24 32 / 0.14);
+  --shadow-2xl: 0 1px 3px rgb(0 0 0 / 0.10), 0 24px 60px rgb(0 0 0 / 0.30);
 
   /* --- Neutral ramp ----------------------------------------------------
      Warmed a few degrees off pure gray so white cards read as crisp against
@@ -55,18 +59,41 @@
   --color-gray-900: #171b24;
 
   /* --- Brand ------------------------------------------------------------
-     `brand` is the active-navigation blue lifted from the reference UI.
-     `saffron` drives the welcome banner, `verdant` the performance banner. */
-  --color-brand-50: #eef5ff;
-  --color-brand-100: #d9e8ff;
-  --color-brand-200: #bcd7ff;
-  --color-brand-300: #8ebeff;
-  --color-brand-400: #599bfb;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2f80ed;
-  --color-brand-700: #1e63c9;
-  --color-brand-800: #1b52a2;
-  --color-brand-900: #1b4680;
+     bk-steels' palette, ported as asked: brand red #fb0404 with the flame
+     orange #f85d23 the header gradient runs out to, over deep maroon #31221c.
+     NOTE: this replaces the sky blue sampled from the ENVISION logo, so the
+     logo artwork and the UI no longer share a hue. That was a deliberate
+     choice — see the Switcher, where `primary` can be pointed anywhere. */
+  --color-brand-50:  #FAF2F2;
+  --color-brand-100: #F5E0E0;
+  --color-brand-200: #F2BDBD;
+  --color-brand-300: #FD7C7C;
+  --color-brand-400: #FC4545;
+  --color-brand-500: #FB1D1D;
+  --color-brand-600: #FB0404;
+  --color-brand-700: #C90303;
+  --color-brand-800: #A10303;
+  --color-brand-900: #830202;
+
+  --color-flame-400: #F97848;
+  --color-flame-500: #F85B21;
+  --color-flame-600: #F85D23;
+  --color-flame-700: #C63A06;
+
+  --color-maroon-700: #4A322A;
+  --color-maroon-800: #31221C;
+  --color-maroon-900: #1D1310;
+
+  --color-accent-50:  #F3F1FD;
+  --color-accent-100: #E7E3FB;
+  --color-accent-200: #CFC7F7;
+  --color-accent-300: #AFA1F1;
+  --color-accent-400: #8A74E8;
+  --color-accent-500: #6F52E0;
+  --color-accent-600: #5B3FD9;
+  --color-accent-700: #4A2FB8;
+  --color-accent-800: #3B2694;
+  --color-accent-900: #302078;
 
   --color-saffron-400: #eeab4c;
   --color-saffron-500: #e2913a;
@@ -94,35 +121,111 @@
     @apply min-h-full w-full overflow-x-hidden text-gray-900 transition-colors duration-200 antialiased font-sans m-0 p-0;
   }
 
-  html.dark body {
-    @apply text-slate-50;
-  }
-
   /*
-    The product's backdrop: a soft ambient wash that gives the floating panels
-    something to sit on. It is a gradient rather than the reference's blurred
-    photograph because the only images in this project are marketing banners
-    with headline text baked in — blurred hard enough to stop competing with
-    the data they are mush anyway, and until then they drag unrelated words
-    onto every screen. `fixed` attachment keeps it still while content scrolls.
+    bk-steels' surfaces, ported as CSS variables so light and dark are one
+    switch. The page is a flat industrial grey — the photographic backdrop this
+    app used before is gone, because that shell is gone with it.
+
+    Light is defined on bare `:root`; dark is redefined under `html.dark` (this
+    app's ThemeContext stamps that class) so the header toggle always wins.
   */
-  body {
-    background-color: #eef1f6;
-    background-image:
-      radial-gradient(58rem 40rem at 12% -8%,  rgb(47 128 237 / 0.10), transparent 60%),
-      radial-gradient(46rem 34rem at 92% 4%,   rgb(226 145 58 / 0.11), transparent 62%),
-      radial-gradient(52rem 38rem at 78% 104%, rgb(69 165 102 / 0.10), transparent 60%),
-      radial-gradient(40rem 30rem at 4% 96%,   rgb(109 67 207 / 0.07), transparent 62%);
-    background-attachment: fixed;
+  :root {
+    color-scheme: light;
+
+    /* How wide the app is allowed to get. A laptop (1366–1512) is the shape
+       these screens were drawn for, and a 2560px row of form fields is not
+       more useful, only harder to read across. */
+    --app-max: 1600px;
+
+    --surface-1: #ffffff;
+    --surface-page: #f3f4f6;
+    --surface-sunken: #f6f7f9;
+    --text-primary: #171a1f;
+    --text-secondary: #5a6472;
+    --text-muted: #8b94a2;
+    --nav-ink: #475569;
+    --menu-hover: #fdf4f4;
+    --heading-ink: #31221c;
+    --border: #e6e9ed;
+    --card-border: #e5e7eb;
+    --gridline: #edeff2;
+    --field-bg: #f8fafc;
+    --field-border: #c7d0dc;
+    --field-bg-locked: #eceff3;
+    --label-ink: #374151;
+    --shadow-1: 0 1px 2px rgb(20 24 32 / 0.06), 0 2px 5px rgb(20 24 32 / 0.05);
+    --shadow-pop: 0 10px 34px rgb(20 24 32 / 0.14);
+
+    /* brand — the header gradient (deep maroon → brand red → flame orange) */
+    --brand-from: #31221c;
+    --brand-mid: #fb0404;
+    --brand-to: #f85d23;
+    --brand-ink: #ffffff;
+    --brand-accent: #fb0404;
+    --brand-solid: #fb0404;
+    --brand-solid-hi: #f85d23;
+    --brand-light: #ffecec;
+    --brand-ring: #fbb3b3;
+    --brand-focus-ring: rgb(251 4 4 / 0.15);
+
+    /* Semantic tones — chips, pills and callouts. Each is an ink plus a soft
+       ground, so both flip together with the theme. */
+    --tone-good-ink: #166534;  --tone-good-bg: #dcfce7;
+    --tone-info-ink: #1e40af;  --tone-info-bg: #dbeafe;
+    --tone-warn-ink: #92400e;  --tone-warn-bg: #fef3c7;
+    --tone-bad-ink:  #991b1b;  --tone-bad-bg:  #fee2e2;
+    --tone-flat-ink: #475569;  --tone-flat-bg: #f1f5f9;
+
+    /* module icon tints — colour is always a second signal beside a label */
+    --ic-indigo: #4f46e5;  --ic-violet: #7c3aed;  --ic-slate: #55617a;
+    --ic-red: #cc2b31;     --ic-amber: #b45309;   --ic-teal: #0f766e;
+    --ic-blue: #1d4ed8;    --ic-emerald: #047857; --ic-magenta: #a21caf;
+    --ic-cyan: #0e7490;
   }
 
-  html.dark body {
-    background-color: #060a15;
-    background-image:
-      radial-gradient(58rem 40rem at 12% -8%,  rgb(47 128 237 / 0.16), transparent 60%),
-      radial-gradient(46rem 34rem at 92% 4%,   rgb(226 145 58 / 0.10), transparent 62%),
-      radial-gradient(52rem 38rem at 78% 104%, rgb(69 165 102 / 0.10), transparent 60%),
-      radial-gradient(40rem 30rem at 4% 96%,   rgb(109 67 207 / 0.12), transparent 62%);
+  html.dark {
+    color-scheme: dark;
+    --surface-1: #1b1e24;
+    --surface-page: #101318;
+    --surface-sunken: #232830;
+    --text-primary: #f3f5f8;
+    --text-secondary: #b4bcc8;
+    --text-muted: #858e9c;
+    --nav-ink: #ccd3dd;
+    --menu-hover: #232830;
+    --heading-ink: #f3f5f8;
+    --border: #2c323b;
+    --card-border: #39414d;
+    --gridline: #2a2f38;
+    --field-bg: #171b21;
+    --field-border: #4a5462;
+    --field-bg-locked: #14171c;
+    --label-ink: #c5cdd8;
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-pop: 0 10px 34px rgb(0 0 0 / 0.55);
+    --brand-from: #1d1310;
+    --brand-mid: #a80505;
+    --brand-to: #b34418;
+    --brand-accent: #ff5c5c;
+    --brand-solid: #d81419;
+    --brand-solid-hi: #ee1c1c;
+    --brand-light: #341b1d;
+    --brand-ring: #5b2b2b;
+    --brand-focus-ring: rgb(255 92 92 / 0.22);
+    --tone-good-ink: #6ee7a5;  --tone-good-bg: #14311f;
+    --tone-info-ink: #93c1fb;  --tone-info-bg: #16273f;
+    --tone-warn-ink: #f3c469;  --tone-warn-bg: #33280f;
+    --tone-bad-ink:  #f79a95;  --tone-bad-bg:  #35201f;
+    --tone-flat-ink: #b4bcc8;  --tone-flat-bg: #262c35;
+    --ic-indigo: #8b93f8;  --ic-violet: #b18cfa;  --ic-slate: #9aa6b8;
+    --ic-red: #f2696d;     --ic-amber: #f0ad4e;   --ic-teal: #3fd8c4;
+    --ic-blue: #6fb0fb;    --ic-emerald: #3fd99b; --ic-magenta: #ec87f7;
+    --ic-cyan: #35d6ec;
+  }
+
+  body {
+    background: var(--surface-page);
+    color: var(--text-primary);
   }
 
   /* Form Element Baseline Reset Controls */
@@ -160,44 +263,62 @@
 
   /* The floating white navigation panel. */
   .erp-sidebar {
-    @apply bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800
-           rounded-2xl shadow-lg flex flex-col overflow-hidden;
+    background: var(--surface-1);
+    border-inline-end: 1px solid var(--border);
+    box-shadow: var(--shadow-1);
+    @apply flex flex-col overflow-hidden;
   }
 
   /* Sidebar link — resting and active. */
+  /* bk-steels' side-menu link: a soft brand-tinted row, not a solid pill. */
   .erp-nav-link {
-    @apply flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold
-           text-gray-600 dark:text-slate-400 transition-all duration-150
-           hover:bg-gray-50 dark:hover:bg-slate-800/70 hover:text-gray-900 dark:hover:text-slate-100;
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius-md);
+    font-size: 13px; font-weight: 500;
+    color: var(--text-secondary);
+    transition: background .12s ease, color .12s ease;
   }
+  .erp-nav-link:hover { background: var(--menu-hover); color: var(--text-primary); }
   .erp-nav-link-active {
-    @apply bg-brand-600 text-white shadow-md shadow-brand-600/25
-           hover:bg-brand-600 hover:text-white;
+    background: var(--brand-light);
+    color: var(--brand-accent);
+    font-weight: 650;
   }
+  .erp-nav-link-active:hover { background: var(--brand-light); color: var(--brand-accent); }
 
   /* The translucent bar carrying breadcrumb + session controls. */
   .erp-topbar {
-    @apply bg-white/85 dark:bg-slate-900/85 backdrop-blur-md
-           border border-gray-100 dark:border-slate-800 rounded-2xl shadow-sm;
+    background: var(--surface-1);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
   }
 
   /* Circular/rounded icon button used throughout the chrome. */
   .erp-icon-btn {
-    @apply h-9 w-9 grid place-items-center rounded-xl text-gray-500 dark:text-slate-400
-           hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-800 dark:hover:text-slate-100
-           transition-colors duration-150;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    color: var(--text-secondary);
+    transition: background .12s ease, color .12s ease;
   }
+  .erp-icon-btn:hover { background: var(--menu-hover); color: var(--text-primary); }
 
   /* ---------- Surfaces -------------------------------------------------- */
 
   /* The default content surface. Everything that holds data sits on one. */
   .erp-card {
-    @apply bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800
-           rounded-2xl shadow-sm;
+    background: var(--surface-1);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
   }
   .erp-card-pad {
-    @apply bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800
-           rounded-2xl shadow-sm p-5;
+    background: var(--surface-1);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
+    @apply p-5;
   }
   /* Pointer-only lift, so touch users never get a stuck hover state. */
   @media (hover: hover) {
@@ -205,7 +326,8 @@
       @apply transition-all duration-200;
     }
     .erp-card-interactive:hover {
-      @apply shadow-md -translate-y-0.5 border-gray-200 dark:border-slate-700;
+      box-shadow: var(--shadow-pop);
+      border-color: var(--brand-ring);
     }
   }
 
@@ -218,7 +340,7 @@
   */
   .erp-hero {
     @apply relative overflow-hidden rounded-2xl px-6 py-6 text-white shadow-md;
-    background: linear-gradient(120deg, var(--color-saffron-400) 0%, var(--color-saffron-600) 100%);
+    background: linear-gradient(100deg, var(--brand-from) 0%, var(--brand-mid) 48%, var(--brand-to) 100%);
   }
   .erp-hero::after {
     /* A large soft highlight in the top-right, matching the reference band. */
@@ -233,13 +355,16 @@
     pointer-events: none;
   }
   .erp-hero-blue {
-    background: linear-gradient(120deg, var(--color-brand-500) 0%, var(--color-brand-700) 100%);
+    background: linear-gradient(100deg, var(--brand-from) 0%, var(--brand-mid) 48%, var(--brand-to) 100%);
+  }
+  .erp-hero-saffron {
+    background: linear-gradient(120deg, var(--color-saffron-400) 0%, var(--color-saffron-600) 100%);
   }
   .erp-hero-green {
     background: linear-gradient(120deg, var(--color-verdant-400) 0%, var(--color-verdant-600) 100%);
   }
   .erp-hero-violet {
-    background: linear-gradient(120deg, #9575e8 0%, #6d43cf 100%);
+    background: linear-gradient(120deg, var(--color-accent-400) 0%, var(--color-accent-700) 100%);
   }
   .erp-hero-cyan {
     background: linear-gradient(120deg, #38b6c9 0%, #1a7f96 100%);
@@ -270,14 +395,19 @@
   /* ---------- Stat tiles ------------------------------------------------ */
 
   .erp-stat {
-    @apply bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800
-           rounded-2xl shadow-sm p-5 flex flex-col gap-3;
+    background: var(--surface-1);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
+    @apply p-5 flex flex-col gap-3;
   }
   .erp-stat-value {
-    @apply text-[26px] leading-none font-extrabold text-gray-900 dark:text-slate-50;
+    font-size: 26px; line-height: 1; font-weight: 800;
+    color: var(--text-primary);
   }
   .erp-stat-label {
-    @apply text-xs font-medium text-gray-500 dark:text-slate-400;
+    font-size: 12px; font-weight: 500;
+    color: var(--text-secondary);
   }
 
   /*
@@ -292,7 +422,7 @@
   .erp-chip-green   { @apply bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300; }
   .erp-chip-amber   { @apply bg-amber-50   text-amber-600   dark:bg-amber-500/15   dark:text-amber-300; }
   .erp-chip-rose    { @apply bg-rose-50    text-rose-500    dark:bg-rose-500/15    dark:text-rose-300; }
-  .erp-chip-violet  { @apply bg-violet-50  text-violet-600  dark:bg-violet-500/15  dark:text-violet-300; }
+  .erp-chip-violet  { @apply bg-accent-50  text-accent-600  dark:bg-accent-500/15  dark:text-accent-300; }
   .erp-chip-cyan    { @apply bg-cyan-50    text-cyan-600    dark:bg-cyan-500/15    dark:text-cyan-300; }
   .erp-chip-slate   { @apply bg-gray-100   text-gray-500    dark:bg-slate-800      dark:text-slate-400; }
 
@@ -384,6 +514,228 @@
     @apply h-1.5 w-1.5 rounded-full bg-emerald-500;
     box-shadow: 0 0 0 3px rgb(16 185 129 / 0.18);
   }
+}
+
+/* ==========================================================================
+   2b. bk-steels SHELL
+   --------------------------------------------------------------------------
+   Ported from bk-steels/portal/src/app-theme.css — same measurements, same
+   states. The gradient header, the horizontal menu bar with its dropdowns, the
+   vertical side menu, and the control/button primitives the forms are built
+   from. Plain CSS rather than @apply, so these keep working whatever happens
+   to the Tailwind utility layer.
+   ========================================================================== */
+@layer components {
+
+  /* ---------- the gradient top bar ---------- */
+  .app-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    /* The gradient stays full width; what sits on it lines up with content. */
+    padding: 10px max(20px, calc((100% - var(--app-max)) / 2));
+    background: linear-gradient(100deg, var(--brand-from) 0%, var(--brand-mid) 48%, var(--brand-to) 100%);
+    color: var(--brand-ink);
+  }
+  /* The logo sits on its own white tile, the way a plate is fixed to a machine. */
+  .header-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; flex: none;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
+  }
+  .header-mark img { width: 34px; height: 34px; object-fit: contain; }
+  .header-title { min-width: 0; }
+  .header-title h1 {
+    margin: 0; font-size: 16px; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .header-title p {
+    margin: 2px 0 0; font-size: 11.5px; font-weight: 500; opacity: .85;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .header-tools { margin-inline-start: auto; display: flex; align-items: center; gap: 6px; }
+
+  .tool-btn {
+    position: relative;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px;
+    border: 0; border-radius: 9px;
+    background: transparent;
+    color: var(--brand-ink);
+    cursor: pointer;
+  }
+  .tool-btn:hover { background: rgb(255 255 255 / 0.18); }
+  .tool-btn:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
+  .pill-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    background: rgb(255 255 255 / 0.92);
+    /* A darker shade of the brand — the pill sits on white, where the brand at
+       full strength would be too light to read. */
+    color: color-mix(in srgb, var(--brand-solid) 76%, #000);
+    font-family: inherit; font-size: 12px; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+  }
+  .pill-btn:hover { background: #fff; }
+
+  /* ---------- horizontal menu bar ---------- */
+  .topnav {
+    background: var(--surface-1);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+  }
+  /* No overflow here: a scroll container would clip the absolutely-positioned
+     dropdowns. The bar wraps instead. */
+  .topnav-inner {
+    display: flex; align-items: stretch; gap: 4px; flex-wrap: wrap;
+    padding: 0 12px;
+    max-width: var(--app-max);
+    margin: 0 auto;
+  }
+  .app-main { max-width: var(--app-max); margin-inline: auto; }
+
+  .nav-group { position: relative; display: flex; }
+  .nav-link {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
+    border: 0; background: none;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    color: var(--nav-ink);
+    text-decoration: none; white-space: nowrap; cursor: pointer;
+  }
+  .nav-link:hover { color: var(--text-primary); }
+  .nav-link:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: -3px; }
+  .nav-link.active { color: var(--brand-accent); font-weight: 600; }
+  /* The current section's underline is the brand gradient, which a border
+     colour cannot carry — hence the strip. */
+  .nav-link.active::after {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+    background: linear-gradient(90deg, var(--brand-from), var(--brand-solid-hi), var(--brand-to));
+    border-radius: 2px 2px 0 0;
+  }
+  .nav-group.open > .nav-link { color: var(--brand-accent); }
+  .nav-link-icon { flex: none; stroke-width: 1.9; }
+  .nav-caret { flex: none; opacity: .7; transition: transform .16s ease; }
+  .nav-group.open .nav-caret { transform: rotate(180deg); }
+
+  .dropdown {
+    position: absolute; top: calc(100% + 4px); inset-inline-start: 0; z-index: 60;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(186px, 1fr));
+    column-gap: 8px; row-gap: 2px; align-items: start;
+    width: max-content;
+    max-width: min(440px, calc(100vw - 24px));
+    padding: 6px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-pop);
+  }
+  /* A short section stays one column wide. */
+  .dropdown[data-cols='1'] {
+    grid-template-columns: minmax(196px, 1fr);
+    max-width: min(240px, calc(100vw - 24px));
+  }
+  /* Opened near the right-hand end of the bar, the panel hangs off its own
+     right edge instead. */
+  .dropdown.flip { inset-inline-start: auto; inset-inline-end: 0; }
+
+  .dropdown-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+    transition: background .12s ease, color .12s ease;
+  }
+  .dropdown-item:hover { background: var(--menu-hover); }
+  .dropdown-item.active {
+    background: var(--brand-light);
+    border-left-color: var(--brand-accent);
+    color: var(--brand-accent);
+    font-weight: 600;
+  }
+
+  /* ---------- controls & buttons ---------- */
+  .control, .btn {
+    font-family: inherit; font-size: 13px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface-1);
+    color: var(--text-primary);
+  }
+  /* Only the control takes the fill — a button keeps the card's own surface. */
+  .control { background: var(--field-bg); border-color: var(--field-border); width: 100%; }
+  .control::placeholder { color: var(--text-muted); opacity: 1; }
+  .control:hover:not(:disabled):not([readonly]) { border-color: var(--text-muted); }
+  .control:disabled, .control[readonly] { background: var(--field-bg-locked); color: var(--text-muted); }
+  .control:focus {
+    outline: none;
+    border-color: var(--brand-accent);
+    background: var(--surface-1);
+    box-shadow: 0 0 0 3px var(--brand-focus-ring);
+  }
+  select.control { cursor: pointer; }
+
+  .btn { cursor: pointer; font-weight: 550; }
+  .btn:hover { background: var(--surface-sunken); }
+  .btn.ghost { background: transparent; }
+  .btn.plain-brand, .btn.plain, .btn.solid-brand {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 8px 15px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+  }
+  .btn.plain-brand {
+    color: var(--brand-accent);
+    border: 1px solid var(--brand-ring);
+    background: var(--surface-1);
+  }
+  .btn.plain-brand:hover { background: var(--brand-light); }
+  .btn.plain {
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    background: var(--surface-1);
+  }
+  .btn.plain:hover { background: var(--surface-sunken); color: var(--text-primary); }
+  .btn.solid-brand {
+    color: #fff; border: 1px solid transparent;
+    font-weight: 700; background: var(--brand-solid);
+  }
+  .btn.solid-brand:hover { filter: brightness(1.06); }
+  .btn:disabled { opacity: .6; cursor: not-allowed; }
+
+  /* ---------- form field ---------- */
+  .form-field { display: flex; flex-direction: column; min-width: 0; }
+  /* Labels are grey and bold — the value typed in is the black text, so the
+     label above should not compete for the same weight of ink. */
+  .form-field label {
+    margin-bottom: 5px;
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--label-ink);
+  }
+  .form-field .req { color: var(--brand-accent); }
+  .form-field .control { padding: 10px 12px; border-radius: 8px; }
+  .form-hint { margin-top: 5px; font-size: 11.5px; color: var(--text-muted); }
+
+  /* ---------- semantic tone chips ---------- */
+  .tone-good { color: var(--tone-good-ink); background: var(--tone-good-bg); }
+  .tone-info { color: var(--tone-info-ink); background: var(--tone-info-bg); }
+  .tone-warn { color: var(--tone-warn-ink); background: var(--tone-warn-bg); }
+  .tone-bad  { color: var(--tone-bad-ink);  background: var(--tone-bad-bg); }
+  .tone-flat { color: var(--tone-flat-ink); background: var(--tone-flat-bg); }
 }
 
 /* ==========================================================================
@@ -578,3 +930,479 @@ input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+/* --------------------------------------------------------------------------
+   Chrome that lives on the gradient header.
+
+   These controls (theme toggle, language, bell, avatar, help) are shared with
+   the rest of the app, where they sit on a white card and are therefore drawn
+   in dark ink. On the gradient they have to flip to the header's own ink, or
+   they read as smudges on the red. Scoped to `.app-header` so the same
+   components keep their normal colours everywhere else.
+   -------------------------------------------------------------------------- */
+.app-header .erp-icon-btn,
+.app-header button:not(.pill-btn) {
+  color: var(--brand-ink);
+}
+.app-header .erp-icon-btn:hover,
+.app-header button:not(.pill-btn):hover {
+  background: rgb(255 255 255 / 0.18);
+  color: var(--brand-ink);
+}
+/* The help button is a solid white pill here, not the tinted chip it is
+   elsewhere, so it stays readable against every stop of the gradient. */
+.app-header .erp-btn-primary,
+.app-header [class*='bg-brand-50'] {
+  background: rgb(255 255 255 / 0.92) !important;
+  color: color-mix(in srgb, var(--brand-solid) 76%, #000) !important;
+  border-color: rgb(255 255 255 / 0.3) !important;
+}
+/* Menus opened from the header are panels on the page, not part of the bar —
+   they must not inherit its white ink. */
+.app-header [role='menu'],
+.app-header .erp-card {
+  color: var(--text-primary);
+}
+.app-header .erp-card .erp-icon-btn { color: var(--text-secondary); }
+
+/* A plain header keeps the app's normal ink. */
+html[data-header-skin='light'] .app-header .erp-icon-btn,
+html[data-header-skin='light'] .app-header button:not(.pill-btn) {
+  color: var(--text-secondary);
+}
+/* ==========================================================================
+   5. LAYOUT PREFERENCES
+   --------------------------------------------------------------------------
+   Ported from bk-steels. Driven by the data attributes `useLayoutPrefs` stamps
+   on <html>. Every option in the Switcher lands here — nothing in that panel is
+   decorative, each choice maps to a rule below.
+   ========================================================================== */
+
+/* ── Header and menu positions ───────────────────────────────────────── */
+html[data-header-pos='fixed'] .app-header { position: sticky; top: 0; z-index: 45; }
+html[data-menu-pos='fixed'] .topnav { position: sticky; top: 0; z-index: 40; }
+/* Stuck under a stuck header, rather than behind it. */
+html[data-menu-pos='fixed'][data-header-pos='fixed'] .topnav { top: var(--header-h, 60px); }
+
+/* ── Layout width ────────────────────────────────────────────────────── */
+html[data-width='boxed'] { --app-max: 1180px; }
+@media (min-width: 1360px) {
+  html[data-width='boxed'] .app-shell {
+    max-width: 1340px;
+    margin-inline: auto;
+    box-shadow: 0 0 0 1px var(--border), 0 0 34px rgb(20 24 32 / 0.10);
+  }
+}
+
+/* ── Page styles ─────────────────────────────────────────────────────── */
+/* The page style is the one place allowed to overrule a card's own radius and
+   shadow, so the whole app changes together. */
+html[data-page-style='classic'] { --surface-page: var(--surface-1); }
+html[data-page-style='classic'] .app-main .erp-card,
+html[data-page-style='classic'] .app-main .erp-stat,
+html[data-page-style='classic'] .app-main section {
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+html[data-page-style='modern'] .app-main .erp-card,
+html[data-page-style='modern'] .app-main .erp-stat,
+html[data-page-style='modern'] .app-main section {
+  border-radius: 18px !important;
+  border-color: transparent !important;
+  box-shadow: 0 8px 26px rgb(20 24 32 / 0.08) !important;
+}
+html.dark[data-page-style='modern'] .app-main .erp-card,
+html.dark[data-page-style='modern'] .app-main .erp-stat,
+html.dark[data-page-style='modern'] .app-main section {
+  box-shadow: 0 8px 26px rgb(0 0 0 / 0.50) !important;
+}
+
+/* ── Page background tints ───────────────────────────────────────────── */
+html[data-bg='slate']  { --surface-page: #e8ecf3; }
+html[data-bg='navy']   { --surface-page: #e6ecf6; }
+html[data-bg='plum']   { --surface-page: #f2e9f3; }
+html[data-bg='forest'] { --surface-page: #e7f1ea; }
+html.dark[data-bg='slate']  { --surface-page: #12161d; }
+html.dark[data-bg='navy']   { --surface-page: #0d1420; }
+html.dark[data-bg='plum']   { --surface-page: #17101a; }
+html.dark[data-bg='forest'] { --surface-page: #0c1712; }
+
+/* ── Header colours ──────────────────────────────────────────────────── */
+html[data-header-skin='light'] .app-header {
+  background: var(--surface-1);
+  color: var(--text-primary);
+  --brand-ink: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+}
+html[data-header-skin='dark'] .app-header {
+  background: #151a22;
+  color: #f4f6f9;
+  --brand-ink: #f4f6f9;
+}
+html[data-header-skin='color'] .app-header { background: var(--brand-solid); }
+/* On a light header the white-on-white hover and pill have to be re-thought. */
+html[data-header-skin='light'] .app-header .tool-btn,
+html[data-header-skin='light'] .app-header .erp-icon-btn,
+html[data-header-skin='light'] .app-header button:not(.pill-btn) { color: var(--text-secondary); }
+html[data-header-skin='light'] .app-header .tool-btn:hover,
+html[data-header-skin='light'] .app-header .erp-icon-btn:hover,
+html[data-header-skin='light'] .app-header button:not(.pill-btn):hover {
+  background: var(--menu-hover);
+  color: var(--text-primary);
+}
+html[data-header-skin='light'] .app-header .pill-btn {
+  background: var(--brand-light);
+  color: var(--brand-accent);
+  border: 1px solid var(--brand-ring);
+}
+html[data-header-skin='light'] .header-mark { background: var(--field-bg); }
+
+/* ── Menu colours (the bar under the header, and the side menu) ──────── */
+html[data-menu-skin='dark'] .topnav,
+html[data-menu-skin='dark'] .sidemenu {
+  background: #151a22;
+  --surface-1: #1b212a;
+  --nav-ink: #cfd6e0;
+  --text-primary: #f4f6f9;
+  --text-secondary: #cfd6e0;
+  --text-muted: #8d97a5;
+  --border: #262d38;
+  --card-border: #2e3641;
+  --menu-hover: #232b35;
+  --brand-light: #2a1a1c;
+}
+html[data-menu-skin='color'] .topnav,
+html[data-menu-skin='color'] .sidemenu,
+html[data-menu-skin='gradient'] .topnav,
+html[data-menu-skin='gradient'] .sidemenu {
+  --surface-1: var(--brand-solid);
+  --nav-ink: rgb(255 255 255 / 0.86);
+  --text-primary: #ffffff;
+  --text-secondary: rgb(255 255 255 / 0.86);
+  --text-muted: rgb(255 255 255 / 0.7);
+  --border: rgb(255 255 255 / 0.18);
+  --card-border: rgb(255 255 255 / 0.24);
+  --menu-hover: rgb(255 255 255 / 0.16);
+  --brand-accent: #ffffff;
+  --brand-light: rgb(255 255 255 / 0.18);
+}
+html[data-menu-skin='color'] .topnav,
+html[data-menu-skin='color'] .sidemenu { background: var(--brand-solid); }
+html[data-menu-skin='gradient'] .topnav,
+html[data-menu-skin='gradient'] .sidemenu {
+  background: linear-gradient(100deg, var(--brand-from) 0%, var(--brand-mid) 55%, var(--brand-to) 100%);
+}
+/* The active-page underline is a gradient of its own; on a coloured bar it
+   would disappear into the background. */
+html[data-menu-skin='color'] .nav-link.active::after,
+html[data-menu-skin='gradient'] .nav-link.active::after,
+html[data-menu-skin='dark'] .nav-link.active::after { background: currentColor; }
+
+/* ── Menu styles: icons only, in the horizontal bar ──────────────────── */
+html[data-menu-style^='icon'] .topnav .nav-link > span:not(.nav-caret),
+html[data-menu-style^='icon'] .topnav .nav-link-text,
+html[data-menu-style^='icon'] .topnav .nav-caret { display: none; }
+html[data-menu-style^='icon'] .topnav .nav-link { padding-inline: 15px; }
+
+/* ==========================================================================
+   6. THE VERTICAL SIDE MENU
+   --------------------------------------------------------------------------
+   bk-steels' `.sidemenu`. The six Sidemenu Layout Styles are all expressed
+   here, against these class names — which is why the component uses them
+   verbatim rather than the app's own.
+   ========================================================================== */
+.sidemenu { display: none; }
+
+@media (min-width: 1024px) {
+  html[data-nav='vertical'] .topnav { display: none; }
+
+  html[data-nav='vertical'] .sidemenu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--rail-w, var(--side-w));
+    background: var(--surface-1);
+    border-inline-end: 1px solid var(--border);
+    z-index: 50;
+    transition: width .18s ease;
+  }
+  /* A menu that scrolls away with the page rather than staying put. */
+  html[data-nav='vertical'][data-menu-pos='scrollable'] .sidemenu { position: absolute; }
+  html[data-nav='vertical'] .app-frame { padding-inline-start: var(--side-w); }
+
+  /* Widths per sidemenu layout. */
+  html[data-sidemenu='default']      { --side-w: 252px; }
+  html[data-sidemenu='closed']       { --side-w: 78px; }
+  html[data-sidemenu='icon-text']    { --side-w: 98px; }
+  html[data-sidemenu='icon-overlay'] { --side-w: 78px; }
+  html[data-sidemenu='detached']     { --side-w: 248px; }
+  html[data-sidemenu='double']       { --side-w: 304px; --rail-w: 78px; }
+  /* Icon menu styles collapse the default layout to the same rail. */
+  html[data-menu-style^='icon'][data-sidemenu='default'] { --side-w: 78px; }
+}
+
+.sidemenu-brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  min-height: 62px;
+  text-decoration: none;
+}
+.sidemenu-mark {
+  flex: none; display: grid; place-items: center;
+  width: 38px; height: 38px; padding: 5px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--brand-ring);
+}
+.sidemenu-mark img { width: 100%; height: 100%; object-fit: contain; }
+.sidemenu-brand-text { display: grid; line-height: 1.15; min-width: 0; }
+.sidemenu-brand-text strong { font-size: 12.5px; font-weight: 800; color: var(--text-primary); white-space: nowrap; }
+.sidemenu-brand-text em { font-size: 10.5px; font-style: normal; font-weight: 600; color: var(--brand-accent); }
+
+.sidemenu-scroll { flex: 1 1 auto; overflow-y: auto; padding: 10px 8px; }
+.sidemenu-list { display: grid; gap: 2px; list-style: none; margin: 0; padding: 0; }
+.sidemenu-sec { position: relative; }
+
+.sidemenu-link {
+  width: 100%;
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  border: none; border-radius: 9px;
+  background: none;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none; cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.sidemenu-link:hover { background: var(--menu-hover); color: var(--text-primary); }
+.sidemenu-link:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: -2px; }
+.sidemenu-link.active { background: var(--brand-light); color: var(--brand-accent); font-weight: 650; }
+.sidemenu-icon { flex: none; stroke-width: 1.9; }
+.sidemenu-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: start; }
+.sidemenu-caret { flex: none; opacity: .7; transition: transform .16s ease; }
+.sidemenu-sec.open > .sidemenu-link .sidemenu-caret { transform: rotate(180deg); }
+
+.sidemenu-sub { display: none; padding: 2px 0 6px; }
+.sidemenu-sec.open > .sidemenu-sub { display: block; }
+.sidemenu-sub-head { display: none; }
+.sidemenu-sub-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 12px 7px 34px;
+  border-radius: 8px;
+  font-size: 12.5px; font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: background .12s ease, color .12s ease;
+}
+.sidemenu-sub-item:hover { background: var(--menu-hover); color: var(--text-primary); }
+.sidemenu-sub-item.active { color: var(--brand-accent); background: var(--brand-light); font-weight: 600; }
+.sidemenu-sub-icon { flex: none; opacity: .8; }
+.sidemenu-foot {
+  flex: none;
+  padding: 7px;
+  text-align: center;
+  font-size: 9.5px; font-weight: 600; letter-spacing: .04em;
+  color: #fff;
+  background: linear-gradient(to right, var(--brand-from), var(--brand-mid), var(--brand-to));
+}
+
+@media (min-width: 1024px) {
+  /* ── The collapsed rail: Closed, Icon Overlay, and the icon menu styles ── */
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-overlay'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-label,
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-overlay'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-caret,
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-overlay'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-brand-text,
+  html[data-sidemenu='icon-text'] .sidemenu-caret,
+  html[data-sidemenu='icon-text'] .sidemenu-brand-text,
+  html[data-sidemenu='double'] .sidemenu-label,
+  html[data-sidemenu='double'] .sidemenu-caret,
+  html[data-sidemenu='double'] .sidemenu-brand-text { display: none; }
+
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-overlay'], [data-sidemenu='double'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-link {
+    justify-content: center;
+    padding: 11px 8px;
+  }
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-overlay'], [data-sidemenu='double'], [data-sidemenu='icon-text'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-brand {
+    justify-content: center;
+    padding-inline: 6px;
+  }
+
+  /* Icon Text keeps a small caption under each glyph. */
+  html[data-sidemenu='icon-text'] .sidemenu-link { flex-direction: column; gap: 5px; padding: 10px 4px; }
+  html[data-sidemenu='icon-text'] .sidemenu-label {
+    flex: none; width: 100%;
+    font-size: 10px; font-weight: 600; line-height: 1.25; letter-spacing: .02em;
+    text-align: center;
+    /* Two lines of caption, then it stops — a long section name must not spill
+       out of a rail this narrow. */
+    white-space: normal; overflow: hidden;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  }
+
+  /* A rail has no room for a submenu underneath, so it opens beside it. */
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-text'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-scroll { overflow: visible; }
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-text'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-sec.open > .sidemenu-sub {
+    position: absolute;
+    inset-inline-start: calc(100% + 6px);
+    top: 0; z-index: 60;
+    min-width: 232px; max-height: 72vh; overflow-y: auto;
+    padding: 8px;
+    background: var(--surface-1);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-pop);
+  }
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-text'], [data-sidemenu='double'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-sub-item { padding-inline-start: 12px; }
+  html:is([data-sidemenu='closed'], [data-sidemenu='icon-text'], [data-sidemenu='double'], [data-menu-style^='icon'][data-sidemenu='default']) .sidemenu-sub-head {
+    display: block;
+    padding: 4px 12px 8px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Icon Overlay: the rail grows over the page instead of moving it. */
+  html[data-sidemenu='icon-overlay'] .sidemenu:hover { width: 252px; box-shadow: var(--shadow-pop); }
+  html[data-sidemenu='icon-overlay'] .sidemenu:hover .sidemenu-label,
+  html[data-sidemenu='icon-overlay'] .sidemenu:hover .sidemenu-caret,
+  html[data-sidemenu='icon-overlay'] .sidemenu:hover .sidemenu-brand-text { display: block; }
+  html[data-sidemenu='icon-overlay'] .sidemenu:hover .sidemenu-link { justify-content: flex-start; padding: 9px 12px; }
+  html[data-sidemenu='icon-overlay'] .sidemenu:hover .sidemenu-brand { justify-content: flex-start; padding-inline: 14px; }
+
+  /* Detached: a card floating clear of the page. */
+  html[data-sidemenu='detached'] .sidemenu {
+    inset-block: 12px;
+    inset-inline-start: 12px;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-pop);
+  }
+  html[data-sidemenu='detached'] .app-frame { padding-inline-start: calc(var(--side-w) + 24px); }
+
+  /* Double: an icon rail, and the open section as a column of its own. */
+  html[data-sidemenu='double'] .sidemenu-scroll { overflow: visible; }
+  html[data-sidemenu='double'] .sidemenu-sec.open > .sidemenu-sub {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: var(--rail-w);
+    width: calc(var(--side-w) - var(--rail-w));
+    z-index: 49;
+    padding: 18px 10px;
+    overflow-y: auto;
+    background: var(--surface-1);
+    border-inline-end: 1px solid var(--border);
+  }
+}
+
+/* ==========================================================================
+   7. THE SWITCHER PANEL
+   ========================================================================== */
+.switcher-scrim {
+  position: fixed; inset: 0; z-index: 1200;
+  background: rgb(15 18 24 / 0.36);
+}
+.switcher {
+  position: fixed; inset-block: 0; inset-inline-end: 0; z-index: 1201;
+  display: flex; flex-direction: column;
+  width: min(320px, 100vw);
+  background: var(--surface-1);
+  color: var(--text-primary);
+  box-shadow: -12px 0 34px rgb(15 18 24 / 0.22);
+  animation: switcher-in .22s ease;
+}
+[dir='rtl'] .switcher {
+  box-shadow: 12px 0 34px rgb(15 18 24 / 0.22);
+  animation-name: switcher-in-rtl;
+}
+@keyframes switcher-in { from { transform: translateX(102%); } to { transform: translateX(0); } }
+@keyframes switcher-in-rtl { from { transform: translateX(-102%); } to { transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) { .switcher { animation: none; } }
+
+.switcher-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.switcher-head h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.switcher-close {
+  margin-inline-start: auto;
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  border: none; border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.switcher-close:hover { background: var(--menu-hover); color: var(--text-primary); }
+
+.switcher-tabs { display: grid; grid-template-columns: 1fr 1fr; }
+.switcher-tabs button {
+  padding: 11px 10px;
+  border: none; border-bottom: 2px solid transparent;
+  background: var(--field-bg);
+  color: var(--text-secondary);
+  font: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer;
+}
+.switcher-tabs button.active {
+  background: var(--tone-good-bg);
+  border-bottom-color: var(--tone-good-ink);
+  color: var(--tone-good-ink);
+}
+
+.switcher-body { flex: 1 1 auto; overflow-y: auto; padding-bottom: 8px; }
+.switcher-group { padding: 0 14px 12px; }
+.switcher-group h4 {
+  margin: 0 -14px 10px;
+  padding: 7px 14px;
+  background: var(--field-bg);
+  border-block: 1px solid var(--border);
+  font-size: 12px; font-weight: 700;
+  color: var(--text-primary);
+}
+.switcher-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; }
+.switcher-options > .switcher-swatches { grid-column: 1 / -1; }
+.switcher-choice {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12.5px;
+  color: var(--label-ink);
+  cursor: pointer;
+}
+.switcher-choice input { accent-color: var(--brand-accent); cursor: pointer; }
+.switcher-choice.is-off { opacity: .45; cursor: not-allowed; }
+.switcher-choice.is-off input { cursor: not-allowed; }
+.switcher-hint { margin: 8px 0 0; font-size: 11.5px; line-height: 1.45; color: var(--text-muted); }
+
+.switcher-swatches { display: flex; flex-wrap: wrap; gap: 9px; }
+.switcher-swatch {
+  position: relative;
+  width: 30px; height: 30px; padding: 0;
+  border: 2px solid transparent; border-radius: 9px;
+  box-shadow: 0 0 0 1px var(--border);
+  cursor: pointer;
+}
+.switcher-swatch.active { border-color: var(--text-primary); }
+.switcher-swatch.custom {
+  display: grid; place-items: center;
+  background: var(--field-bg);
+  color: var(--text-secondary);
+}
+.switcher-swatch.custom input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+.switcher-foot { padding: 12px 14px; border-top: 1px solid var(--border); }
+.switcher-reset {
+  width: 100%;
+  padding: 10px;
+  border: none; border-radius: 8px;
+  background: #e91e63;
+  color: #fff;
+  font: inherit; font-size: 13.5px; font-weight: 650;
+  cursor: pointer;
+}
+.switcher-reset:hover { filter: brightness(1.06); }
+
+/* The loader shown while a route is being opened; the Switcher can turn it off. */
+html[data-loader='disable'] .app-loader { display: none; }

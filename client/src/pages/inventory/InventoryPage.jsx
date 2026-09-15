@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ExcelTools from '../../components/common/ExcelTools';
 import Modal from '../../components/common/Modal';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
@@ -40,11 +41,24 @@ const InventoryPage = () => {
     <div className="space-y-4">
       <PageHeader tone="cyan" icon={<Icons.inventory size={18} />} title="Inventory"
         subtitle="Lab hardware, licences and consumables. Anything at or below its reorder level is flagged."
-        action={can('inventory.create') && (
-          <button onClick={() => setForm({ name: '', sku: '', category: '', quantity: 0, unit: 'unit', reorder_level: 0 })}
-            className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> {t('Add item')}
-          </button>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="inventory"
+              rows={L.items}
+              onCreate={can('inventory.create') ? inventoryApi.createItem : undefined}
+              onDone={L.load}
+              variant="hero"
+            />
+            {can('inventory.create') && (
+              <button
+                onClick={() => setForm({ name: '', sku: '', category: '', quantity: 0, unit: 'unit', reorder_level: 0 })}
+                className="erp-hero-btn px-4 py-2.5 min-h-11"
+              >
+                <Icons.plus size={15} aria-hidden="true" /> {t('Add item')}
+              </button>
+            )}
+          </div>
         )} />
       <Flash error={L.error} notice={L.notice} />
 

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { usePersistedState } from '../../hooks/useListState';
 import { Link, useNavigate } from 'react-router-dom';
 import DataTable from '../../components/common/DataTable';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import SearchFilter from '../../components/common/SearchFilter';
 import BatchesDashboard from './BatchesDashboard';
 import { Icons } from '../../components/common/icons';
@@ -32,16 +34,20 @@ const BatchesPage = () => {
   const navigate = useNavigate();
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [status, setStatus] = useState('');
+  const [search, setSearch] = usePersistedState('batches:search', '');
+  const [status, setStatus] = usePersistedState('batches:status', '');
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  // Named so it can be re-run after a bulk import, not just on mount.
+  const load = useCallback(() => {
+    setLoading(true);
     batchApi.getAll()
       .then((r) => setBatches(r.data.data || []))
       .catch((e) => setError(e.response?.data?.message || 'Unable to load batches.'))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => { load(); }, [load]);
 
   const columns = [
     {
@@ -104,10 +110,21 @@ const BatchesPage = () => {
         icon={Icons.batches}
         title="Batches"
         subtitle="Clashes with a trainer, a room or the operating hours are rejected on save."
-        action={can('batches.create') && (
-          <Link to="/batches/new" className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> {t('New Batch')}
-          </Link>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="batches"
+              rows={batches}
+              onCreate={can('batches.create') ? batchApi.create : undefined}
+              onDone={load}
+              variant="hero"
+            />
+            {can('batches.create') && (
+              <Link to="/batches/new" className="erp-hero-btn px-4 py-2.5 min-h-11">
+                <Icons.plus size={15} aria-hidden="true" /> {t('New Batch')}
+              </Link>
+            )}
+          </div>
         )}
       />
 

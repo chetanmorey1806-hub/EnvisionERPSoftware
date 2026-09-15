@@ -1,0 +1,25 @@
+
+/* ==========================================================================
+   5. LAYOUT PREFERENCES
+   --------------------------------------------------------------------------
+   Driven by the data attributes `useLayoutPrefs` stamps on <html>. Keeping the
+   variants here rather than in the components means the Switcher only has to
+   change one attribute and the whole shell follows.
+   ========================================================================== */
+
+/* A plain header for anyone who finds the gradient too loud. */
+html[data-header-skin='light'] .app-header {
+  background: var(--surface-1);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+}
+html[data-header-skin='light'] .tool-btn { color: var(--text-secondary); }
+html[data-header-skin='light'] .tool-btn:hover { background: var(--menu-hover); color: var(--text-primary); }
+html[data-header-skin='light'] .pill-btn {
+  border-color: var(--border);
+  background: var(--surface-sunken);
+}
+html[data-header-skin='light'] .header-title p { color: var(--text-muted); }
+
+/* Boxed content narrows the reading column; the header gradient stays full. */
+html[data-width='boxed'] .app-main { max-width: 1180px; }

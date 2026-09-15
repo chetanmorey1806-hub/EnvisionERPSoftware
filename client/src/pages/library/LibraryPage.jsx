@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ExcelTools from '../../components/common/ExcelTools';
 import Modal from '../../components/common/Modal';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
@@ -36,11 +37,24 @@ const LibraryPage = () => {
     <div className="space-y-4">
       <PageHeader tone="cyan" icon={<Icons.library size={18} />} title="Library"
         subtitle="Books and courseware, and how many copies are on the shelf right now."
-        action={can('library.create') && (
-          <button onClick={() => setForm({ title: '', author: '', isbn: '', category: '', total_copies: 1 })}
-            className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> {t('Add book')}
-          </button>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="library"
+              rows={L.items}
+              onCreate={can('library.create') ? libraryApi.addBook : undefined}
+              onDone={L.load}
+              variant="hero"
+            />
+            {can('library.create') && (
+              <button
+                onClick={() => setForm({ title: '', author: '', isbn: '', category: '', total_copies: 1 })}
+                className="erp-hero-btn px-4 py-2.5 min-h-11"
+              >
+                <Icons.plus size={15} aria-hidden="true" /> {t('Add book')}
+              </button>
+            )}
+          </div>
         )} />
       <Flash error={L.error} notice={L.notice} />
 

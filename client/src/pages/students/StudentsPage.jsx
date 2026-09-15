@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { usePersistedState } from '../../hooks/useListState';
 import { Link, useNavigate } from 'react-router-dom';
 import DataTable from '../../components/common/DataTable';
 import SearchFilter from '../../components/common/SearchFilter';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import StudentsDashboard from '../../components/students/StudentsDashboard';
 import { Icons } from '../../components/common/icons';
 import { studentApi } from '../../api/studentApi';
@@ -22,8 +24,8 @@ const StudentsPage = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
-  const [status, setStatus] = useState('');
+  const [search, setSearch] = usePersistedState('students:search', '');
+  const [status, setStatus] = usePersistedState('students:status', '');
 
   const load = useCallback(() => {
     setLoading(true);
@@ -81,10 +83,21 @@ const StudentsPage = () => {
         icon={Icons.students}
         title="Student Directory"
         subtitle="Live records — students flagged red are drop-out risks."
-        action={can('students.create') && (
-          <Link to="/students/new" className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> {t('New Student')}
-          </Link>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="students"
+              rows={students}
+              onCreate={can('students.create') ? studentApi.create : undefined}
+              onDone={load}
+              variant="hero"
+            />
+            {can('students.create') && (
+              <Link to="/students/new" className="erp-hero-btn px-4 py-2.5 min-h-11">
+                <Icons.plus size={15} aria-hidden="true" /> {t('New Student')}
+              </Link>
+            )}
+          </div>
         )}
       />
 

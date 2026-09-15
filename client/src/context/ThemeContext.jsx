@@ -17,8 +17,11 @@ export const ThemeProvider = ({ children }) => {
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
+  // `setTheme` is exposed as well as the toggle: the Switcher offers Light and
+  // Dark as two radio buttons, which needs to set a value rather than flip one.
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

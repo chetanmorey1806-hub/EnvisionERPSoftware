@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ExcelTools from '../../components/common/ExcelTools';
 import Modal from '../../components/common/Modal';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
@@ -30,11 +31,24 @@ const StaffPage = () => {
     <div className="space-y-4">
       <PageHeader tone="brand" icon={<Icons.staff size={18} />} title="Staff"
         subtitle="Front desk, accounts and administration — the people who are not trainers."
-        action={can('staff.create') && (
-          <button onClick={() => setForm({ name: '', email: '', phone: '', department: '', designation: '', status: 'active' })}
-            className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> {t('Add staff')}
-          </button>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="staff"
+              rows={L.items}
+              onCreate={can('staff.create') ? staffApi.create : undefined}
+              onDone={L.load}
+              variant="hero"
+            />
+            {can('staff.create') && (
+              <button
+                onClick={() => setForm({ name: '', email: '', phone: '', department: '', designation: '', status: 'active' })}
+                className="erp-hero-btn px-4 py-2.5 min-h-11"
+              >
+                <Icons.plus size={15} aria-hidden="true" /> {t('Add staff')}
+              </button>
+            )}
+          </div>
         )} />
       <Flash error={L.error} notice={L.notice} />
 

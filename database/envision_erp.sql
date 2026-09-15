@@ -794,16 +794,37 @@ CREATE TABLE IF NOT EXISTS `inventory_transactions` (
 --  settings + backups
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `institution_settings` (
-  `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name`          VARCHAR(200) DEFAULT 'Envision Institute',
-  `address`       VARCHAR(255) DEFAULT NULL,
-  `phone`         VARCHAR(20)  DEFAULT NULL,
-  `email`         VARCHAR(160) DEFAULT NULL,
-  `logo`          VARCHAR(255) DEFAULT NULL,
-  `academic_year` VARCHAR(20)  DEFAULT NULL,
-  `currency`      VARCHAR(10)  DEFAULT 'INR',
-  `timezone`      VARCHAR(60)  DEFAULT 'Asia/Kolkata',
-  `updated_at`    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name`            VARCHAR(200) DEFAULT 'Envision Institute',
+  `legal_name`      VARCHAR(200) DEFAULT NULL,
+  `tagline`         VARCHAR(160) DEFAULT NULL,
+  `registration_no` VARCHAR(60)  DEFAULT NULL,
+  `affiliation`     VARCHAR(200) DEFAULT NULL,
+  `address`         VARCHAR(255) DEFAULT NULL,
+  `city`            VARCHAR(80)  DEFAULT NULL,
+  `state`           VARCHAR(80)  DEFAULT NULL,
+  `pincode`         VARCHAR(10)  DEFAULT NULL,
+  `phone`           VARCHAR(20)  DEFAULT NULL,
+  `email`           VARCHAR(160) DEFAULT NULL,
+  `website`         VARCHAR(160) DEFAULT NULL,
+  `gstin`           VARCHAR(20)  DEFAULT NULL,
+  `pan`             VARCHAR(15)  DEFAULT NULL,
+  `logo`            VARCHAR(255) DEFAULT NULL,
+  `academic_year`   VARCHAR(20)  DEFAULT NULL,
+  `currency`        VARCHAR(10)  DEFAULT 'INR',
+  `timezone`        VARCHAR(60)  DEFAULT 'Asia/Kolkata',
+  -- printed on fee receipts and invoices
+  `bank_name`       VARCHAR(120) DEFAULT NULL,
+  `bank_branch`     VARCHAR(120) DEFAULT NULL,
+  `account_holder`  VARCHAR(160) DEFAULT NULL,
+  `account_no`      VARCHAR(40)  DEFAULT NULL,
+  `ifsc`            VARCHAR(20)  DEFAULT NULL,
+  `upi_id`          VARCHAR(80)  DEFAULT NULL,
+  `signatory_name`  VARCHAR(120) DEFAULT NULL,
+  `signatory_role`  VARCHAR(80)  DEFAULT NULL,
+  `receipt_terms`   TEXT         DEFAULT NULL,
+  `certificate_note` TEXT        DEFAULT NULL,
+  `updated_at`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -814,6 +835,22 @@ CREATE TABLE IF NOT EXISTS `backup_logs` (
   `status`     ENUM('success','failed') NOT NULL DEFAULT 'success',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- One row per document type per academic year: what the next admission,
+-- receipt or certificate number reads. Unique on (doc_type, fy) so a new year
+-- starts a fresh series without disturbing the old one.
+CREATE TABLE IF NOT EXISTS `numbering_series` (
+  `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `doc_type`    VARCHAR(40) NOT NULL,
+  `fy`          VARCHAR(20) NOT NULL,
+  `prefix`      VARCHAR(30) NOT NULL DEFAULT '',
+  `suffix`      VARCHAR(30) DEFAULT NULL,
+  `next_number` INT UNSIGNED NOT NULL DEFAULT 1,
+  `padding`     TINYINT UNSIGNED NOT NULL DEFAULT 4,
+  `updated_at`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_numbering_doc_fy` (`doc_type`, `fy`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------------

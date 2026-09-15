@@ -16,6 +16,8 @@ import {
   Trash2, Pencil, Eye, Mail, MessageCircle, Clock, AlertTriangle,
   CircleCheck, CircleX, Inbox, Building2, Star, Wallet, Filter, HelpCircle,
   Folder, Share2, ChevronLeft, ChevronRight, SendHorizontal,
+  Hash, Landmark, ScrollText, Monitor, Palette, Keyboard, Database,
+  Layers, Save, RotateCcw, Globe, Type,
 } from 'lucide-react';
 
 export const Icons = {
@@ -78,6 +80,20 @@ export const Icons = {
   share: Share2,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
+
+  // Settings vocabulary
+  hash: Hash,           // document numbering
+  bank: Landmark,
+  terms: ScrollText,
+  monitor: Monitor,     // "follow the device"
+  palette: Palette,
+  keyboard: Keyboard,
+  database: Database,
+  layers: Layers,       // masters
+  save: Save,
+  reset: RotateCcw,
+  globe: Globe,
+  type: Type,
 };
 
 /** Notification `type` → icon, used by the bell menu and toasts. */

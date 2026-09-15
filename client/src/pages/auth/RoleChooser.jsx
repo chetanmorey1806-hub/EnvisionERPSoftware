@@ -18,22 +18,57 @@ const RoleChooser = ({ mode = 'login' }) => {
 
   return (
     <div className="erp-shell min-h-screen flex flex-col items-center justify-center px-4 py-12">
-      <div className="w-full max-w-3xl animate-fade-up">
+      <div className="w-full max-w-5xl animate-fade-up">
 
-        <div className="text-center mb-8">
+        <div className="text-center lg:text-left mb-8">
           <div className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 shadow-lg">
             <Logo className="h-12" />
           </div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 mt-3">
             {INSTITUTE.city} · {INSTITUTE.certification}
           </p>
-          <h1 className="mt-5 text-2xl font-extrabold text-gray-900 dark:text-slate-50">
-            {isRegister ? 'Create your account' : 'Sign in to your portal'}
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Choose your role to continue.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 stagger">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+
+          {/*
+            The institute's own promise, stated once on the way in. The artwork
+            carries its headline baked into the pixels, so it is placed as a
+            message — never blurred behind data, where those words would read as
+            an accident.
+          */}
+          <div className="hidden lg:block">
+            <img
+              src="/about-us.png"
+              alt="Lifetime job assistance courses at Envision Computer Training Institute"
+              width={515}
+              height={476}
+              className="w-full max-w-md mx-auto select-none drop-shadow-sm"
+              draggable="false"
+            />
+            <ul className="mt-6 space-y-2.5 max-w-md mx-auto">
+              {[
+                'Lifetime placement assistance till you get a job',
+                'Trainers with real project experience',
+                'Industry-aligned, job-ready curriculum',
+              ].map((line) => (
+                <li key={line} className="flex items-start gap-2.5 text-sm text-gray-600 dark:text-slate-400">
+                  <Icons.success size={16} className="shrink-0 mt-0.5 text-brand-600 dark:text-brand-400" aria-hidden="true" />
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <div className="text-center lg:text-left mb-6">
+              <h1 className="text-2xl font-extrabold text-gray-900 dark:text-slate-50">
+                {isRegister ? 'Create your account' : 'Sign in to your portal'}
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Choose your role to continue.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 stagger">
           {ROLE_ORDER.map((slug, i) => {
             const p = AUTH_ROLES[slug];
             const Icon = p.icon;
@@ -68,7 +103,9 @@ const RoleChooser = ({ mode = 'login' }) => {
                 )}
               </Card>
             );
-          })}
+              })}
+            </div>
+          </div>
         </div>
 
         <div className="text-center mt-8">

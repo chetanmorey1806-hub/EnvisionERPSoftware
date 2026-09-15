@@ -33,6 +33,17 @@ const Topbar = () => {
           <Icons.menu size={18} aria-hidden="true" />
         </button>
 
+        {/* Search entry point — the palette also opens on ⌘K. */}
+        <button
+          onClick={() => window.dispatchEvent(new Event('erp:open-palette'))}
+          title="Search (⌘K)"
+          aria-label="Search"
+          className="hidden sm:flex items-center gap-2 h-9 pl-2.5 pr-2 rounded-xl border border-gray-200 dark:border-slate-700 text-gray-400 hover:border-brand-300 dark:hover:border-brand-700 hover:text-gray-600 dark:hover:text-slate-300 transition-colors shrink-0"
+        >
+          <Icons.search size={15} aria-hidden="true" />
+          <kbd className="text-[10px] font-mono font-bold border border-gray-200 dark:border-slate-700 rounded px-1">⌘K</kbd>
+        </button>
+
         <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs font-medium min-w-0">
           <Link
             to="/dashboard"

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { usePersistedState } from '../../hooks/useListState';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import DataTable from '../../components/common/DataTable';
 import Modal from '../../components/common/Modal';
 import SearchFilter from '../../components/common/SearchFilter';
@@ -26,7 +28,7 @@ const RoomsPage = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = usePersistedState('rooms:search', '');
   const [type, setType] = useState('');
   const [form, setForm] = useState(null);
   const [error, setError] = useState('');
@@ -95,11 +97,24 @@ const RoomsPage = () => {
         icon={Icons.team}
         title="Classrooms & Labs"
         subtitle="Physical rooms a batch can be scheduled into — seating capacity is enforced."
-        action={can('classrooms.create') && (
-          <button onClick={() => { setForm({ ...EMPTY }); setError(''); }}
-            className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> Add Room
-          </button>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="rooms"
+              rows={rooms}
+              onCreate={can('classrooms.create') ? roomApi.create : undefined}
+              onDone={load}
+              variant="hero"
+            />
+            {can('classrooms.create') && (
+              <button
+                onClick={() => { setForm({ ...EMPTY }); setError(''); }}
+                className="erp-hero-btn px-4 py-2.5 min-h-11"
+              >
+                <Icons.plus size={15} aria-hidden="true" /> Add Room
+              </button>
+            )}
+          </div>
         )}
       />
 

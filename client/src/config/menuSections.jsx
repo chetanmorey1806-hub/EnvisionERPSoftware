@@ -42,6 +42,7 @@ import ReportsPage from '../pages/reports/ReportsPage';
 import TrainerPerformance from '../pages/admin/TrainerPerformance';
 
 import SettingsPage from '../pages/settings/SettingsPage';
+import GlobalSettingsPage from '../pages/settings/GlobalSettingsPage';
 import UsersPage from '../pages/users/UsersPage';
 import RolesPage from '../pages/roles/RolesPage';
 import ProfilePage from '../pages/profile/ProfilePage';
@@ -137,6 +138,7 @@ export const menuSections = [
     label: 'Settings',
     items: [
       { icon: Icons.settings, name: 'Institute Settings', path: '/settings', permission: 'settings.view', element: <SettingsPage /> },
+      { icon: Icons.hash, name: 'Global Settings', path: '/settings/global', permission: 'settings.view', element: <GlobalSettingsPage /> },
       { icon: Icons.users, name: 'User Management', path: '/users', permission: 'users.view', element: <UsersPage /> },
       { icon: Icons.roles, name: 'Roles & Permissions', path: '/roles', permission: 'roles.view', element: <RolesPage /> },
     ],

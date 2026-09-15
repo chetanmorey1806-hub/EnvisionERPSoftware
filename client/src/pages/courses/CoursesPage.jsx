@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { usePersistedState } from '../../hooks/useListState';
 import { Link, useNavigate } from 'react-router-dom';
 import DataTable from '../../components/common/DataTable';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import SearchFilter from '../../components/common/SearchFilter';
 import { Icons } from '../../components/common/icons';
 import { courseApi } from '../../api/courseApi';
@@ -17,15 +19,19 @@ const CoursesPage = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = usePersistedState('courses:search', '');
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  // Named so it can be re-run after a bulk import, not just on mount.
+  const load = useCallback(() => {
+    setLoading(true);
     courseApi.getAll()
       .then((r) => setCourses(r.data.data || []))
       .catch((e) => setError(e.response?.data?.message || 'Unable to load courses.'))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => { load(); }, [load]);
 
   const columns = [
     {
@@ -68,10 +74,21 @@ const CoursesPage = () => {
         icon={Icons.courses}
         title="Course Catalog"
         subtitle="Add a course with its schedule, trainer and classroom in one step."
-        action={can('courses.create') && (
-          <Link to="/courses/new" className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> {t('Add New Course')}
-          </Link>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="courses"
+              rows={courses}
+              onCreate={can('courses.create') ? courseApi.create : undefined}
+              onDone={load}
+              variant="hero"
+            />
+            {can('courses.create') && (
+              <Link to="/courses/new" className="erp-hero-btn px-4 py-2.5 min-h-11">
+                <Icons.plus size={15} aria-hidden="true" /> {t('Add New Course')}
+              </Link>
+            )}
+          </div>
         )}
       />
 

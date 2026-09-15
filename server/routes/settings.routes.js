@@ -7,6 +7,8 @@ const h = require('../utils/asyncHandler');
 router.use(authenticate);
 router.get('/profile', can('settings.view'), h(C.getInstitutionProfile));
 router.put('/profile', can('settings.update'), h(C.updateInstitutionProfile));
+router.get('/numbering', can('settings.view'), h(C.getNumbering));
+router.put('/numbering/:docType', can('settings.update'), h(C.saveNumbering));
 router.get('/backups', can('settings.view'), h(C.getBackupLogs));
 router.post('/backups/trigger', can('settings.update'), h(C.triggerBackup));
 

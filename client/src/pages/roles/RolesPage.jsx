@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PageHero } from '../../components/common/PageShell';
+import { Icons } from '../../components/common/icons';
 import { roleApi } from '../../api/roleApi';
 import { usePermissions } from '../../hooks/usePermissions';
 

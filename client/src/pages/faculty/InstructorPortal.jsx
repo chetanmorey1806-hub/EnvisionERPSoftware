@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { PageHero } from '../../components/common/PageShell';
+import { Icons } from '../../components/common/icons';
 import { facultyPortalApi } from '../../api/facultyPortalApi';
 // The full attendance client (register + session open/close), not the stub in
 // facultyPortalApi which only had submitBulk.

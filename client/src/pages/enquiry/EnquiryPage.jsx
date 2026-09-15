@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import { Icons } from '../../components/common/icons';
 import { enquiryApi } from '../../api/enquiryApi';
 import { courseApi } from '../../api/courseApi';
@@ -143,10 +144,21 @@ const EnquiryPage = () => {
         icon={Icons.enquiries}
         title="Lead Management & Admissions"
         subtitle="Log inquiries, track follow-ups, and convert leads into students."
-        action={can('enquiries.create') && (
-          <button onClick={() => setNewLead({ ...EMPTY_LEAD })} className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> Log New Lead
-          </button>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="enquiries"
+              rows={leads}
+              onCreate={can('enquiries.create') ? enquiryApi.create : undefined}
+              onDone={load}
+              variant="hero"
+            />
+            {can('enquiries.create') && (
+              <button onClick={() => setNewLead({ ...EMPTY_LEAD })} className="erp-hero-btn px-4 py-2.5 min-h-11">
+                <Icons.plus size={15} aria-hidden="true" /> Log New Lead
+              </button>
+            )}
+          </div>
         )}
       />
 

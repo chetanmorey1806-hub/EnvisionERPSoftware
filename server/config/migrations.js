@@ -288,6 +288,54 @@ async function runMigrations(conn, db) {
   await conn.query(
     "UPDATE course_materials SET due_at = TIMESTAMP(due_date, '23:59:59') WHERE due_at IS NULL AND due_date IS NOT NULL"
   );
+  // ---- Institute profile: everything a printed document needs -------------
+  // Receipts, certificates and invoices all print the same letterhead, bank
+  // block and signatory. Held here as one row rather than hard-coded in each
+  // template, so a change of address is one save and not a code change.
+  const profileCols = {
+    legal_name:      "VARCHAR(200) NULL AFTER `name`",
+    tagline:         'VARCHAR(160) NULL',           // prints under the logo
+    registration_no: 'VARCHAR(60) NULL',
+    affiliation:     'VARCHAR(200) NULL',           // board / university
+    gstin:           'VARCHAR(20) NULL',
+    pan:             'VARCHAR(15) NULL',
+    city:            'VARCHAR(80) NULL',
+    state:           'VARCHAR(80) NULL',
+    pincode:         'VARCHAR(10) NULL',
+    website:         'VARCHAR(160) NULL',
+    bank_name:       'VARCHAR(120) NULL',
+    bank_branch:     'VARCHAR(120) NULL',
+    account_holder:  'VARCHAR(160) NULL',
+    account_no:      'VARCHAR(40) NULL',
+    ifsc:            'VARCHAR(20) NULL',
+    upi_id:          'VARCHAR(80) NULL',
+    signatory_name:  'VARCHAR(120) NULL',           // above "Authorised Signatory"
+    signatory_role:  'VARCHAR(80) NULL',
+    receipt_terms:   'TEXT NULL',                   // foot of a fee receipt
+    certificate_note: 'TEXT NULL',                  // foot of a certificate
+  };
+  for (const [col, ddl] of Object.entries(profileCols)) {
+    await ensureColumn(conn, db, 'institution_settings', col, ddl);
+  }
+
+  // ---- Document numbering -------------------------------------------------
+  // One row per document type per academic year: what the next admission /
+  // receipt / certificate number reads. Unique on (doc_type, fy) so a new year
+  // starts its own series without disturbing the old one.
+  await conn.query(
+    `CREATE TABLE IF NOT EXISTS \`numbering_series\` (
+       \`id\`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+       \`doc_type\`    VARCHAR(40) NOT NULL,
+       \`fy\`          VARCHAR(20) NOT NULL,
+       \`prefix\`      VARCHAR(30) NOT NULL DEFAULT '',
+       \`suffix\`      VARCHAR(30) DEFAULT NULL,
+       \`next_number\` INT UNSIGNED NOT NULL DEFAULT 1,
+       \`padding\`     TINYINT UNSIGNED NOT NULL DEFAULT 4,
+       \`updated_at\`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+       PRIMARY KEY (\`id\`),
+       UNIQUE KEY \`uk_numbering_doc_fy\` (\`doc_type\`, \`fy\`)
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`
+  );
 }
 
 module.exports = { runMigrations, ensureColumn, columnExists };

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../../components/common/Modal';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { userApi } from '../../api/userApi';
@@ -143,12 +144,24 @@ const UsersPage = () => {
         icon={Icons.users}
         title="User Management"
         subtitle="Create the accounts for trainers, the placement team, staff and students — and control who can sign in."
-        action={can('users.create') && (
-          <button
-            onClick={() => setForm({ name: '', email: '', password: '', phone: '', role: 'faculty', status: 'active' })}
-            className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> {t('Add user')}
-          </button>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="users"
+              rows={users}
+              onCreate={can('users.create') ? userApi.create : undefined}
+              onDone={load}
+              variant="hero"
+            />
+            {can('users.create') && (
+              <button
+                onClick={() => setForm({ name: '', email: '', password: '', phone: '', role: 'faculty', status: 'active' })}
+                className="erp-hero-btn px-4 py-2.5 min-h-11"
+              >
+                <Icons.plus size={15} aria-hidden="true" /> {t('Add user')}
+              </button>
+            )}
+          </div>
         )}
       />
 

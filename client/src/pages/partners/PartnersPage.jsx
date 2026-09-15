@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { usePersistedState } from '../../hooks/useListState';
 import { Link, useNavigate } from 'react-router-dom';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import EmptyState from '../../components/common/EmptyState';
 import { Icons } from '../../components/common/icons';
 import { partnerApi } from '../../api/partnerApi';
@@ -27,7 +29,7 @@ const PartnersPage = () => {
 
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = usePersistedState('partners:search', '');
   const [query, setQuery] = useState('');
   const [deleted, setDeleted] = useState(false);
   const [expanded, setExpanded] = useState(null);      // partner id whose contacts are open
@@ -90,7 +92,14 @@ const PartnersPage = () => {
         title="Corporate Partners"
         subtitle="Companies that sponsor training and hire our students."
         action={(
-          <div className="flex gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools
+              schema="partners"
+              rows={partners}
+              onCreate={can('partners.create') ? partnerApi.create : undefined}
+              onDone={load}
+              variant="hero"
+            />
             <button
               onClick={() => setDeleted((d) => !d)}
               className={`erp-hero-btn px-4 py-2.5 min-h-11 ${deleted ? 'bg-white/35' : ''}`}
