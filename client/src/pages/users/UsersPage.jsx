@@ -31,6 +31,9 @@ const ROLE_TONE = {
   registrar: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
   staff: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
   student: 'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400',
+  accountant: 'bg-teal-100 text-teal-700 dark:bg-teal-950/50 dark:text-teal-400',
+  librarian: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-950/50 dark:text-cyan-400',
+  teaching_assistant: 'bg-lime-100 text-lime-700 dark:bg-lime-950/50 dark:text-lime-400',
 };
 
 const shortDate = (d) =>

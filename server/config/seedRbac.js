@@ -77,6 +77,9 @@ const ROLES = [
   { name: 'branch_head', label: 'Branch Head', description: 'Runs a centre: everything operational plus P&L, but cannot touch users, roles or system settings.', is_system: 1 },
   { name: 'registrar', label: 'Front-Desk Registrar', description: 'Front desk: enquiries, admissions and taking fees. Cannot price a course or waive a fine.', is_system: 1 },
   { name: 'coordinator', label: 'Academic Coordinator', description: 'Owns delivery: batches, timetable, syllabus pacing, exams and certification. No money.', is_system: 1 },
+  { name: 'accountant', label: 'Accountant', description: 'The books: fee plans, collections, dues, late fees, expenses, payroll and profit & loss. No academics.', is_system: 1 },
+  { name: 'librarian', label: 'Librarian', description: 'Library and inventory: books, copies, issues and returns, and the institute\'s stock.', is_system: 1 },
+  { name: 'teaching_assistant', label: 'Teaching Assistant', description: 'Helps trainers in every class: classwork, grading drafts, attendance and marks. Cannot issue certificates or sign off job-readiness.', is_system: 1 },
 ];
 
 const ACTION_LABEL = {
@@ -208,6 +211,49 @@ function permissionsForRole(roleName, permissionNames) {
         ...grant(['portfolio'], ['view']),
         ...grant(['communications'], ['view', 'send']),
         ...grant(['partners'], ['view', 'create', 'update']),
+        ...grant(['chat'], ['view', 'send']),
+        ...grant(['documents'], ['view', 'create', 'update', 'delete', 'share']),
+      ];
+
+    case 'accountant':
+      // Owns the money end to end — including pricing a course and waiving a
+      // fine, which the registrar deliberately cannot do — but no academics.
+      return [
+        ...grant(['dashboard', 'students', 'courses', 'batches', 'admissions'], ['view']),
+        ...grant(['fees'], ['view', 'create', 'update', 'export', 'manage', 'structure']),
+        ...grant(['expenses'], ['view', 'create', 'update', 'delete']),
+        ...grant(['payroll'], ['view', 'update']),
+        ...grant(['reports'], ['view', 'export']),
+        ...grant(['partners'], ['view']),
+        ...grant(['notifications'], ['view']),
+        ...grant(['chat'], ['view', 'send']),
+        ...grant(['documents'], ['view', 'create', 'update', 'delete', 'share']),
+      ];
+
+    case 'librarian':
+      return [
+        ...grant(['dashboard', 'students', 'courses', 'batches'], ['view']),
+        ...grant(['library', 'inventory'], ['view', 'create', 'update']),
+        ...grant(['notifications'], ['view']),
+        ...grant(['chat'], ['view', 'send']),
+        ...grant(['documents'], ['view', 'create', 'update', 'share']),
+      ];
+
+    case 'teaching_assistant':
+      // A co-teacher in every class. Drafts grades and keeps registers, but the
+      // decisions that carry the institute's name stay with trainers and the
+      // coordinator: no certificates, no readiness sign-off, no overrides.
+      return [
+        ...grant(['dashboard', 'students', 'courses', 'batches', 'exams', 'faculty'], ['view']),
+        ...grant(['classroom'], ['view', 'create', 'update']),
+        ...grant(['attendance'], ['view', 'create', 'update', 'manage']),
+        ...grant(['results'], ['view', 'create', 'update', 'manage']),
+        ...grant(['syllabus'], ['view']),
+        ...grant(['grades'], ['view', 'create', 'update']),
+        ...grant(['remedials'], ['view', 'update']),
+        ...grant(['flags'], ['view', 'create']),
+        ...grant(['leaves'], ['view', 'create']),
+        ...grant(['notifications'], ['view']),
         ...grant(['chat'], ['view', 'send']),
         ...grant(['documents'], ['view', 'create', 'update', 'delete', 'share']),
       ];

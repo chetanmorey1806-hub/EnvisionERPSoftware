@@ -802,17 +802,22 @@ const pageHelpEnMr = {
   '/classroom': {
     en: {
       title: 'Classroom',
-      purpose: 'Classwork and homework — trainers publish it, students submit it.',
+      purpose: 'Google Classroom inside the ERP: every batch is a class with a stream, classwork, people and grades.',
       steps: [
-        'TRAINER: you see everything you have published for your batches. Filter by type or batch.',
-        'Click "View submissions" on any item to see who submitted, download their file, and give a grade.',
-        'STUDENT: you see the work assigned to you. Overdue items are outlined in red.',
+        'CLASSES: each card is one batch. Trainers see the class code and how much work is waiting to be reviewed; students see what is due soon.',
+        'STUDENTS join a class with "Join class" and the 7-character code from their trainer.',
+        'STREAM: the teacher posts announcements (with a file if needed); everyone can comment. New classwork shows up here too, and "Upcoming" lists work due in the next 7 days.',
+        'CLASSWORK: press "Create" for an Assignment, a Question (typed answer), Material (no submission) or a Topic. Work is grouped by topic.',
+        'Open any piece of work to see instructions, class comments and, for a teacher, every student\'s status: assigned, turned in, done late, missing, draft grade or returned.',
+        'PEOPLE: the teacher and the students. Teachers can copy the class code and remove a student.',
+        'GRADES (teachers): every student against every graded item, with averages. Type in a cell to draft a grade; "Export to Excel" downloads the gradebook.',
       ],
-      submit:
-        'TRAINER — click "Publish work": choose the batch and type (Classwork / Homework / Lab / Material), write the title and instructions, set the time duration and due date, attach a file, then click "Publish". Students are notified instantly.\n\nSTUDENT — click "Submit work": write a note, attach your file (ZIP, PDF, DOC or image, up to 25 MB), and click "Submit". You can resubmit — it replaces the old file.',
+      submit: 'TEACHER: open the work, type a grade (and feedback) for a student and press Save. That is a DRAFT the student cannot see. Tick the students and press "Return" to release grades and feedback to them.\n\nSTUDENT: open the work, add a file or write your answer, and press "Turn in". You can "Unsubmit" to change it until your trainer grades it. Use Private comments to ask your trainer something only they will see.',
       tips: [
-        'Submitting after the due date is marked "late" automatically.',
-        'A trainer can only publish to batches assigned to them.',
+        'The class settings (gear on the class page) change the banner colour and description, reset the class code, or stop students joining with the code.',
+        'Work turned in after the due time is marked "Done late" automatically; work never turned in becomes "Missing".',
+        'A removed student cannot rejoin with the code. Add them back from their student record.',
+        'Classes come from batches: schedule a batch with a trainer and its class appears here.',
       ],
     },
     mr: {

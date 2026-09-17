@@ -23,7 +23,8 @@ import FollowupPage from '../pages/followup/FollowupPage';
 import AdmissionsPage from '../pages/admissions/AdmissionsPage';
 import FeesPage from '../pages/fees/FeesPage';
 
-import ClassroomSwitch from '../pages/classroom/ClassroomSwitch';
+import ClassesHome from '../pages/classroom/ClassesHome';
+import ClassView from '../pages/classroom/ClassView';
 import InstructorPortal from '../pages/faculty/InstructorPortal';
 import AttendancePage from '../pages/attendance/AttendancePage';
 import MyAttendance from '../pages/attendance/MyAttendance';
@@ -99,7 +100,7 @@ export const menuSections = [
     label: 'Academics',
     items: [
       { icon: Icons.faculty, name: 'My Classes', path: '/my-classes', permission: 'attendance.manage', element: <InstructorPortal /> },
-      { icon: Icons.courses, name: 'Classroom', path: '/classroom', permission: 'classroom.view', element: <ClassroomSwitch /> },
+      { icon: Icons.courses, name: 'Classroom', path: '/classroom', permission: 'classroom.view', element: <ClassesHome /> },
       { icon: Icons.attendance, name: 'Attendance', path: '/attendance', permission: 'attendance.manage', element: <AttendancePage /> },
       { icon: Icons.exams, name: 'Examinations', path: '/examinations', permission: 'exams.view', element: <ExaminationPage /> },
       { icon: Icons.results, name: 'Results', path: '/results', permission: 'results.manage', element: <ResultsPage /> },
@@ -164,6 +165,9 @@ export const visibleTopLinks = (can) => topLinks.filter((l) => !l.permission || 
  */
 export const hiddenRoutes = [
   { path: '/profile', element: <ProfilePage /> },
+
+  // One class: Stream / Classwork / People / Grades. Membership is checked by the API.
+  { path: '/classroom/:batchId', permission: 'classroom.view', element: <ClassView /> },
 
   { path: '/students/new', permission: 'students.create', element: <StudentForm /> },
   { path: '/students/:id/edit', permission: 'students.update', element: <StudentForm /> },

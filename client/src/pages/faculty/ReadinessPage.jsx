@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../../components/common/Modal';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { trainerEvalApi } from '../../api/trainerEvalApi';
@@ -241,6 +242,10 @@ const ReadinessPage = () => {
                   {summary.placed} {t('placed')}
                 </span>
               </div>
+            )}
+            {rows.length > 0 && (
+              <ExcelTools schema="readiness" rows={rows}
+                filename={`readiness-${batches.find((b) => String(b.id) === String(batchId))?.code || batchId}`} />
             )}
           </div>
 

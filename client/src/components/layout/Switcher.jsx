@@ -105,6 +105,7 @@ const Switcher = ({ open, onClose }) => {
               <Group title="Theme Color Mode:">
                 <Choice name="sw-mode" label="Light" value="light" current={theme} onChange={setTheme} />
                 <Choice name="sw-mode" label="Dark" value="dark" current={theme} onChange={setTheme} />
+                <Choice name="sw-mode" label="Device" value="system" current={theme} onChange={setTheme} />
               </Group>
 
               <Group title="Directions:">

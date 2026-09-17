@@ -51,7 +51,7 @@ const MASTERS = [
 const fmtDate = (v) => (v ? new Date(v).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : '—');
 
 const SettingsPage = () => {
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme, resolved, setTheme } = useContext(ThemeContext);
   const { lang, setLang, languages } = useT();
   const { can } = usePermissions();
   const { prefs, set, reset } = useLayoutPrefs();
@@ -111,7 +111,7 @@ const SettingsPage = () => {
         subtitle="How the portal behaves on this device — and the way through to what everyone shares."
         meta={[
           { label: 'Academic year', value: profile?.academic_year || '—' },
-          { label: 'Appearance', value: theme === 'dark' ? 'Dark' : 'Light' },
+          { label: 'Appearance', value: theme === 'system' ? 'Device' : theme === 'dark' ? 'Dark' : 'Light' },
         ]}
         action={
           can('settings.view') && (
@@ -137,7 +137,9 @@ const SettingsPage = () => {
       >
         <Row
           label="Colour mode"
-          hint={theme === 'dark' ? 'Dark — easier at night and in a dim lab' : 'Light — the shipped look'}
+          hint={theme === 'system'
+            ? `Following this device — currently ${resolved}`
+            : theme === 'dark' ? 'Dark — easier at night and in a dim lab' : 'Light — the shipped look'}
         >
           <Segmented
             value={theme}
@@ -145,6 +147,7 @@ const SettingsPage = () => {
             options={[
               { value: 'light', label: 'Light', icon: Icons.sun },
               { value: 'dark', label: 'Dark', icon: Icons.moon },
+              { value: 'system', label: 'Device', icon: Icons.monitor },
             ]}
           />
         </Row>

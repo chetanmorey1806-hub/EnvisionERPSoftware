@@ -5,6 +5,7 @@ import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { certificateApi } from '../../api/certificateApi';
 import { studentApi } from '../../api/studentApi';
+import ExcelTools from '../../components/common/ExcelTools';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useT } from '../../context/LanguageContext';
 
@@ -101,11 +102,16 @@ const CertificatesPage = () => {
         icon={Icons.certificates}
         title="Certificates"
         subtitle="Issued only when the course is finished, the marks are in and the fees are clear."
-        action={can('certificates.issue') && (
-          <button onClick={() => { setIssuing({ student_id: '', remarks: '', override_reason: '' }); setCheck(null); }}
-            className="erp-hero-btn px-4 py-2.5 min-h-11">
-            <Icons.plus size={15} aria-hidden="true" /> {t('Issue certificate')}
-          </button>
+        action={(
+          <div className="flex flex-wrap items-center gap-2">
+            <ExcelTools schema="certificates" rows={certs} variant="hero" />
+            {can('certificates.issue') && (
+              <button onClick={() => { setIssuing({ student_id: '', remarks: '', override_reason: '' }); setCheck(null); }}
+                className="erp-hero-btn px-4 py-2.5 min-h-11">
+                <Icons.plus size={15} aria-hidden="true" /> {t('Issue certificate')}
+              </button>
+            )}
+          </div>
         )}
       />
 

@@ -25,7 +25,8 @@ const AppHeader = ({ onOpenSwitcher }) => {
   const { toggleSidebar } = useContext(SidebarContext);
   const { user, logout } = useContext(AuthContext);
   const { pathname } = useLocation();
-  const segments = pathname.split('/').filter(Boolean);
+  // Ids are not titles: /classroom/2 reads "Classroom", /students/5/edit reads "Edit".
+  const segments = pathname.split('/').filter((seg) => seg && !/^\d+$/.test(seg));
   const here = segments.length ? humanise(segments[segments.length - 1]) : 'Dashboard';
 
   return (

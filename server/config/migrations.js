@@ -74,6 +74,20 @@ async function runMigrations(conn, db) {
     );
     console.log('[db:setup] users.role extended (branch_head, registrar, coordinator).');
   }
+  const [roleCol2] = await conn.query(
+    `SELECT COLUMN_TYPE FROM information_schema.COLUMNS
+     WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'users' AND COLUMN_NAME = 'role'`, [db]
+  );
+  if (roleCol2.length && !roleCol2[0].COLUMN_TYPE.includes('teaching_assistant')) {
+    await conn.query(
+      `ALTER TABLE users MODIFY COLUMN role
+       ENUM('super_admin','admin','faculty','staff','student','placement',
+            'branch_head','registrar','coordinator',
+            'accountant','librarian','teaching_assistant')
+       NOT NULL DEFAULT 'staff'`
+    );
+    console.log('[db:setup] users.role extended (accountant, librarian, teaching_assistant).');
+  }
 
   // ---- Trainer module: assignment open/closed + batch sign-off ------------
   await ensureColumn(conn, db, 'course_materials', 'status', "ENUM('open','closed') NOT NULL DEFAULT 'open' AFTER due_date");
@@ -334,6 +348,115 @@ async function runMigrations(conn, db) {
        \`updated_at\`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
        PRIMARY KEY (\`id\`),
        UNIQUE KEY \`uk_numbering_doc_fy\` (\`doc_type\`, \`fy\`)
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`
+  );
+  // ---- Google Classroom-style classes -------------------------------------
+  // A batch IS a class. It gains a join code, a banner colour and a short
+  // description; classwork gains topics and points; submissions gain a
+  // "returned" moment, so a grade can be drafted privately and released later.
+  await ensureColumn(conn, db, 'batches', 'class_code', 'VARCHAR(8) NULL');
+  await ensureColumn(conn, db, 'batches', 'class_theme', 'VARCHAR(20) NULL');
+  await ensureColumn(conn, db, 'batches', 'class_description', 'TEXT NULL');
+  await ensureColumn(conn, db, 'batches', 'class_join_enabled', 'TINYINT(1) NOT NULL DEFAULT 1');
+  const [codeIdx] = await conn.query(
+    `SELECT INDEX_NAME FROM information_schema.STATISTICS
+     WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'batches' AND INDEX_NAME = 'uq_batches_class_code'`, [db]
+  );
+  if (!codeIdx.length) {
+    await conn.query('ALTER TABLE batches ADD UNIQUE KEY `uq_batches_class_code` (`class_code`)');
+    console.log('[db:setup] batches.class_code unique index added.');
+  }
+
+  await conn.query(
+    `CREATE TABLE IF NOT EXISTS \`class_topics\` (
+       \`id\`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+       \`batch_id\`   INT UNSIGNED NOT NULL,
+       \`name\`       VARCHAR(120) NOT NULL,
+       \`position\`   INT NOT NULL DEFAULT 0,
+       \`created_at\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+       PRIMARY KEY (\`id\`),
+       KEY \`idx_topic_batch\` (\`batch_id\`),
+       CONSTRAINT \`fk_topic_batch\` FOREIGN KEY (\`batch_id\`) REFERENCES \`batches\` (\`id\`) ON DELETE CASCADE
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`
+  );
+
+  await ensureColumn(conn, db, 'course_materials', 'topic_id', 'INT UNSIGNED NULL AFTER batch_id');
+  await ensureColumn(conn, db, 'course_materials', 'points', 'SMALLINT UNSIGNED NULL');
+  const [cmType2] = await conn.query(
+    `SELECT COLUMN_TYPE FROM information_schema.COLUMNS
+     WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'course_materials' AND COLUMN_NAME = 'type'`, [db]
+  );
+  if (cmType2.length && !cmType2[0].COLUMN_TYPE.includes('question')) {
+    await conn.query(
+      `ALTER TABLE course_materials MODIFY COLUMN type
+       ENUM('material','assignment','lab','classwork','homework','question')
+       NOT NULL DEFAULT 'material'`
+    );
+    console.log('[db:setup] course_materials.type extended (question).');
+  }
+
+  // Grades are drafted, then returned. Rows graded before this existed were
+  // already shown to the student, so they count as returned — the backfill runs
+  // only in the migration that adds the column, never again.
+  if (await ensureColumn(conn, db, 'assignment_submissions', 'returned_at', 'DATETIME NULL AFTER graded_at')) {
+    await conn.query(
+      "UPDATE assignment_submissions SET status = 'returned', returned_at = graded_at WHERE status = 'graded'"
+    );
+  }
+
+  await conn.query(
+    `CREATE TABLE IF NOT EXISTS \`class_announcements\` (
+       \`id\`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+       \`batch_id\`   INT UNSIGNED NOT NULL,
+       \`user_id\`    INT UNSIGNED DEFAULT NULL,
+       \`body\`       TEXT NOT NULL,
+       \`file_name\`  VARCHAR(255) DEFAULT NULL,
+       \`file_url\`   VARCHAR(255) DEFAULT NULL,
+       \`size_kb\`    INT DEFAULT 0,
+       \`created_at\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+       PRIMARY KEY (\`id\`),
+       KEY \`idx_ann_batch\` (\`batch_id\`, \`created_at\`),
+       CONSTRAINT \`fk_ann_batch\` FOREIGN KEY (\`batch_id\`) REFERENCES \`batches\` (\`id\`) ON DELETE CASCADE,
+       CONSTRAINT \`fk_ann_user\`  FOREIGN KEY (\`user_id\`)  REFERENCES \`users\` (\`id\`)   ON DELETE SET NULL
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`
+  );
+
+  // Class comments: visible to the whole class, on an announcement or a piece
+  // of classwork. Exactly one of the two targets is set.
+  await conn.query(
+    `CREATE TABLE IF NOT EXISTS \`class_comments\` (
+       \`id\`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
+       \`batch_id\`        INT UNSIGNED NOT NULL,
+       \`announcement_id\` INT UNSIGNED DEFAULT NULL,
+       \`material_id\`     INT UNSIGNED DEFAULT NULL,
+       \`user_id\`         INT UNSIGNED DEFAULT NULL,
+       \`body\`            VARCHAR(1000) NOT NULL,
+       \`created_at\`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+       PRIMARY KEY (\`id\`),
+       KEY \`idx_cc_ann\` (\`announcement_id\`),
+       KEY \`idx_cc_mat\` (\`material_id\`),
+       CONSTRAINT \`fk_cc_batch\` FOREIGN KEY (\`batch_id\`)        REFERENCES \`batches\` (\`id\`)             ON DELETE CASCADE,
+       CONSTRAINT \`fk_cc_ann\`   FOREIGN KEY (\`announcement_id\`) REFERENCES \`class_announcements\` (\`id\`) ON DELETE CASCADE,
+       CONSTRAINT \`fk_cc_mat\`   FOREIGN KEY (\`material_id\`)     REFERENCES \`course_materials\` (\`id\`)    ON DELETE CASCADE,
+       CONSTRAINT \`fk_cc_user\`  FOREIGN KEY (\`user_id\`)         REFERENCES \`users\` (\`id\`)               ON DELETE SET NULL
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`
+  );
+
+  // Private comments: one thread per (classwork, student) between that student
+  // and the teachers. No other student can read it.
+  await conn.query(
+    `CREATE TABLE IF NOT EXISTS \`class_private_comments\` (
+       \`id\`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+       \`material_id\` INT UNSIGNED NOT NULL,
+       \`student_id\`  INT UNSIGNED NOT NULL,
+       \`user_id\`     INT UNSIGNED DEFAULT NULL,
+       \`body\`        VARCHAR(1000) NOT NULL,
+       \`created_at\`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+       PRIMARY KEY (\`id\`),
+       KEY \`idx_pc_thread\` (\`material_id\`, \`student_id\`),
+       CONSTRAINT \`fk_pc_mat\`  FOREIGN KEY (\`material_id\`) REFERENCES \`course_materials\` (\`id\`) ON DELETE CASCADE,
+       CONSTRAINT \`fk_pc_stu\`  FOREIGN KEY (\`student_id\`)  REFERENCES \`students\` (\`id\`)         ON DELETE CASCADE,
+       CONSTRAINT \`fk_pc_user\` FOREIGN KEY (\`user_id\`)     REFERENCES \`users\` (\`id\`)            ON DELETE SET NULL
      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`
   );
 }

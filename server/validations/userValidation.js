@@ -6,6 +6,7 @@
 const ROLES = [
   'super_admin', 'admin', 'faculty', 'staff', 'student', 'placement',
   'branch_head', 'registrar', 'coordinator',
+  'accountant', 'librarian', 'teaching_assistant',
 ];
 
 module.exports = {

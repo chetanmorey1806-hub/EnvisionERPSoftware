@@ -26,7 +26,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'lg' }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4"
+      className="fixed inset-0 z-[1400] flex items-end sm:items-center justify-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-label={typeof title === 'string' ? t(title) : undefined}

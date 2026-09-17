@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../../components/common/Modal';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { placementApi } from '../../api/placementApi';
@@ -256,6 +257,16 @@ const PlacementPage = () => {
       </div>
 
       {loading && <p className="text-xs text-gray-500 py-8 text-center">{t('Loading…')}</p>}
+
+      {!loading && tab === 'jobs' && jobs.length > 0 && (
+        <div className="flex justify-end"><ExcelTools schema="placementJobs" rows={jobs} filename="placement-jobs" /></div>
+      )}
+      {!loading && tab === 'pipeline' && pipeline?.rows?.length > 0 && (
+        <div className="flex justify-end">
+          <ExcelTools schema="placementPipeline" rows={pipeline.rows}
+            filename={`pipeline-${String(pipeline.job.company || 'job').replace(/\s+/g, '-')}`} />
+        </div>
+      )}
 
       {/* ---------------- JOBS ---------------- */}
       {!loading && tab === 'jobs' && (

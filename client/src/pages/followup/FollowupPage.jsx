@@ -2,6 +2,7 @@ import React from 'react';
 import { Icons } from '../../components/common/icons';
 import { PageHeader, Empty, Flash, Table, Pill, useList, Loading, dateStr } from '../../components/common/PageKit';
 import { followupApi } from '../../api/followupApi';
+import ExcelTools from '../../components/common/ExcelTools';
 
 /** Follow-ups that are due. Created against an enquiry, from the Enquiries page. */
 const FollowupPage = () => {
@@ -10,7 +11,8 @@ const FollowupPage = () => {
   return (
     <div className="space-y-4">
       <PageHeader tone="amber" icon={<Icons.followups size={18} />} title="Follow-ups"
-        subtitle="Callbacks that are due. Every one belongs to an enquiry — raise them from the Enquiries page." />
+        subtitle="Callbacks that are due. Every one belongs to an enquiry — raise them from the Enquiries page."
+        action={<ExcelTools schema="followups" rows={L.items} variant="hero" />} />
       <Flash error={L.error} notice={L.notice} />
 
       {L.loading ? <Loading /> : L.items.length === 0 ? (

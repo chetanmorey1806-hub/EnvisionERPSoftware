@@ -12,6 +12,17 @@
       content="Envision Computer Training Institute, Pune — student, faculty and finance management portal."
     />
     <title>Envision Computer Training Institute · Pune</title>
+      <script>
+      // Paint the saved colour mode before the app loads, so a dark-mode user
+      // never sees a white flash. Mirrors src/context/ThemeContext.jsx.
+      (function () {
+        try {
+          var t = localStorage.getItem('erp-theme') || 'light';
+          var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) { /* private mode: stay light */ }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

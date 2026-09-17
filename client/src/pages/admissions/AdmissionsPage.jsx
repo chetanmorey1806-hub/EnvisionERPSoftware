@@ -2,6 +2,7 @@ import React from 'react';
 import { Icons } from '../../components/common/icons';
 import { PageHeader, Empty, Flash, Table, Pill, Btn, useList, Loading, dateStr } from '../../components/common/PageKit';
 import { admissionApi } from '../../api/admissionApi';
+import ExcelTools from '../../components/common/ExcelTools';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useT } from '../../context/LanguageContext';
 
@@ -22,7 +23,8 @@ const AdmissionsPage = () => {
   return (
     <div className="space-y-4">
       <PageHeader tone="amber" icon={<Icons.admissions size={18} />} title="Admissions"
-        subtitle="Applications waiting on a decision. Approving one creates the student record." />
+        subtitle="Applications waiting on a decision. Approving one creates the student record."
+        action={<ExcelTools schema="admissions" rows={L.items} variant="hero" />} />
       <Flash error={L.error} notice={L.notice} />
 
       {L.loading ? <Loading /> : L.items.length === 0 ? (

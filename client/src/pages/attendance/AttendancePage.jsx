@@ -4,6 +4,7 @@ import { inputClsCompact } from '../../components/form/FormKit';
 import { PageHeader, Empty, Flash, Table, Loading } from '../../components/common/PageKit';
 import { attendanceApi } from '../../api/attendanceApi';
 import { batchApi } from '../../api/batchApi';
+import ExcelTools from '../../components/common/ExcelTools';
 import { useT } from '../../context/LanguageContext';
 
 const STATUS_TONE = {
@@ -74,6 +75,8 @@ const AttendancePage = () => {
               {batches.map((b) => <option key={b.id} value={b.id}>{b.name} ({b.code})</option>)}
             </select>
             <input type="date" className={`${inputClsCompact} max-w-45`} value={date} onChange={(e) => setDate(e.target.value)} />
+            <ExcelTools schema="attendance" rows={register}
+              filename={`attendance-${batches.find((b) => String(b.id) === String(batchId))?.code || batchId}-${date}`} />
             {data && (
               <div className="flex items-center gap-2 text-[11px] text-gray-500">
                 <span className="px-2 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 font-bold">

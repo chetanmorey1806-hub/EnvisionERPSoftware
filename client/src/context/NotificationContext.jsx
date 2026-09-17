@@ -23,7 +23,7 @@ export const NotificationProvider = ({ children }) => {
       {children}
       
       {/* Toast Render Portals */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full">
+      <div className="fixed bottom-5 right-5 z-[1500] flex flex-col gap-2 max-w-sm w-full">
         {toasts.map((toast) => (
           <div
             key={toast.id}

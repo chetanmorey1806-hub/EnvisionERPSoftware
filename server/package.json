@@ -10,7 +10,9 @@
     "db:seed": "node config/runSeed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "emails:daily": "node jobs/runDailyEmails.js",
-    "db:fresh": "node config/freshStart.js"
+    "db:fresh": "node config/freshStart.js",
+    "demo:load": "node scripts/demoData.js load",
+    "demo:clear": "node scripts/demoData.js clear"
   },
   "keywords": [],
   "author": "",

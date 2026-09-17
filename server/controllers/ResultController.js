@@ -33,22 +33,32 @@ const ResultController = {
 
   // POST /results/upload  { examId, marks: [{ studentId, marks }] }
   async uploadMarks(req, res) {
-    const { examId, marks } = req.body || {};
+    // Accepts both spellings. The Results screen has always sent
+    // { exam_id, marks: [{ student_id, marks_obtained }] } while this handler only
+    // read the camelCase form, so every save from that screen was refused.
+    const body = req.body || {};
+    const examId = body.examId ?? body.exam_id;
+    const { marks } = body;
     if (!examId || !Array.isArray(marks)) return fail(res, 'examId and marks[] are required.', 422);
     const exam = await findById('exams', examId);
     if (!exam) return fail(res, 'Exam not found.', 404);
 
     let saved = 0;
-    for (const m of marks) {
-      if (!m.studentId || m.marks === undefined) continue;
-      const pct = exam.total_marks ? (Number(m.marks) / Number(exam.total_marks)) * 100 : 0;
-      const grade = m.grade || gradeFor(pct);
+    for (const raw of marks) {
+      const studentId = raw.studentId ?? raw.student_id;
+      const value = raw.marks ?? raw.marks_obtained;
+      if (!studentId || value === undefined || value === null || value === '') continue;
+      if (Number(value) < 0 || Number(value) > Number(exam.total_marks)) {
+        return fail(res, `Marks must be between 0 and ${exam.total_marks}.`, 422);
+      }
+      const pct = exam.total_marks ? (Number(value) / Number(exam.total_marks)) * 100 : 0;
+      const grade = raw.grade || gradeFor(pct);
       await query(
         `INSERT INTO marks (exam_id, student_id, marks_obtained, grade, remarks)
          VALUES (?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE marks_obtained = VALUES(marks_obtained),
                                  grade = VALUES(grade), remarks = VALUES(remarks)`,
-        [examId, m.studentId, m.marks, grade, m.remarks || null]
+        [examId, studentId, value, grade, raw.remarks || null]
       );
       saved += 1;
     }

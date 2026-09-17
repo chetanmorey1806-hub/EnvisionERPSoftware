@@ -184,6 +184,156 @@ export const excelSchemas = {
       { key: 'reorder_level', label: 'Reorder Level', type: 'number', example: '3' },
     ],
   },
+
+  /* ---- export-only lists (no create endpoint to import into safely) ---- */
+
+  admissions: {
+    label: 'Admissions',
+    columns: [
+      { key: 'name', label: 'Applicant' },
+      { key: 'email', label: 'Email' },
+      { key: 'phone', label: 'Phone' },
+      { key: 'course_title', label: 'Course' },
+      { key: 'applied_at', label: 'Applied' },
+      { key: 'docs_verified', label: 'Documents verified', format: (r) => (Number(r.docs_verified) ? 'Yes' : 'No') },
+      { key: 'status', label: 'Status' },
+    ],
+  },
+
+  followups: {
+    label: 'Follow-ups',
+    columns: [
+      { key: 'enquiry_name', label: 'Enquiry', format: (r) => r.enquiry_name || `#${r.enquiry_id}` },
+      { key: 'phone', label: 'Phone' },
+      { key: 'note', label: 'Note' },
+      { key: 'followup_date', label: 'Due' },
+      { key: 'next_followup_date', label: 'Next follow-up' },
+      { key: 'status', label: 'Status' },
+    ],
+  },
+
+  attendance: {
+    label: 'Attendance',
+    columns: [
+      { key: 'admission_no', label: 'Admission No' },
+      { key: 'name', label: 'Student' },
+      { key: 'status', label: 'Status', format: (r) => r.status || 'not marked' },
+      { key: 'source', label: 'Marked by', format: (r) => (r.source === 'self' ? 'self check-in' : r.source === 'trainer' ? 'trainer' : '') },
+    ],
+  },
+
+  // Results is the one sheet that goes both ways: export the batch, type the
+  // marks, import it back. Import only FILLS the marks on screen — the normal
+  // "Save marks" still does the saving and the server's checks.
+  results: {
+    label: 'Marks',
+    columns: [
+      { key: 'student_id', label: 'Student ID', type: 'number', required: true, example: '12', hint: 'Keep the id from the export — it is how a row finds its student' },
+      { key: 'admission_no', label: 'Admission No', readOnly: true },
+      { key: 'name', label: 'Student', readOnly: true },
+      { key: 'marks_obtained', label: 'Marks', type: 'number', required: true, example: '72', aliases: ['marks obtained', 'score'] },
+    ],
+  },
+
+  certificates: {
+    label: 'Certificates',
+    columns: [
+      { key: 'certificate_number', label: 'Certificate No' },
+      { key: 'student_name', label: 'Student' },
+      { key: 'admission_no', label: 'Admission No' },
+      { key: 'issued_date', label: 'Issued' },
+      { key: 'approved_by_name', label: 'Approved by' },
+      { key: 'status', label: 'Status' },
+      { key: 'remarks', label: 'Remarks' },
+    ],
+  },
+
+  feeDues: {
+    label: 'Fee dues',
+    columns: [
+      { key: 'name', label: 'Student' },
+      { key: 'admission_no', label: 'Admission No' },
+      { key: 'phone', label: 'Phone' },
+      { key: 'course_title', label: 'Course' },
+      { key: 'overdue_amount', label: 'Overdue (₹)', type: 'number' },
+      { key: 'fines_due', label: 'Late fees (₹)', type: 'number' },
+      { key: 'days_late', label: 'Days late', type: 'number' },
+      { key: 'oldest_due', label: 'Oldest due date' },
+    ],
+  },
+
+  feePlans: {
+    label: 'Fee plans',
+    columns: [
+      { key: 'name', label: 'Plan' },
+      { key: 'course_title', label: 'Course' },
+      { key: 'base_fee', label: 'Base fee (₹)', type: 'number' },
+      { key: 'registration_fee', label: 'Registration (₹)', type: 'number' },
+      { key: 'tax_pct', label: 'GST %', type: 'number' },
+      { key: 'installments', label: 'Installments', type: 'number' },
+      { key: 'interval_days', label: 'Days between', type: 'number' },
+      { key: 'late_fee_per_day', label: 'Late fee / day (₹)', type: 'number' },
+      { key: 'late_fee_cap', label: 'Late fee cap (₹)', type: 'number' },
+      { key: 'grace_days', label: 'Grace days', type: 'number' },
+      { key: 'students_on_plan', label: 'Students on plan', type: 'number' },
+    ],
+  },
+
+  expenses: {
+    label: 'Expenses',
+    columns: [
+      { key: 'voucher_no', label: 'Voucher' },
+      { key: 'category', label: 'Category' },
+      { key: 'payee', label: 'Paid to' },
+      { key: 'amount', label: 'Amount (₹)', type: 'number' },
+      { key: 'spent_on', label: 'Date' },
+      { key: 'mode', label: 'Mode' },
+      { key: 'note', label: 'Note' },
+    ],
+  },
+
+  readiness: {
+    label: 'Readiness',
+    columns: [
+      { key: 'admission_no', label: 'Admission No' },
+      { key: 'name', label: 'Student' },
+      { key: 'attendance_pct', label: 'Attendance %', type: 'number' },
+      { key: 'technical_pct', label: 'Technical %', type: 'number' },
+      { key: 'soft_skill_cleared', label: 'Soft skills signed off', format: (r) => (r.soft_skill_cleared ? 'Yes' : 'No') },
+      { key: 'employability', label: 'Status' },
+      { key: 'assessments', label: 'Assessments', type: 'number' },
+    ],
+  },
+
+  placementJobs: {
+    label: 'Jobs',
+    columns: [
+      { key: 'company', label: 'Company' },
+      { key: 'role', label: 'Role' },
+      { key: 'location', label: 'Location' },
+      { key: 'package', label: 'Package' },
+      { key: 'skills', label: 'Skills' },
+      { key: 'openings', label: 'Openings', type: 'number' },
+      { key: 'min_attendance_pct', label: 'Min attendance %', type: 'number' },
+      { key: 'min_score_pct', label: 'Min score %', type: 'number' },
+      { key: 'require_job_ready', label: 'Job-Ready only', format: (r) => (Number(r.require_job_ready) ? 'Yes' : 'No') },
+      { key: 'applicants', label: 'In pipeline', type: 'number' },
+      { key: 'placed', label: 'Placed', type: 'number' },
+      { key: 'status', label: 'Status' },
+    ],
+  },
+
+  placementPipeline: {
+    label: 'Pipeline',
+    columns: [
+      { key: 'student_name', label: 'Student' },
+      { key: 'admission_no', label: 'Admission No' },
+      { key: 'status', label: 'Stage' },
+      { key: 'match_score', label: 'Match score', type: 'number' },
+      { key: 'rounds', label: 'Rounds logged', type: 'number' },
+      { key: 'rejection_reason', label: 'Rejection reason' },
+    ],
+  },
 };
 
 export default excelSchemas;

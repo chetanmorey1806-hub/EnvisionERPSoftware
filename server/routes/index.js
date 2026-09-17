@@ -19,6 +19,7 @@ router.use('/roles', require('./role.routes'));
 router.use('/users', require('./user.routes'));
 router.use('/students', require('./student.routes'));
 router.use('/classroom', require('./classroom.routes'));
+router.use('/classes', require('./class.routes'));
 router.use('/share', require('./share.routes'));
 router.use('/documents', require('./document.routes'));
 router.use('/courses', require('./course.routes'));

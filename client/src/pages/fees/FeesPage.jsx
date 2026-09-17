@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../../components/common/Modal';
 import { PageHero } from '../../components/common/PageShell';
+import ExcelTools from '../../components/common/ExcelTools';
 import { Icons } from '../../components/common/icons';
 import { Field, inputClsCompact } from '../../components/form/FormKit';
 import { feeApi } from '../../api/feeApi';
@@ -245,6 +246,14 @@ const FeesPage = () => {
       </div>
 
       {loading && <p className="text-xs text-gray-500 py-8 text-center">{t('Loading…')}</p>}
+
+      {!loading && ['dues', 'plans', 'expenses'].includes(tab) && (
+        <div className="flex justify-end">
+          {tab === 'dues' && <ExcelTools schema="feeDues" rows={dues} filename="fee-dues" />}
+          {tab === 'plans' && <ExcelTools schema="feePlans" rows={plans} filename="fee-plans" />}
+          {tab === 'expenses' && <ExcelTools schema="expenses" rows={expenses} filename="expenses" />}
+        </div>
+      )}
 
       {/* ---------------- DUES ---------------- */}
       {!loading && tab === 'dues' && (

@@ -5,6 +5,7 @@ import { PageHeader, Empty, Flash, Table, Loading } from '../../components/commo
 import { resultApi } from '../../api/resultApi';
 import { examApi } from '../../api/examApi';
 import { batchApi } from '../../api/batchApi';
+import ExcelTools from '../../components/common/ExcelTools';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useT } from '../../context/LanguageContext';
 
@@ -69,6 +70,17 @@ const ResultsPage = () => {
 
   const exam = exams.find((e) => String(e.id) === String(examId));
 
+  // Excel import FILLS the marks on screen; "Save marks" still saves them, so
+  // the same server checks apply as when marks are typed by hand.
+  const importMark = async ({ student_id: sid, marks_obtained: m }) => {
+    if (!rows.some((r) => (r.student_id ?? r.id) === sid)) throw new Error(t('This student is not in the selected batch.'));
+    if (exam && (Number(m) < 0 || Number(m) > Number(exam.total_marks))) {
+      throw new Error(`${t('Marks must be between 0 and')} ${exam.total_marks}.`);
+    }
+    setMarks((cur) => ({ ...cur, [sid]: String(m) }));
+  };
+  const sheetRows = rows.map((r) => ({ ...r, student_id: r.student_id ?? r.id, marks_obtained: marks[r.student_id ?? r.id] ?? '' }));
+
   return (
     <div className="space-y-4">
       <PageHeader tone="violet" icon={<Icons.results size={18} />} title="Results"
@@ -86,6 +98,12 @@ const ResultsPage = () => {
             <select className={`${inputClsCompact} max-w-xs`} value={examId} onChange={(e) => setExamId(e.target.value)}>
               {exams.map((e) => <option key={e.id} value={e.id}>{e.title}</option>)}
             </select>
+            {rows.length > 0 && (
+              <ExcelTools schema="results" rows={sheetRows}
+                filename={`marks-${batches.find((b) => String(b.id) === String(batchId))?.code || batchId}-${exam?.title || examId}`}
+                onCreate={can('results.create') ? importMark : undefined}
+                onDone={() => flash(t('Marks filled from Excel. Check them, then press Save marks.'))} />
+            )}
             {can('results.create') && rows.length > 0 && (
               <button onClick={save} disabled={busy}
                 className="px-3 py-2 text-xs font-bold rounded-lg bg-emerald-600 text-white disabled:opacity-50">
